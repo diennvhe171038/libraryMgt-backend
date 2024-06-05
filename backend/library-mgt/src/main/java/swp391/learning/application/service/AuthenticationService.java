@@ -10,7 +10,7 @@ public interface AuthenticationService {
     ResponseCommon<CreateUserResponseDTO> createUser(CreateUserRequest requestDTO);
 
     String getUserFromEmail(String email);
-    ResponseCommon<GetUserByEmailResponse> getUserByEmail(GetUserByEmailRequest getUserByEmailRequest);
+//    ResponseCommon<GetUserByEmailResponse> getUserByEmail(GetUserByEmailRequest getUserByEmailRequest);
 
     ResponseCommon<JWTResponse> login(LoginRequest loginRequest);
     ResponseCommon<ChangePasswordResponse> changePassword(ChangePasswordRequest changePasswordRequest);

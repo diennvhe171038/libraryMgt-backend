@@ -1,6 +1,6 @@
 package swp391.learning.domain.enums;
 
-public enum EnumTypeStatus {
+public enum EnumUserStatus {
         INACTIVE,
         ACTIVE,
         IN_PROCESS;

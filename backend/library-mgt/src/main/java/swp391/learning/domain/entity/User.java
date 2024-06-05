@@ -5,7 +5,7 @@ import lombok.*;
 import lombok.experimental.Accessors;
 import swp391.learning.domain.enums.EnumTypeGender;
 import swp391.learning.domain.enums.EnumTypeRole;
-import swp391.learning.domain.enums.EnumTypeStatus;
+import swp391.learning.domain.enums.EnumUserStatus;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -54,7 +54,7 @@ public class User {
     private LocalDate date_of_birth;
 
     @Enumerated(EnumType.STRING)
-    private EnumTypeStatus status;
+    private EnumUserStatus status;
 
     @Column(name="session_id")
     private Integer session_id; // phien de check moi lan dang nhap

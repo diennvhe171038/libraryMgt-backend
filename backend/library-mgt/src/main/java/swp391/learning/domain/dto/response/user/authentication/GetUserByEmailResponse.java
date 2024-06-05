@@ -3,7 +3,7 @@ package swp391.learning.domain.dto.response.user.authentication;
 import lombok.*;
 import swp391.learning.domain.enums.EnumTypeGender;
 import swp391.learning.domain.enums.EnumTypeRole;
-import swp391.learning.domain.enums.EnumTypeStatus;
+import swp391.learning.domain.enums.EnumUserStatus;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -35,5 +35,5 @@ public class GetUserByEmailResponse {
     @NotNull
     private LocalDate date_of_birth;
     @NotNull
-    private EnumTypeStatus status;
+    private EnumUserStatus status;
 }
