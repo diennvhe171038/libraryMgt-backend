@@ -1,9 +1,9 @@
 package swp391.learning.domain.dto.request.user.authentication;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
-import javax.validation.constraints.NotBlank;
 
 @Setter
 @Getter

@@ -1,5 +1,6 @@
 package swp391.learning.controller;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.slf4j.Logger;
@@ -23,7 +24,6 @@ import swp391.learning.security.UserDetailsImpl;
 import swp391.learning.security.jwt.JWTResponse;
 import swp391.learning.security.jwt.JWTUtils;
 
-import javax.validation.Valid;
 import java.util.Objects;
 
 @RestController

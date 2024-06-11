@@ -1,12 +1,13 @@
 package swp391.learning.domain.dto.response.user.authentication;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import swp391.learning.domain.enums.EnumTypeGender;
 import swp391.learning.domain.enums.EnumTypeRole;
 import swp391.learning.domain.enums.EnumUserStatus;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 

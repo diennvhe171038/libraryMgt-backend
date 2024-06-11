@@ -1,6 +1,7 @@
 package swp391.learning.domain.dto.request.user.authentication;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,6 @@ import org.antlr.v4.runtime.misc.NotNull;
 import swp391.learning.domain.enums.EnumTypeGender;
 import swp391.learning.domain.enums.EnumTypeRole;
 
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 
 @Setter
