@@ -21,6 +21,7 @@ import swp391.learning.repository.AuthenticationRepository;
 import swp391.learning.repository.CategoryRepository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -129,6 +130,21 @@ public class CategoryBookImpl implements CategoryBookService {
 
     @Override
     public ResponseCommon<FindAllCategoryResponse> findAllCategory() {
-        return null;
+        try {
+            List<Category> listCategory = categoryRepository.findAllByIsDeleted(false);
+            // if the list is empty -> tell the user
+            if (listCategory.isEmpty()) {
+                log.debug("Get all Category failed: Category list is empty");
+                return new ResponseCommon<>(ResponseCode.CATEGORY_LIST_IS_EMPTY, null);
+            } else {
+                FindAllCategoryResponse response = new FindAllCategoryResponse("Get all success", listCategory);
+                log.debug("Get all Category successful");
+                return new ResponseCommon<>(ResponseCode.SUCCESS, response);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.debug("Get all Category failed: " + e.getMessage());
+            return new ResponseCommon<>(ResponseCode.FAIL, null);
+        }
     }
 }
