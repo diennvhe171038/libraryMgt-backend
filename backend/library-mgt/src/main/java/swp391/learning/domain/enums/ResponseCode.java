@@ -3,7 +3,7 @@ package swp391.learning.domain.enums;
 import lombok.Getter;
 
 @Getter
-public enum ResponseCode { // thang cong: 200, that bai: 400, khong tim thay: 404
+public enum ResponseCode { // thang cong: 200, that bai: 400, khong tim thay: 404, Khong ton tai:401
     SUCCESS(200, "Success"),
     FAIL(400, "Fail"),
     USER_NOT_FOUND(404, "User not found"),
@@ -11,7 +11,11 @@ public enum ResponseCode { // thang cong: 200, that bai: 400, khong tim thay: 40
     OTP_INCORRECT(400, "OTP incorrect"),
     Expired_OTP(400, "Expired OTP"),
     USER_EXIST(400, "User exist"),
-    OLD_PASSWORD_INCORRECT(400, "Old password incorrect");
+    OLD_PASSWORD_INCORRECT(400, "Old password incorrect"),
+//    category
+    CATEGORY_EXIST(400,"Category exist"),
+    CATEGORY_NOT_EXIST(401,"Category not exist"),
+    CATEGORY_LIST_IS_EMPTY(400,"Category list is empty"),;
 
 
     private final int code;
