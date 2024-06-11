@@ -22,4 +22,6 @@ public interface AuthenticationService {
     ResponseCommon<GetOTPResponse> getOtp(GetOTPRequest request);
 
     ResponseCommon<ResendOTPResponse> resendOTP(ResendOTPRequest request);
+
+    ResponseCommon<SetRoleUserResponse> setRole(SetRoleUserRequest setRoleUserRequest);
 }

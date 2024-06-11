@@ -307,4 +307,19 @@ public class AuthenticationImpl implements AuthenticationService {
         mail.setTemplate("templete");
         return mail;
     }
+    @Override
+    public ResponseCommon<SetRoleUserResponse> setRole(SetRoleUserRequest setRoleUserRequest) {
+        try {
+            User user = authenticationRepository.findByUsername(setRoleUserRequest.getUsername()).orElse(null);
+            user.setRole(setRoleUserRequest.getTypeRole());
+            authenticationRepository.save(user);
+            SetRoleUserResponse setRoleUserResponse = new SetRoleUserResponse();
+            setRoleUserResponse.setUsername(user.getUsername());
+            setRoleUserResponse.setTypeRole(user.getRole());
+            return new ResponseCommon<>(ResponseCode.SUCCESS,setRoleUserResponse);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseCommon<>(ResponseCode.FAIL, null);
+        }
+    }
 }

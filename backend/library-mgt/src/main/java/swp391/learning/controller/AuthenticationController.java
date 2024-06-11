@@ -190,4 +190,14 @@ public class AuthenticationController {
             return ResponseEntity.ok(response);
         }
     }
+    @PostMapping("/set-role-user")
+    public ResponseEntity<ResponseCommon<SetRoleUserResponse>> setRoleUser(@RequestBody SetRoleUserRequest setRoleUserRequest) {
+        try {
+            ResponseCommon<SetRoleUserResponse> response = authenticationService.setRole(setRoleUserRequest);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(new ResponseCommon<>(ResponseCode.FAIL, null), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
