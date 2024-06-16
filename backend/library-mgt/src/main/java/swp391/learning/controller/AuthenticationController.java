@@ -129,8 +129,6 @@ public class AuthenticationController {
     @PostMapping("/changePassword")
     public ResponseEntity<ResponseCommon<ChangePasswordResponse>> changePassword(@Valid @RequestBody ChangePasswordRequest changePasswordRequest) {
         ResponseCommon<ChangePasswordResponse> response = authenticationService.changePassword(changePasswordRequest);
-        String username = SecurityUtils.getUsernameAuth();
-        System.out.println(username);
         if (response.getCode() == ResponseCode.SUCCESS.getCode()) {
             return ResponseEntity.ok(response);
         } else {
@@ -161,7 +159,7 @@ public class AuthenticationController {
         if(response.getCode()==ResponseCode.Expired_OTP.getCode()){
             return ResponseEntity.badRequest().body(new ResponseCommon<>(ResponseCode.Expired_OTP.getCode(),"Expried otp",null));
         } else if (response.getCode() == ResponseCode.SUCCESS.getCode()) {
-            String hassPass = passwordService.hashPassword(forgotPasswordRequest.getPassword());
+            String hassPass = passwordService.hashPassword(forgotPasswordRequest.getNewPassword());
             user.setPassword(hassPass);
             authenticationService.updateUser(user);
             return ResponseEntity.ok(response);
@@ -173,23 +171,23 @@ public class AuthenticationController {
             return ResponseEntity.badRequest().body(response);
         }
     }
-    @PostMapping("/refresh-access-token")
-    public ResponseEntity<JWTResponse> refreshToken(@Valid @RequestBody RefreshTokenRequest request) {
-        String refreshToken = request.getRefreshToken();
-        User user = authenticationRepository.findByEmail(request.getEmail()).orElse(null);
-
-        if (refreshToken.isEmpty() || refreshToken == null) {
-            return ResponseEntity.badRequest().body(null);
-        } else {
-            UserDetailsImpl userDetails = UserDetailsImpl.build(user);
-            String accessToken = jwtUtils.generateAccessToken(userDetails);
-            String newRefreshToken = jwtUtils.generateRefreshToken(userDetails);
-            JWTResponse response = new JWTResponse();
-            response.setAccessToken(accessToken);
-            response.setRefreshToken(newRefreshToken);
-            return ResponseEntity.ok(response);
-        }
-    }
+//    @PostMapping("/refresh-access-token")
+//    public ResponseEntity<JWTResponse> refreshToken(@Valid @RequestBody RefreshTokenRequest request) {
+//        String refreshToken = request.getRefreshToken();
+//        User user = authenticationRepository.findByEmail(request.getEmail()).orElse(null);
+//
+//        if (refreshToken.isEmpty() || refreshToken == null) {
+//            return ResponseEntity.badRequest().body(null);
+//        } else {
+//            UserDetailsImpl userDetails = UserDetailsImpl.build(user);
+//            String accessToken = jwtUtils.generateAccessToken(userDetails);
+//            String newRefreshToken = jwtUtils.generateRefreshToken(userDetails);
+//            JWTResponse response = new JWTResponse();
+//            response.setAccessToken(accessToken);
+//            response.setRefreshToken(newRefreshToken);
+//            return ResponseEntity.ok(response);
+//        }
+//    }
     @PostMapping("/set-role-user")
     public ResponseEntity<ResponseCommon<SetRoleUserResponse>> setRoleUser(@RequestBody SetRoleUserRequest setRoleUserRequest) {
         try {
