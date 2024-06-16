@@ -47,6 +47,8 @@ public class CategoryBookImpl implements CategoryBookService {
             }
             category.setName(addCategoryRequest.getName());
             category.setUserCreated(user);
+            LocalDateTime localDateTime = LocalDateTime.now();
+            category.setUpdatedAt(localDateTime.now());
             // Save category to the database
             Category savedCategory = categoryRepository.save(category);
 
@@ -59,6 +61,7 @@ public class CategoryBookImpl implements CategoryBookService {
             AddCategoryResponse addCategoryResponse = new AddCategoryResponse();
             addCategoryResponse.setCategoryID(category.getId());
             addCategoryResponse.setCategoryName(category.getName());
+            addCategoryResponse.setUpdatedAt(category.getUpdatedAt());
             return new ResponseCommon<>(ResponseCode.SUCCESS, addCategoryResponse);
         } catch (Exception e) {
             e.printStackTrace();
@@ -128,23 +131,23 @@ public class CategoryBookImpl implements CategoryBookService {
         }
     }
 
-    @Override
-    public ResponseCommon<FindAllCategoryResponse> findAllCategory() {
-        try {
-            List<Category> listCategory = categoryRepository.findAllByIsDeleted(false);
-            // if the list is empty -> tell the user
-            if (listCategory.isEmpty()) {
-                log.debug("Get all Category failed: Category list is empty");
-                return new ResponseCommon<>(ResponseCode.CATEGORY_LIST_IS_EMPTY, null);
-            } else {
-                FindAllCategoryResponse response = new FindAllCategoryResponse("Get all success", listCategory);
-                log.debug("Get all Category successful");
-                return new ResponseCommon<>(ResponseCode.SUCCESS, response);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.debug("Get all Category failed: " + e.getMessage());
-            return new ResponseCommon<>(ResponseCode.FAIL, null);
-        }
-    }
+//    @Override
+//    public ResponseCommon<FindAllCategoryResponse> findAllCategory() {
+//        try {
+//            List<Category> listCategory = categoryRepository.findAllByIsDeleted(false);
+//            // if the list is empty -> tell the user
+//            if (listCategory.isEmpty()) {
+//                log.debug("Get all Category failed: Category list is empty");
+//                return new ResponseCommon<>(ResponseCode.CATEGORY_LIST_IS_EMPTY, null);
+//            } else {
+//                FindAllCategoryResponse response = new FindAllCategoryResponse("Get all success", listCategory);
+//                log.debug("Get all Category successful");
+//                return new ResponseCommon<>(ResponseCode.SUCCESS, response);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            log.debug("Get all Category failed: " + e.getMessage());
+//            return new ResponseCommon<>(ResponseCode.FAIL, null);
+//        }
+//    }
 }
