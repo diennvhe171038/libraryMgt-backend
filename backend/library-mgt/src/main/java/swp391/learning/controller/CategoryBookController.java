@@ -13,12 +13,11 @@ import swp391.learning.domain.dto.request.admin.category.DeleteCategoryRequest;
 import swp391.learning.domain.dto.request.admin.category.UpdateCategoryRequest;
 import swp391.learning.domain.dto.response.admin.category.AddCategoryResponse;
 import swp391.learning.domain.dto.response.admin.category.DeleteCategoryResponse;
-import swp391.learning.domain.dto.response.admin.category.FindAllCategoryResponse;
 import swp391.learning.domain.dto.response.admin.category.UpdateCategoryResponse;
 import swp391.learning.domain.enums.ResponseCode;
 
 @RestController
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v1/category")
 @AllArgsConstructor
 @Log4j2
 public class CategoryBookController {
@@ -67,16 +66,16 @@ public class CategoryBookController {
             return ResponseEntity.badRequest().body(new ResponseCommon<>(ResponseCode.FAIL.getCode(),"Delete Fail",null));
         }
     }
-    @GetMapping("/find-all-category")
-    public ResponseEntity<ResponseCommon<FindAllCategoryResponse>> findAllCategory(){
-        ResponseCommon<FindAllCategoryResponse> response = categoryBookService.findAllCategory();
-        // if code response equals code success -> return ok
-        if(response.getCode()==ResponseCode.SUCCESS.getCode()){
-            return ResponseEntity.ok(response);
-        } else if(response.getCode()==ResponseCode.CATEGORY_LIST_IS_EMPTY.getCode()){
-            return ResponseEntity.badRequest().body(new ResponseCommon<>(ResponseCode.CATEGORY_LIST_IS_EMPTY.getCode(),"List Category is Empty",null));
-        } else {
-            return ResponseEntity.badRequest().body(new ResponseCommon<>(ResponseCode.FAIL.getCode(),"Find All category fail",null));
-        }
-    }
+//    @GetMapping("/find-all-category")
+//    public ResponseEntity<ResponseCommon<FindAllCategoryResponse>> findAllCategory(){
+//        ResponseCommon<FindAllCategoryResponse> response = categoryBookService.findAllCategory();
+//        // if code response equals code success -> return ok
+//        if(response.getCode()==ResponseCode.SUCCESS.getCode()){
+//            return ResponseEntity.ok(response);
+//        } else if(response.getCode()==ResponseCode.CATEGORY_LIST_IS_EMPTY.getCode()){
+//            return ResponseEntity.badRequest().body(new ResponseCommon<>(ResponseCode.CATEGORY_LIST_IS_EMPTY.getCode(),"List Category is Empty",null));
+//        } else {
+//            return ResponseEntity.badRequest().body(new ResponseCommon<>(ResponseCode.FAIL.getCode(),"Find All category fail",null));
+//        }
+//    }
 }

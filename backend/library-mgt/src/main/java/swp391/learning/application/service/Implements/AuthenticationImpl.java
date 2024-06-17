@@ -53,6 +53,7 @@ public class AuthenticationImpl implements AuthenticationService {
             String hassPass = passwordService.hashPassword(requestDTO.getPassword());
             user.setPassword(hassPass);
             user.setEmail(requestDTO.getEmail());
+//            user.setAddress(requestDTO.getAddress());
             user.setPhone(requestDTO.getPhone());
             user.setRole(requestDTO.getRole());
             user.setFullName(requestDTO.getFullName());
@@ -131,7 +132,7 @@ public class AuthenticationImpl implements AuthenticationService {
     @Override
     public ResponseCommon<JWTResponse> login(LoginRequest loginRequest) {
         try {
-            Optional<User> user = authenticationRepository.findByEmail(loginRequest.getUsername());
+            Optional<User> user = authenticationRepository.findByEmail(loginRequest.getEmail());
             // if username request not found in database -> tell user
             if(user.isEmpty()){
                 return new ResponseCommon<>(ResponseCode.USER_NOT_FOUND,null);
@@ -139,10 +140,7 @@ public class AuthenticationImpl implements AuthenticationService {
             else {
                 String hashPass = passwordService.hashPassword(loginRequest.getPassword());
 //                 so sanh pass trong db sai -> return fail
-//                String password = loginRequest.getPassword();
-//                String hashedPassword = user.get().getPassword();
-//                if (!password.equals(hashedPassword)) {
-                if (user.orElse(null).getPassword().equals(hashPass)) {
+                if (!user.orElse(null).getPassword().equals(hashPass)) {
                     return new ResponseCommon<>(ResponseCode.PASSWORD_INCORRECT, null);
                 } // else -> verify otp
                 else {

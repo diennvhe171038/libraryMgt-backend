@@ -5,14 +5,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import swp391.learning.application.service.CategoryBookService;
-import swp391.learning.controller.AuthenticationController;
 import swp391.learning.domain.dto.common.ResponseCommon;
 import swp391.learning.domain.dto.request.admin.category.AddCategoryRequest;
 import swp391.learning.domain.dto.request.admin.category.DeleteCategoryRequest;
 import swp391.learning.domain.dto.request.admin.category.UpdateCategoryRequest;
 import swp391.learning.domain.dto.response.admin.category.AddCategoryResponse;
 import swp391.learning.domain.dto.response.admin.category.DeleteCategoryResponse;
-import swp391.learning.domain.dto.response.admin.category.FindAllCategoryResponse;
 import swp391.learning.domain.dto.response.admin.category.UpdateCategoryResponse;
 import swp391.learning.domain.entity.Category;
 import swp391.learning.domain.entity.User;
@@ -21,7 +19,6 @@ import swp391.learning.repository.AuthenticationRepository;
 import swp391.learning.repository.CategoryRepository;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -47,6 +44,8 @@ public class CategoryBookImpl implements CategoryBookService {
             }
             category.setName(addCategoryRequest.getName());
             category.setUserCreated(user);
+            LocalDateTime localDateTime = LocalDateTime.now();
+            category.setUpdatedAt(localDateTime.now());
             // Save category to the database
             Category savedCategory = categoryRepository.save(category);
 
@@ -59,6 +58,7 @@ public class CategoryBookImpl implements CategoryBookService {
             AddCategoryResponse addCategoryResponse = new AddCategoryResponse();
             addCategoryResponse.setCategoryID(category.getId());
             addCategoryResponse.setCategoryName(category.getName());
+            addCategoryResponse.setUpdatedAt(category.getUpdatedAt());
             return new ResponseCommon<>(ResponseCode.SUCCESS, addCategoryResponse);
         } catch (Exception e) {
             e.printStackTrace();
@@ -128,23 +128,23 @@ public class CategoryBookImpl implements CategoryBookService {
         }
     }
 
-    @Override
-    public ResponseCommon<FindAllCategoryResponse> findAllCategory() {
-        try {
-            List<Category> listCategory = categoryRepository.findAllByIsDeleted(false);
-            // if the list is empty -> tell the user
-            if (listCategory.isEmpty()) {
-                log.debug("Get all Category failed: Category list is empty");
-                return new ResponseCommon<>(ResponseCode.CATEGORY_LIST_IS_EMPTY, null);
-            } else {
-                FindAllCategoryResponse response = new FindAllCategoryResponse("Get all success", listCategory);
-                log.debug("Get all Category successful");
-                return new ResponseCommon<>(ResponseCode.SUCCESS, response);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.debug("Get all Category failed: " + e.getMessage());
-            return new ResponseCommon<>(ResponseCode.FAIL, null);
-        }
-    }
+//    @Override
+//    public ResponseCommon<FindAllCategoryResponse> findAllCategory() {
+//        try {
+//            List<Category> listCategory = categoryRepository.findAllByIsDeleted(false);
+//            // if the list is empty -> tell the user
+//            if (listCategory.isEmpty()) {
+//                log.debug("Get all Category failed: Category list is empty");
+//                return new ResponseCommon<>(ResponseCode.CATEGORY_LIST_IS_EMPTY, null);
+//            } else {
+//                FindAllCategoryResponse response = new FindAllCategoryResponse("Get all success", listCategory);
+//                log.debug("Get all Category successful");
+//                return new ResponseCommon<>(ResponseCode.SUCCESS, response);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            log.debug("Get all Category failed: " + e.getMessage());
+//            return new ResponseCommon<>(ResponseCode.FAIL, null);
+//        }
+//    }
 }

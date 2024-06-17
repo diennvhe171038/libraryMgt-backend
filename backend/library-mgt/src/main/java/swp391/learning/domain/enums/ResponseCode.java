@@ -12,11 +12,18 @@ public enum ResponseCode { // thang cong: 200, that bai: 400, khong tim thay: 40
     Expired_OTP(400, "Expired OTP"),
     USER_EXIST(400, "User exist"),
     OLD_PASSWORD_INCORRECT(400, "Old password incorrect"),
-//    category
-    CATEGORY_EXIST(400,"Category exist"),
-    CATEGORY_NOT_EXIST(401,"Category not exist"),
-    CATEGORY_LIST_IS_EMPTY(400,"Category list is empty"),;
-
+    //    category
+    CATEGORY_EXIST(400, "Category exist"),
+    CATEGORY_NOT_EXIST(401, "Category not exist"),
+    CATEGORY_LIST_IS_EMPTY(400, "Category list is empty"),
+    //    category
+    AUTHOR_EXIST(400, "Author exist"),
+    AUTHOR_NOT_EXIST(401, "Author not exist"),
+    AUTHOR_LIST_IS_EMPTY(400, "Author list is empty"),
+    // book
+    BOOK_EXIST(400,"BOOK exist"),
+    BOOK_NOT_EXIST(401,"BOOK not exist"),
+    BOOK_LIST_IS_EMPTY(400,"BOOK list is empty"),;
 
     private final int code;
     private final String message;

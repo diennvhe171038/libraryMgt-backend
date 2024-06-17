@@ -7,18 +7,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 public class AddCategoryResponse {
-    @NotNull
     private int categoryID;
-    @NotBlank
     private String categoryName;
-    @NotBlank
     private String createdBy;
-    @NotBlank
     private String updatedBy;
-
+    private LocalDateTime updatedAt;
 }
