@@ -1,7 +1,8 @@
 package swp391.learning.config;
-import org.bouncycastle.crypto.macs.HMac;
 import org.bouncycastle.crypto.digests.SHA512Digest;
+import org.bouncycastle.crypto.macs.HMac;
 import org.bouncycastle.crypto.params.KeyParameter;
+
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
@@ -81,6 +82,15 @@ public class VnPayConfig {
         }
     }
 
+    public static String getRandomNumber(int len) {
+        Random rnd = new Random();
+        String chars = "0123456789";
+        StringBuilder sb = new StringBuilder(len);
+        for (int i = 0; i < len; i++) {
+            sb.append(chars.charAt(rnd.nextInt(chars.length())));
+        }
+        return sb.toString();
+    }
 
 //    public static String getIpAddress(HttpServletRequest request) {
 //        String ipAdress;
@@ -94,14 +104,4 @@ public class VnPayConfig {
 //        }
 //        return ipAdress;
 //    }
-
-    public static String getRandomNumber(int len) {
-        Random rnd = new Random();
-        String chars = "0123456789";
-        StringBuilder sb = new StringBuilder(len);
-        for (int i = 0; i < len; i++) {
-            sb.append(chars.charAt(rnd.nextInt(chars.length())));
-        }
-        return sb.toString();
-    }
 }

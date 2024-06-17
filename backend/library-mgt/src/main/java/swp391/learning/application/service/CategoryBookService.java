@@ -16,6 +16,6 @@ public interface CategoryBookService {
 
     ResponseCommon<DeleteCategoryResponse> deleteCategory(DeleteCategoryRequest deleteCategoryRequest);
 
-    ResponseCommon<FindAllCategoryResponse> findAllCategory();
+//    ResponseCommon<FindAllCategoryResponse> findAllCategory();
 
 }

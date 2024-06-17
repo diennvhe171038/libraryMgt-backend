@@ -125,6 +125,13 @@
 			<version>0.11.5</version>
 		</dependency>
 
+<!--		VNPay-->
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcprov-jdk15on</artifactId>
+			<version>1.70</version>
+		</dependency>
+
 		<!-- SpringDoc -->
 		<dependency>
 			<groupId>org.springdoc</groupId>

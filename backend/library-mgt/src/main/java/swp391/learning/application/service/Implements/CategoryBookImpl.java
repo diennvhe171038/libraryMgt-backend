@@ -5,14 +5,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import swp391.learning.application.service.CategoryBookService;
-import swp391.learning.controller.AuthenticationController;
 import swp391.learning.domain.dto.common.ResponseCommon;
 import swp391.learning.domain.dto.request.admin.category.AddCategoryRequest;
 import swp391.learning.domain.dto.request.admin.category.DeleteCategoryRequest;
 import swp391.learning.domain.dto.request.admin.category.UpdateCategoryRequest;
 import swp391.learning.domain.dto.response.admin.category.AddCategoryResponse;
 import swp391.learning.domain.dto.response.admin.category.DeleteCategoryResponse;
-import swp391.learning.domain.dto.response.admin.category.FindAllCategoryResponse;
 import swp391.learning.domain.dto.response.admin.category.UpdateCategoryResponse;
 import swp391.learning.domain.entity.Category;
 import swp391.learning.domain.entity.User;
@@ -21,7 +19,6 @@ import swp391.learning.repository.AuthenticationRepository;
 import swp391.learning.repository.CategoryRepository;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Objects;
 
 @Service

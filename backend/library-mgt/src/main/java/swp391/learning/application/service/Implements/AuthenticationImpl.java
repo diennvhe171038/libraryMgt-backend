@@ -140,9 +140,6 @@ public class AuthenticationImpl implements AuthenticationService {
             else {
                 String hashPass = passwordService.hashPassword(loginRequest.getPassword());
 //                 so sanh pass trong db sai -> return fail
-//                String password = loginRequest.getPassword();
-//                String hashedPassword = user.get().getPassword();
-//                if (!password.equals(hashedPassword)) {
                 if (!user.orElse(null).getPassword().equals(hashPass)) {
                     return new ResponseCommon<>(ResponseCode.PASSWORD_INCORRECT, null);
                 } // else -> verify otp
