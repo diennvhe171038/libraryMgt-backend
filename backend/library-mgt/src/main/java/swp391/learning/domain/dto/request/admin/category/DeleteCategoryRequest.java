@@ -13,7 +13,7 @@ import lombok.Setter;
 @Setter
 public class DeleteCategoryRequest {
     @NotBlank
-    private String username;
+    private String email;
     @NotNull
     private int categoryID;
 }

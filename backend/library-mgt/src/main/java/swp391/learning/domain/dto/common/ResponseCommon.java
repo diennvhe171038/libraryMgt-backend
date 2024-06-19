@@ -1,5 +1,6 @@
 package swp391.learning.domain.dto.common;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -11,9 +12,16 @@ import swp391.learning.domain.enums.ResponseCode;
 public class ResponseCommon<T> {
     private int code;
     private String message;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private T data;
 
     public ResponseCommon() {
+    }
+
+    public ResponseCommon(int code, String message) {
+        this.code = code;
+        this.message = message;
     }
 
     public ResponseCommon(int code, String message, T data) {

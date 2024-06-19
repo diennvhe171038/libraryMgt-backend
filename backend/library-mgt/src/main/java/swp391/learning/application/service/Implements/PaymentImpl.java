@@ -7,8 +7,8 @@ import swp391.learning.config.VnPayConfig;
 import swp391.learning.domain.dto.common.PaymentRes;
 import swp391.learning.domain.dto.common.ResponseCommon;
 import swp391.learning.domain.enums.ResponseCode;
-import swp391.learning.repository.AuthenticationRepository;
 import swp391.learning.repository.PaymentRepository;
+import swp391.learning.repository.UserRepository;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -20,7 +20,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class PaymentImpl implements PaymentService {
     private final PaymentRepository paymentRepository;
-    private final AuthenticationRepository authenticationRepository;
+    private final UserRepository userRepository;
 
     @Override
     public ResponseCommon<PaymentRes> addPayment(double amount) throws UnsupportedEncodingException {

@@ -13,7 +13,7 @@ import lombok.Setter;
 @Setter
 public class AddCategoryRequest {
     @NotBlank
-    private String username;
+    private String email;
     @NotBlank
     private String name;
 }

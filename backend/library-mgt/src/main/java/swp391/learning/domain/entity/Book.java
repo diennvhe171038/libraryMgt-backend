@@ -23,7 +23,7 @@ public class Book {
     @Column(name = "name")
     private String name;
     @Column(name = "description")
-    private String description;
+    private String desc;
     @ManyToOne
     @JoinColumn(name="category_id",referencedColumnName = "id")
     private Category category;

@@ -1,27 +1,25 @@
 package swp391.learning.application.service;
 
-import swp391.learning.domain.dto.common.ResponseCommon;
-import swp391.learning.domain.dto.request.user.authentication.*;
-import swp391.learning.domain.dto.response.user.authentication.*;
-import swp391.learning.domain.entity.User;
-import swp391.learning.security.jwt.JWTResponse;
+
+import swp391.learning.domain.dto.request.user.authentication.LoginRequest;
+import swp391.learning.domain.dto.request.user.authentication.RegisterRequest;
+import swp391.learning.domain.dto.response.user.authentication.AuthenticationResponse;
 
 public interface AuthenticationService {
-    ResponseCommon<CreateUserResponseDTO> createUser(CreateUserRequest requestDTO);
+    void register(RegisterRequest registerRequest);
 
-    String getUserFromEmail(String email);
-//    ResponseCommon<GetUserByEmailResponse> getUserByEmail(GetUserByEmailRequest getUserByEmailRequest);
+    AuthenticationResponse authenticate(LoginRequest loginRequest);
 
-    ResponseCommon<JWTResponse> login(LoginRequest loginRequest);
-    ResponseCommon<ChangePasswordResponse> changePassword(ChangePasswordRequest changePasswordRequest);
+    AuthenticationResponse verify(String email, String otp);
 
-    ResponseCommon<VerifyOtpResponse> verifyOtp(VerifyOtpRequest verifyOtpRequest);
+    boolean verifyOTP(String email, String otpCode);
 
-    User updateUser(User user);
+    void sendOtp(String email);
 
-    ResponseCommon<GetOTPResponse> getOtp(GetOTPRequest request);
+    boolean checkEmailExist(String email);
 
-    ResponseCommon<ResendOTPResponse> resendOTP(ResendOTPRequest request);
+    void changePassword(String otp, String email, String newPassword);
 
-    ResponseCommon<SetRoleUserResponse> setRole(SetRoleUserRequest setRoleUserRequest);
+
+
 }

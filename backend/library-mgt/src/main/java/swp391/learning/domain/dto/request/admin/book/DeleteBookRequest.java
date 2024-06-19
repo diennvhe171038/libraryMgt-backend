@@ -13,7 +13,9 @@ import lombok.Setter;
 @Setter
 public class DeleteBookRequest {
     @NotBlank
-    private String username;
+    private String email;
+    @NotBlank
+    private String nameBook;
     @NotNull
     private int bookID;
 }

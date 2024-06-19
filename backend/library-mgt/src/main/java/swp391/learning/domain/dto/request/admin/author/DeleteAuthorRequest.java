@@ -13,7 +13,7 @@ import lombok.Setter;
 @Setter
 public class DeleteAuthorRequest {
     @NotBlank
-    private String username;
+    private String email;
     @NotNull
     private int authorID;
 }

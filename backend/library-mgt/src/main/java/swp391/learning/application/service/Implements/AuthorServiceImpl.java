@@ -12,15 +12,11 @@ import swp391.learning.domain.dto.request.admin.author.UpdateAuthorRequest;
 import swp391.learning.domain.dto.response.admin.author.AddAuthorResponse;
 import swp391.learning.domain.dto.response.admin.author.DeleteAuthorResponse;
 import swp391.learning.domain.dto.response.admin.author.UpdateAuthorResponse;
-import swp391.learning.domain.dto.response.admin.category.AddCategoryResponse;
-import swp391.learning.domain.dto.response.admin.category.DeleteCategoryResponse;
-import swp391.learning.domain.dto.response.admin.category.UpdateCategoryResponse;
 import swp391.learning.domain.entity.Author;
-import swp391.learning.domain.entity.Category;
 import swp391.learning.domain.entity.User;
 import swp391.learning.domain.enums.ResponseCode;
-import swp391.learning.repository.AuthenticationRepository;
 import swp391.learning.repository.AuthorRepository;
+import swp391.learning.repository.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -28,7 +24,7 @@ import java.util.Objects;
 @Service
 @RequiredArgsConstructor
 public class AuthorServiceImpl implements AuthorService {
-    private final AuthenticationRepository authenticationRepository;
+    private final UserRepository userRepository;
     private final AuthorRepository authorRepository;
     private static final Logger log = LoggerFactory.getLogger(AuthorServiceImpl.class);
 
@@ -36,7 +32,7 @@ public class AuthorServiceImpl implements AuthorService {
     public ResponseCommon<AddAuthorResponse> addAuthor(AddAuthorRequest addAuthorRequest) {
         try {
             Author author = authorRepository.findAuthorByName(addAuthorRequest.getNameAuthor()).orElse(null);
-            User user = authenticationRepository.findByUsername(addAuthorRequest.getUsername()).orElse(null);
+            User user = userRepository.findByEmail(addAuthorRequest.getEmail());
             // if category not null -> tell user
             if (!Objects.isNull(author)) {
                 log.debug("Add author failed: author already exists");
@@ -49,7 +45,7 @@ public class AuthorServiceImpl implements AuthorService {
             author.setName(addAuthorRequest.getNameAuthor());
             author.setDeleted(false);
             author.setLink_Thumnail(addAuthorRequest.getLink_Thumnail());
-            author.setDescribe(addAuthorRequest.getDescribe());
+            author.setDesc(addAuthorRequest.getDescribe());
             LocalDateTime localDateTime = LocalDateTime.now();
             author.setUpdatedAt(localDateTime.now());
             // Save category to the database
@@ -64,7 +60,7 @@ public class AuthorServiceImpl implements AuthorService {
             AddAuthorResponse addAuthorResponse = new AddAuthorResponse();
             addAuthorResponse.setAuthorID(author.getId());
             addAuthorResponse.setNameAuthor(author.getName());
-            addAuthorResponse.setDescribe(author.getDescribe());
+            addAuthorResponse.setDescribe(author.getDesc());
             addAuthorResponse.setLink_thumnail(author.getLink_Thumnail());
             addAuthorResponse.setUpdatedAt(author.getUpdatedAt());
             return new ResponseCommon<>(ResponseCode.SUCCESS, addAuthorResponse);
@@ -79,7 +75,7 @@ public class AuthorServiceImpl implements AuthorService {
     public ResponseCommon<UpdateAuthorResponse> updateAuthor(UpdateAuthorRequest updateAuthorRequest) {
         try {
             Author author = authorRepository.findAuthorById(updateAuthorRequest.getAuthorID()).orElse(null);
-            User user = authenticationRepository.findByUsername(updateAuthorRequest.getUsername()).orElse(null);
+            User user = userRepository.findByEmail(updateAuthorRequest.getEmail());
             // if category is null -> tell user
             if (Objects.isNull(author)) {
                 log.debug("Update Category failed: Category does not exist");
@@ -90,7 +86,7 @@ public class AuthorServiceImpl implements AuthorService {
                 authorUpdate.setName(updateAuthorRequest.getNameAuthor());
                 authorUpdate.setUpdatedAt(LocalDateTime.now());
                 authorUpdate.setDeleted(updateAuthorRequest.isDeleted());
-                authorUpdate.setDescribe(updateAuthorRequest.getDescription());
+                authorUpdate.setDesc(updateAuthorRequest.getDescription());
                 authorUpdate.setLink_Thumnail(updateAuthorRequest.getLink_thumnail());
                 authorUpdate.setUserUpdated(user);
                 authorRepository.save(authorUpdate);
@@ -98,7 +94,7 @@ public class AuthorServiceImpl implements AuthorService {
                 UpdateAuthorResponse updateAuthorResponse = new UpdateAuthorResponse();
                 updateAuthorResponse.setAuthorID(authorUpdate.getId());
                 updateAuthorResponse.setNameAuthor(authorUpdate.getName());
-                updateAuthorResponse.setDescription(authorUpdate.getDescribe());
+                updateAuthorResponse.setDescription(authorUpdate.getDesc());
                 updateAuthorResponse.setLinkThumail(authorUpdate.getLink_Thumnail());
                 log.debug("Update author successful");
                 return new ResponseCommon<>(ResponseCode.SUCCESS, updateAuthorResponse);
@@ -114,7 +110,7 @@ public class AuthorServiceImpl implements AuthorService {
     public ResponseCommon<DeleteAuthorResponse> deleteAuthor(DeleteAuthorRequest deleteAuthorRequest) {
         try {
             Author author = authorRepository.findAuthorById(deleteAuthorRequest.getAuthorID()).orElse(null);
-            User user = authenticationRepository.findByUsername(deleteAuthorRequest.getUsername()).orElse(null);
+            User user = userRepository.findByEmail(deleteAuthorRequest.getEmail());
             // if category is null -> tell the user
             if (Objects.isNull(author)) {
                 log.debug("Delete Category failed: Category does not exist");

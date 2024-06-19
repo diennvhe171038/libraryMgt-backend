@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 public class AddAuthorRequest {
     @NotBlank
-    private String username;
+    private String email;
     @NotBlank
     private String nameAuthor;
     @NotBlank

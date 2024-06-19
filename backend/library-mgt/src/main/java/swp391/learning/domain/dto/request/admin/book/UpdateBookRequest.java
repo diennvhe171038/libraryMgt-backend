@@ -13,7 +13,7 @@ import lombok.Setter;
 @Setter
 public class UpdateBookRequest {
         @NotBlank
-        private String username;
+        private String email;
         @NotNull
         private int bookID;
         @NotBlank
