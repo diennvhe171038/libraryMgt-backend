@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import swp391.learning.domain.entity.Category;
 
+import java.sql.Blob;
 import java.time.LocalDateTime;
 
 @AllArgsConstructor
@@ -27,7 +28,7 @@ public class AddBookResponse {
     @NotEmpty
     private Category category;
     @NotBlank
-    private String linkThumail;
+    private Blob image;
     @NotNull
     private LocalDateTime createdAt;
     @NotBlank

@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Blob;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -22,8 +24,8 @@ public class UpdateBookRequest {
         private String description;
         @NotNull
         private double price;
-        @NotBlank
-        private String link_thumnail;
+//        @NotBlank
+//        private Blob image;
         @NotNull
         private int categoryID;
         @NotNull

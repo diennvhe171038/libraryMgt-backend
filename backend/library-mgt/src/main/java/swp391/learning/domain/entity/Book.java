@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.sql.Blob;
 import java.time.LocalDateTime;
 
 @Entity
@@ -20,8 +21,8 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private int id;
-    @Column(name = "name")
-    private String name;
+    @Column(name = "nameBook")
+    private String nameBook;
     @Column(name = "description")
     private String desc;
     @ManyToOne
@@ -29,8 +30,8 @@ public class Book {
     private Category category;
     @Column(name = "created_at")
     private LocalDateTime createdAt;
-    @Column(name = "link_thummail")
-    private String linkThumnail;
+    @Column(name = "image")
+    private Blob image;
     @Column(name="price")
     private double price;
     @Column(name="deleted")
