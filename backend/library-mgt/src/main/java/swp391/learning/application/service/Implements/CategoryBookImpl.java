@@ -15,8 +15,8 @@ import swp391.learning.domain.dto.response.admin.category.UpdateCategoryResponse
 import swp391.learning.domain.entity.Category;
 import swp391.learning.domain.entity.User;
 import swp391.learning.domain.enums.ResponseCode;
-import swp391.learning.repository.AuthenticationRepository;
 import swp391.learning.repository.CategoryRepository;
+import swp391.learning.repository.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -25,14 +25,14 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class CategoryBookImpl implements CategoryBookService {
     private final CategoryRepository categoryRepository;
-    private final AuthenticationRepository authenticationRepository;
+    private final UserRepository userRepository;
     private static final Logger log = LoggerFactory.getLogger(CategoryBookImpl.class);
 
     @Override
     public ResponseCommon<AddCategoryResponse> addCategory(AddCategoryRequest addCategoryRequest) {
         try {
             Category category = categoryRepository.findCategoryByName(addCategoryRequest.getName()).orElse(null);
-            User user = authenticationRepository.findByUsername(addCategoryRequest.getUsername()).orElse(null);
+            User user = userRepository.findByEmail(addCategoryRequest.getEmail());
             // if category not null -> tell user
             if (!Objects.isNull(category)) {
                 log.debug("Add Category failed: Category already exists");
@@ -71,7 +71,7 @@ public class CategoryBookImpl implements CategoryBookService {
     public ResponseCommon<UpdateCategoryResponse> updateCategory(UpdateCategoryRequest updateCategoryRequest) {
         try {
             Category category = categoryRepository.findCategoryById(updateCategoryRequest.getCategoryID()).orElse(null);
-            User user = authenticationRepository.findByUsername(updateCategoryRequest.getUsername()).orElse(null);
+            User user = userRepository.findByEmail(updateCategoryRequest.getEmail());
             // if category is null -> tell user
             if (Objects.isNull(category)) {
                 log.debug("Update Category failed: Category does not exist");
@@ -102,7 +102,7 @@ public class CategoryBookImpl implements CategoryBookService {
     public ResponseCommon<DeleteCategoryResponse> deleteCategory(DeleteCategoryRequest deleteCategoryRequest) {
         try {
             Category category = categoryRepository.findCategoryById(deleteCategoryRequest.getCategoryID()).orElse(null);
-            User user = authenticationRepository.findByUsername(deleteCategoryRequest.getUsername()).orElse(null);
+            User user = userRepository.findByEmail(deleteCategoryRequest.getEmail());
             // if category is null -> tell the user
             if (Objects.isNull(category)) {
                 log.debug("Delete Category failed: Category does not exist");

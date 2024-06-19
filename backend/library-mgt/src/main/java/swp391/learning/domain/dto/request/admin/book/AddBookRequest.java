@@ -13,7 +13,7 @@ import lombok.Setter;
 @Getter
 public class AddBookRequest {
     @NotBlank
-    private String username;
+    private String email;
     @NotBlank
     private String name;
     @NotBlank

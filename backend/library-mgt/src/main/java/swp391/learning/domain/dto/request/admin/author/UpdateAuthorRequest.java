@@ -13,7 +13,7 @@ import lombok.Setter;
 @Setter
 public class UpdateAuthorRequest {
     @NotBlank
-    private String username; // userName nguoi sua
+    private String email; // userName nguoi sua
     @NotNull
     private int authorID;
     @NotBlank

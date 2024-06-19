@@ -18,9 +18,9 @@ import swp391.learning.domain.entity.Book;
 import swp391.learning.domain.entity.Category;
 import swp391.learning.domain.entity.User;
 import swp391.learning.domain.enums.ResponseCode;
-import swp391.learning.repository.AuthenticationRepository;
 import swp391.learning.repository.BookRepository;
 import swp391.learning.repository.CategoryRepository;
+import swp391.learning.repository.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -31,7 +31,7 @@ import java.util.Objects;
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final CategoryRepository categoryRepository;
-    private final AuthenticationRepository authenticationRepository;
+    private final UserRepository userRepository;
     private static final Logger log = LoggerFactory.getLogger(BookServiceImpl.class);
 
 
@@ -39,7 +39,7 @@ public class BookServiceImpl implements BookService {
     public ResponseCommon<AddBookResponse> addBook(AddBookRequest addBookRequest) {
         try {
             Book book = bookRepository.findBookByName(addBookRequest.getName()).orElse(null);
-            User user = authenticationRepository.findByUsername(addBookRequest.getUsername()).orElse(null);
+            User user = userRepository.findByEmail(addBookRequest.getEmail());
             // if Book not null -> tell the user
             if (!Objects.isNull(book)) {
                 log.debug("Add Book failed: Book already exists");
@@ -50,7 +50,7 @@ public class BookServiceImpl implements BookService {
                 book = new Book();
             }
             book.setName(addBookRequest.getName());
-            book.setDescription(addBookRequest.getDescription());
+            book.setDesc(addBookRequest.getDescription());
             book.setLinkThumnail(addBookRequest.getLink_thumnail());
             book.setPrice(addBookRequest.getPrice());
             book.setCreatedAt(LocalDateTime.now());
@@ -71,7 +71,7 @@ public class BookServiceImpl implements BookService {
             AddBookResponse addBookResponse = new AddBookResponse();
             addBookResponse.setBookID(book.getId());
             addBookResponse.setBookName(book.getName());
-            addBookResponse.setDescription(book.getDescription());
+            addBookResponse.setDescription(book.getDesc());
             addBookResponse.setPrice(book.getPrice());
             addBookResponse.setCategory(book.getCategory());
             addBookResponse.setLinkThumail(book.getLinkThumnail());
@@ -90,7 +90,7 @@ public class BookServiceImpl implements BookService {
     public ResponseCommon<UpdateBookResponse> updateBook(UpdateBookRequest updateBookRequest) {
         try {
             Book bookExist = bookRepository.findBookByName(updateBookRequest.getName()).orElse(null);
-            User user = authenticationRepository.findByUsername(updateBookRequest.getUsername()).orElse(null);
+            User user = userRepository.findByEmail(updateBookRequest.getEmail());
             // if bookExist is null -> tell the user
             if (Objects.isNull(bookExist)) {
                 log.debug("Update Book failed: Book does not exist");
@@ -100,7 +100,7 @@ public class BookServiceImpl implements BookService {
                 Book bookUpdate = bookExist;
                 bookUpdate.setCategory(category);
                 bookUpdate.setName(updateBookRequest.getName());
-                bookUpdate.setDescription(updateBookRequest.getDescription());
+                bookUpdate.setDesc(updateBookRequest.getDescription());
                 bookUpdate.setPrice(updateBookRequest.getPrice());
                 bookUpdate.setLinkThumnail(updateBookRequest.getLink_thumnail());
                 bookUpdate.setCreatedAt(LocalDateTime.now());
@@ -111,7 +111,7 @@ public class BookServiceImpl implements BookService {
                 UpdateBookResponse updateBookResponse = new UpdateBookResponse();
                 updateBookResponse.setBookID(bookUpdate.getId());
                 updateBookResponse.setBookName(bookUpdate.getName());
-                updateBookResponse.setDescription(bookUpdate.getDescription());
+                updateBookResponse.setDescription(bookUpdate.getDesc());
                 updateBookResponse.setPrice(bookUpdate.getPrice());
                 updateBookResponse.setCategory(bookUpdate.getCategory());
                 updateBookResponse.setLinkThumail(bookUpdate.getLinkThumnail());
@@ -133,8 +133,8 @@ public class BookServiceImpl implements BookService {
     @Override
     public ResponseCommon<DeleteBookResponse> deleteBook(DeleteBookRequest deleteBookRequest) {
         try {
-            Book bookExist = bookRepository.findBookByName(deleteBookRequest.getUsername()).orElse(null);
-            User user = authenticationRepository.findByUsername(deleteBookRequest.getUsername()).orElse(null);
+            Book bookExist = bookRepository.findBookByName(deleteBookRequest.getNameBook()).orElse(null);
+            User user = userRepository.findByEmail(deleteBookRequest.getEmail());
             // if bookExist is null -> tell the user
             if (Objects.isNull(bookExist)) {
                 log.debug("Delete Book failed: Book does not exist");
@@ -148,7 +148,7 @@ public class BookServiceImpl implements BookService {
                 DeleteBookResponse deleteBookResponse = new DeleteBookResponse();
                 deleteBookResponse.setBookID(bookDelete.getId());
                 deleteBookResponse.setBookName(bookDelete.getName());
-                deleteBookResponse.setDescription(bookDelete.getDescription());
+                deleteBookResponse.setDescription(bookDelete.getDesc());
                 deleteBookResponse.setPrice(bookDelete.getPrice());
                 deleteBookResponse.setCategory(bookDelete.getCategory());
                 deleteBookResponse.setLinkThumail(bookDelete.getLinkThumnail());

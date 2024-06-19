@@ -2,69 +2,91 @@ package swp391.learning.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.Accessors;
-import swp391.learning.domain.enums.EnumTypeGender;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import swp391.learning.domain.enums.EnumTypeRole;
 import swp391.learning.domain.enums.EnumUserStatus;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
-@Entity
-@Table(name = "users")
-@Accessors(chain = true)
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-@ToString
-public class User {
+@AllArgsConstructor
+@Builder
+@Entity
+@Table(name = "user")
+public class User implements UserDetails, Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
 
-    @Column(name = "username")
-    private String username;
 
-    @Column(name = "password")
+    private String fullName;
     private String password;
-
-    @Column(name = "email")
     private String email;
 
-    @Column(name = "phone")
-    private String phone;
-
     @Enumerated(EnumType.STRING)
-    @Column(name = "role")
     private EnumTypeRole role;
-
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @Column(name = "full_name")
-    private String fullName;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "gender")
-    private EnumTypeGender gender;
-
-    @Column(name = "date_of_birth")
-    private LocalDate date_of_birth;
 
     @Enumerated(EnumType.STRING)
     private EnumUserStatus status;
 
-    @Column(name="session_id")
-    private Integer session_id; // phien de check moi lan dang nhap
+    private String phoneNumber;
+    private Boolean verified;
 
-    @Column(name="updated_at")
-    private LocalDateTime updatedAt;
+    @Column(name = "created_at")
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
 
-    @Column(name = "otp")
-    private String otp; // ma otp
+    @Column(name = "updated_at")
+    @UpdateTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedAt;
 
-    @Column(name = "expired_otp")
-    private LocalDateTime expiredOTP; // thời gian otp
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

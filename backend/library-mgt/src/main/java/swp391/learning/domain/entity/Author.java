@@ -19,15 +19,21 @@ import java.time.LocalDateTime;
 public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
+
     @Column(name = "name")
     private String name;
+
     @Column(name="deleted")
     private boolean isDeleted;
+
+    @Column(name="created_at")
+    private LocalDateTime createdAt;
     @Column(name="updated_at")
     private LocalDateTime updatedAt;
-    @Column(name="describe")
-    private String describe; //gioi thieu tac gia
+    @Column(name="description")
+    private String desc; //gioi thieu tac gia
     @Column(name = "link_thummail")
     private String link_Thumnail; // anh tac gia
     @ManyToOne
