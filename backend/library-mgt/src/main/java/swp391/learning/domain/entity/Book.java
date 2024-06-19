@@ -20,8 +20,8 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private int id;
-    @Column(name = "name")
-    private String name;
+    @Column(name = "nameBook")
+    private String nameBook;
     @Column(name = "description")
     private String desc;
     @ManyToOne

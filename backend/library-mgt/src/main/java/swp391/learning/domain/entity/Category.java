@@ -20,8 +20,8 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name = "name")
-    private String name;
+    @Column(name = "nameCategory")
+    private String nameCategory;
     @Column(name="deleted")
     private boolean isDeleted;
     @Column(name="updated_at")

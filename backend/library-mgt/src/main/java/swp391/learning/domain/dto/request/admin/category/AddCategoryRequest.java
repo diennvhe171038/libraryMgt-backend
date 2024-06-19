@@ -15,5 +15,5 @@ public class AddCategoryRequest {
     @NotBlank
     private String email;
     @NotBlank
-    private String name;
+    private String nameCategory;
 }
