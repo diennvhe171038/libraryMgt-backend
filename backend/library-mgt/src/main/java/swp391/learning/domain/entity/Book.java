@@ -24,7 +24,7 @@ public class Book {
     @Column(name = "nameBook")
     private String nameBook;
     @Column(name = "description")
-    private String desc;
+    private String desc; // gioi thieu sach
     @ManyToOne
     @JoinColumn(name="category_id",referencedColumnName = "id")
     private Category category;

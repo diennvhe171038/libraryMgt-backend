@@ -24,8 +24,8 @@ public class UpdateBookRequest {
         private String description;
         @NotNull
         private double price;
-//        @NotBlank
-//        private Blob image;
+        @NotBlank
+        private Blob image;
         @NotNull
         private int categoryID;
         @NotNull

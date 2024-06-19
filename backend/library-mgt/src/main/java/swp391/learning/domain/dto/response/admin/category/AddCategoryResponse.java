@@ -14,9 +14,6 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class AddCategoryResponse {
-    private int categoryID;
-    private String categoryName;
-    private String createdBy;
-    private String updatedBy;
-    private LocalDateTime updatedAt;
+    @NotBlank
+    private String message;
 }

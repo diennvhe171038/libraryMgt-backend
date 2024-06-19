@@ -17,24 +17,6 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class DeleteBookResponse {
-    @NotNull
-    private int bookID;
     @NotBlank
-    private String bookName;
-    @NotBlank
-    private String description;
-    @NotEmpty
-    private Category category;
-    @NotNull
-    private double price;
-    @NotBlank
-    private Blob image;
-    @NotNull
-    private LocalDateTime createdAt;
-    @NotNull
-    private boolean isDeleted;
-    @NotBlank
-    private String createdBy;
-    @NotBlank
-    private String updatedBy;
+    private String message;
 }
