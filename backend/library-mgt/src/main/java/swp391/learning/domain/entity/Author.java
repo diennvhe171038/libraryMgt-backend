@@ -1,13 +1,12 @@
 package swp391.learning.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Table(name = "author")
@@ -32,14 +31,21 @@ public class Author {
     private LocalDateTime createdAt;
     @Column(name="updated_at")
     private LocalDateTime updatedAt;
+
     @Column(name="description")
     private String desc; //gioi thieu tac gia
     @Column(name = "link_thummail")
     private String link_Thumnail; // anh tac gia
+
     @ManyToOne
     @JoinColumn (name="created_by",referencedColumnName = "id")
     private User userCreated;
+
     @ManyToOne
     @JoinColumn(name="updated_by",referencedColumnName = "id")
     private User userUpdated;
+
+    @OneToMany(mappedBy = "author")
+    @JsonIgnore
+    private Set<Book> books;
 }

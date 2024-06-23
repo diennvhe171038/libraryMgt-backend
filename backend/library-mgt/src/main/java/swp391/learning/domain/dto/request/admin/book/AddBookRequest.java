@@ -26,5 +26,6 @@ public class AddBookRequest {
     private Blob image;
     @NotBlank
     private String category;
-
+    @NotNull
+    private int stock;
 }

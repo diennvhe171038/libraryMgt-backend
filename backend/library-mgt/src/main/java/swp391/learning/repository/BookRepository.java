@@ -13,9 +13,10 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
 
         Optional<Book> findBookById(int id);
 
-        @Query("SELECT c FROM Book c " +
-                "WHERE LOWER(c.nameBook) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
-                "OR LOWER(c.category.nameCategory) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+    @Query("SELECT b FROM Book b " +
+            "JOIN b.category c " +
+            "WHERE LOWER(b.nameBook) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
+            "OR LOWER(c.nameCategory) LIKE LOWER(CONCAT('%', :keyword, '%'))")
         List<Book> searchBookByNameOrCategory(@Param("keyword") String keyword);
 
 

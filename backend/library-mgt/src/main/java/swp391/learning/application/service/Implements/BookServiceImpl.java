@@ -23,9 +23,12 @@ import swp391.learning.repository.BookRepository;
 import swp391.learning.repository.CategoryRepository;
 import swp391.learning.repository.UserRepository;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -46,17 +49,25 @@ public class BookServiceImpl implements BookService {
                 log.debug("Add Book failed: Book already exists");
                 return new ResponseCommon<>(ResponseCode.BOOK_EXIST, null);
             }
-            // if Book is null -> new Book
-            if (Objects.isNull(book)) {
-                book = new Book();
-            }
+            String uploadDir = "uploads/";
+            String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+            String filePath = uploadDir + fileName;
+            File serverFile = new File(filePath);
+            file.transferTo(serverFile);
+
+            book = new Book();
             book.setNameBook(addBookRequest.getName());
             book.setDesc(addBookRequest.getDescription());
             book.setPrice(addBookRequest.getPrice());
             book.setCreatedAt(LocalDateTime.now());
+            book.setImagePath(filePath);
+            book.setStock(addBookRequest.getStock());
             Category category = categoryRepository.findCategoryByNameCategory(addBookRequest.getCategory()).orElse(null);
-            System.out.println(category);
-            book.setCategory(category);
+            if (category == null) {
+                log.debug("Add Book failed: Category does not exist");
+                return new ResponseCommon<>(ResponseCode.CATEGORY_NOT_EXIST, null);
+            }
+            book.setCategory(Set.of(category));
             book.setUserCreated(user);
 
             // Save Book to the database
@@ -90,14 +101,23 @@ public class BookServiceImpl implements BookService {
             } else {
                 Category category = categoryRepository.findCategoryById(updateBookRequest.getCategoryID()).orElse(null);
                 Book bookUpdate = bookExist;
-                bookUpdate.setCategory(category);
+                bookUpdate.setCategory(Set.of(category));
                 bookUpdate.setNameBook(updateBookRequest.getName());
                 bookUpdate.setDesc(updateBookRequest.getDescription());
                 bookUpdate.setPrice(updateBookRequest.getPrice());
+                bookUpdate.setStock(updateBookRequest.getStock());
                 bookUpdate.setCreatedAt(LocalDateTime.now());
                 bookUpdate.setUpdatedAt(LocalDateTime.now());
                 bookUpdate.setDeleted(updateBookRequest.isDeleted());
                 bookUpdate.setUserUpdated(user);
+                if (file != null && !file.isEmpty()) {
+                    String uploadDir = "uploads/";
+                    String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+                    String filePath = uploadDir + fileName;
+                    File serverFile = new File(filePath);
+                    file.transferTo(serverFile);
+                    bookExist.setImagePath(filePath);
+                }
                 bookRepository.save(bookUpdate);
                 UpdateBookResponse updateBookResponse = new UpdateBookResponse();
                 updateBookResponse.setMessage("Update Book successful");
