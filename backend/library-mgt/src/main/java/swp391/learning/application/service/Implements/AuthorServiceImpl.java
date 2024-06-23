@@ -48,6 +48,7 @@ public class AuthorServiceImpl implements AuthorService {
             author.setDesc(addAuthorRequest.getDescribe());
             LocalDateTime localDateTime = LocalDateTime.now();
             author.setUpdatedAt(localDateTime.now());
+            author.setUserCreated(user);
             // Save category to the database
             Author savedAuthor = authorRepository.save(author);
 
