@@ -2,10 +2,8 @@ package swp391.learning.domain.dto.response.admin.category;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 import swp391.learning.domain.entity.Category;
 
 import java.util.List;
@@ -14,10 +12,11 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
+@Data
+@Builder
 public class FindAllCategoryResponse {
-    @NotBlank
-    private String message;
-    @NotEmpty
-    private List<Category> categoryList;
-
+    private int categoryId;
+    private String categoryName;
+    private int parentId;
+    private int createdById;
 }

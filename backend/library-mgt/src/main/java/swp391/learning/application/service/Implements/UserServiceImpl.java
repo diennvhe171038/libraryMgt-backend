@@ -53,8 +53,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(int id, UserRequest userRequest) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Người dùng không tồn tại"));
+        User user = userRepository.findById(id);
 
         user.setFullName(userRequest.getFullName());
         user.setEmail(userRequest.getEmail());
@@ -71,8 +70,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse getUserById(int id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Người dùng không tồn tại"));
+        User user = userRepository.findById(id);
 
         return mapToUserResponse(user);
     }

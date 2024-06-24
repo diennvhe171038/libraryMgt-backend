@@ -15,8 +15,8 @@ import java.time.LocalDateTime;
 @Setter
 public class AddCategoryResponse {
     private int categoryID;
-    private String categoryName;
+    private String parentCategory;
+    private String subCategory;
     private String createdBy;
-    private String updatedBy;
     private LocalDateTime updatedAt;
 }

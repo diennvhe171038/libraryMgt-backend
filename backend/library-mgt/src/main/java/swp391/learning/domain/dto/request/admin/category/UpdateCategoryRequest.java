@@ -12,12 +12,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UpdateCategoryRequest {
-    @NotBlank
-    private String email;
     @NotNull
-    private int categoryID;
+    private int updatedById;
+    private int parentId;
     @NotBlank
-    private String categoryUpdate;
-    @NotNull
-    private boolean deleted;
+    private String name;
+    private int categoryId;
+
 }

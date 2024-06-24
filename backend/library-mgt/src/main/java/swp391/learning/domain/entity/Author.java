@@ -8,6 +8,8 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "author")
@@ -25,21 +27,20 @@ public class Author {
     @Column(name = "name")
     private String name;
 
-    @Column(name="deleted")
-    private boolean isDeleted;
+    private String image;
 
-    @Column(name="created_at")
+    private String description;
+
+    @ManyToOne
+    @JoinColumn(name = "modified_by")
+    private User modifiedBy;
+
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
-    @Column(name="updated_at")
+
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-    @Column(name="description")
-    private String desc; //gioi thieu tac gia
-    @Column(name = "link_thummail")
-    private String link_Thumnail; // anh tac gia
-    @ManyToOne
-    @JoinColumn (name="created_by",referencedColumnName = "id")
-    private User userCreated;
-    @ManyToOne
-    @JoinColumn(name="updated_by",referencedColumnName = "id")
-    private User userUpdated;
+
+//    @ManyToMany(mappedBy = "authors")
+//    private Set<Book> books = new HashSet<>();
 }

@@ -9,6 +9,8 @@ import lombok.experimental.Accessors;
 
 import java.sql.Blob;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "book")
@@ -44,4 +46,12 @@ public class Book {
     @ManyToOne
     @JoinColumn(name="updated_by",referencedColumnName = "id")
     private User userUpdated;
+
+//    @ManyToMany
+//    @JoinTable(
+//            name = "book_author",
+//            joinColumns = @JoinColumn(name = "book_id"),
+//            inverseJoinColumns = @JoinColumn(name = "author_id")
+//    )
+//    private Set<Author> authors = new HashSet<>();
 }
