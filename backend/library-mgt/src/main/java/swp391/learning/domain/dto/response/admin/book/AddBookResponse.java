@@ -17,21 +17,6 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 public class AddBookResponse {
-    @NotNull
-    private int bookID;
     @NotBlank
-    private String bookName;
-    @NotBlank
-    private String description;
-    @NotNull
-    private double price;
-    @NotEmpty
-    private Category category;
-    @NotBlank
-    private Blob image;
-    @NotNull
-    private LocalDateTime createdAt;
-    @NotBlank
-    private String createdBy;
-
+    private String message;
 }

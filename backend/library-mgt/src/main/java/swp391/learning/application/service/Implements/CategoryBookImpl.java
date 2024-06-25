@@ -31,7 +31,7 @@ public class CategoryBookImpl implements CategoryBookService {
     @Override
     public ResponseCommon<AddCategoryResponse> addCategory(AddCategoryRequest addCategoryRequest) {
         try {
-            Category category = categoryRepository.findCategoryByName(addCategoryRequest.getName()).orElse(null);
+            Category category = categoryRepository.findCategoryByNameCategory(addCategoryRequest.getNameCategory()).orElse(null);
             User user = userRepository.findByEmail(addCategoryRequest.getEmail());
             // if category not null -> tell user
             if (!Objects.isNull(category)) {
@@ -42,7 +42,7 @@ public class CategoryBookImpl implements CategoryBookService {
             if (Objects.isNull(category)) {
                 category = new Category();
             }
-            category.setName(addCategoryRequest.getName());
+            category.setNameCategory(addCategoryRequest.getNameCategory());
             category.setUserCreated(user);
             LocalDateTime localDateTime = LocalDateTime.now();
             category.setUpdatedAt(localDateTime.now());
@@ -54,11 +54,8 @@ public class CategoryBookImpl implements CategoryBookService {
                 log.debug("Add Category failed: Unable to save the category");
                 return new ResponseCommon<>(ResponseCode.FAIL, null);
             }
-            log.debug("Add Category successful");
             AddCategoryResponse addCategoryResponse = new AddCategoryResponse();
-            addCategoryResponse.setCategoryID(category.getId());
-            addCategoryResponse.setCategoryName(category.getName());
-            addCategoryResponse.setUpdatedAt(category.getUpdatedAt());
+            addCategoryResponse.setMessage("Add Category successful");
             return new ResponseCommon<>(ResponseCode.SUCCESS, addCategoryResponse);
         } catch (Exception e) {
             e.printStackTrace();
@@ -79,16 +76,14 @@ public class CategoryBookImpl implements CategoryBookService {
             } else {
                 //tạo mảng để lưu dữ liệu mới
                 Category categoryUpdate = category;
-                categoryUpdate.setName(updateCategoryRequest.getCategoryUpdate());
+                categoryUpdate.setNameCategory(updateCategoryRequest.getCategoryUpdate());
                 categoryUpdate.setUpdatedAt(LocalDateTime.now());
                 categoryUpdate.setDeleted(updateCategoryRequest.isDeleted());
                 categoryUpdate.setUserUpdated(user);
                 categoryRepository.save(categoryUpdate);
                 //update du lieu
                 UpdateCategoryResponse updateCategoryResponse = new UpdateCategoryResponse();
-                updateCategoryResponse.setCategoryID(categoryUpdate.getId());
-                updateCategoryResponse.setCategoryName(categoryUpdate.getName());
-                log.debug("Update Category successful");
+                updateCategoryResponse.setMessage("Update Category successful");
                 return new ResponseCommon<>(ResponseCode.SUCCESS, updateCategoryResponse);
             }
         } catch (Exception e) {
@@ -115,10 +110,7 @@ public class CategoryBookImpl implements CategoryBookService {
                 categoryRepository.save(categoryUpdate);
 
                 DeleteCategoryResponse deleteCategoryResponse = new DeleteCategoryResponse();
-                deleteCategoryResponse.setCategoryID(categoryUpdate.getId());
-                deleteCategoryResponse.setCategoryName(categoryUpdate.getName());
-                deleteCategoryResponse.setDeleted(categoryUpdate.isDeleted());
-                log.debug("Delete Category successful");
+                deleteCategoryResponse.setMessage("Delete Category successful");
                 return new ResponseCommon<>(ResponseCode.SUCCESS, deleteCategoryResponse);
             }
         } catch (Exception e) {

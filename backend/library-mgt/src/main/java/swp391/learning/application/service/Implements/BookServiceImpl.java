@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import swp391.learning.application.service.BookService;
 import swp391.learning.domain.dto.common.ResponseCommon;
 import swp391.learning.domain.dto.request.admin.book.AddBookRequest;
@@ -22,9 +23,12 @@ import swp391.learning.repository.BookRepository;
 import swp391.learning.repository.CategoryRepository;
 import swp391.learning.repository.UserRepository;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -36,27 +40,34 @@ public class BookServiceImpl implements BookService {
 
 
     @Override
-    public ResponseCommon<AddBookResponse> addBook(AddBookRequest addBookRequest) {
+    public ResponseCommon<AddBookResponse> addBook(AddBookRequest addBookRequest, MultipartFile file) {
         try {
-            Book book = bookRepository.findBookByName(addBookRequest.getName()).orElse(null);
+            Book book = bookRepository.findBookByNameBook(addBookRequest.getName()).orElse(null);
             User user = userRepository.findByEmail(addBookRequest.getEmail());
             // if Book not null -> tell the user
             if (!Objects.isNull(book)) {
                 log.debug("Add Book failed: Book already exists");
                 return new ResponseCommon<>(ResponseCode.BOOK_EXIST, null);
             }
-            // if Book is null -> new Book
-            if (Objects.isNull(book)) {
-                book = new Book();
-            }
-            book.setName(addBookRequest.getName());
+            String uploadDir = "uploads/";
+            String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+            String filePath = uploadDir + fileName;
+            File serverFile = new File(filePath);
+            file.transferTo(serverFile);
+
+            book = new Book();
+            book.setNameBook(addBookRequest.getName());
             book.setDesc(addBookRequest.getDescription());
-            book.setLinkThumnail(addBookRequest.getLink_thumnail());
             book.setPrice(addBookRequest.getPrice());
             book.setCreatedAt(LocalDateTime.now());
-            Category category = categoryRepository.findCategoryByName(addBookRequest.getCategory()).orElse(null);
-            System.out.println(category);
-            book.setCategory(category);
+            book.setImagePath(filePath);
+            book.setStock(addBookRequest.getStock());
+            Category category = categoryRepository.findCategoryByNameCategory(addBookRequest.getCategory()).orElse(null);
+            if (category == null) {
+                log.debug("Add Book failed: Category does not exist");
+                return new ResponseCommon<>(ResponseCode.CATEGORY_NOT_EXIST, null);
+            }
+            book.setCategory(Set.of(category));
             book.setUserCreated(user);
 
             // Save Book to the database
@@ -69,15 +80,7 @@ public class BookServiceImpl implements BookService {
             }
 
             AddBookResponse addBookResponse = new AddBookResponse();
-            addBookResponse.setBookID(book.getId());
-            addBookResponse.setBookName(book.getName());
-            addBookResponse.setDescription(book.getDesc());
-            addBookResponse.setPrice(book.getPrice());
-            addBookResponse.setCategory(book.getCategory());
-            addBookResponse.setLinkThumail(book.getLinkThumnail());
-            addBookResponse.setCreatedAt(book.getCreatedAt());
-            addBookResponse.setCreatedBy(user.getUsername());
-            log.debug("Add Book successful");
+            addBookResponse.setMessage("Add Book successful");
             return new ResponseCommon<>(ResponseCode.SUCCESS, addBookResponse);
         } catch (Exception e) {
             e.printStackTrace();
@@ -87,9 +90,9 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public ResponseCommon<UpdateBookResponse> updateBook(UpdateBookRequest updateBookRequest) {
+    public ResponseCommon<UpdateBookResponse> updateBook(UpdateBookRequest updateBookRequest, MultipartFile file) {
         try {
-            Book bookExist = bookRepository.findBookByName(updateBookRequest.getName()).orElse(null);
+            Book bookExist = bookRepository.findBookByNameBook(updateBookRequest.getName()).orElse(null);
             User user = userRepository.findByEmail(updateBookRequest.getEmail());
             // if bookExist is null -> tell the user
             if (Objects.isNull(bookExist)) {
@@ -98,29 +101,26 @@ public class BookServiceImpl implements BookService {
             } else {
                 Category category = categoryRepository.findCategoryById(updateBookRequest.getCategoryID()).orElse(null);
                 Book bookUpdate = bookExist;
-                bookUpdate.setCategory(category);
-                bookUpdate.setName(updateBookRequest.getName());
+                bookUpdate.setCategory(Set.of(category));
+                bookUpdate.setNameBook(updateBookRequest.getName());
                 bookUpdate.setDesc(updateBookRequest.getDescription());
                 bookUpdate.setPrice(updateBookRequest.getPrice());
-                bookUpdate.setLinkThumnail(updateBookRequest.getLink_thumnail());
+                bookUpdate.setStock(updateBookRequest.getStock());
                 bookUpdate.setCreatedAt(LocalDateTime.now());
                 bookUpdate.setUpdatedAt(LocalDateTime.now());
                 bookUpdate.setDeleted(updateBookRequest.isDeleted());
                 bookUpdate.setUserUpdated(user);
+                if (file != null && !file.isEmpty()) {
+                    String uploadDir = "uploads/";
+                    String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+                    String filePath = uploadDir + fileName;
+                    File serverFile = new File(filePath);
+                    file.transferTo(serverFile);
+                    bookExist.setImagePath(filePath);
+                }
                 bookRepository.save(bookUpdate);
                 UpdateBookResponse updateBookResponse = new UpdateBookResponse();
-                updateBookResponse.setBookID(bookUpdate.getId());
-                updateBookResponse.setBookName(bookUpdate.getName());
-                updateBookResponse.setDescription(bookUpdate.getDesc());
-                updateBookResponse.setPrice(bookUpdate.getPrice());
-                updateBookResponse.setCategory(bookUpdate.getCategory());
-                updateBookResponse.setLinkThumail(bookUpdate.getLinkThumnail());
-                LocalDateTime localDateTime = LocalDateTime.now();
-                updateBookResponse.setUpdateAt(localDateTime);
-                updateBookResponse.setCreateAt(bookUpdate.getCreatedAt());
-                updateBookResponse.setUpdatedBy(bookUpdate.getUserUpdated().getUsername());
-                updateBookResponse.setCreatedBy(bookUpdate.getUserCreated().getUsername());
-                log.debug("Update Book successful");
+                updateBookResponse.setMessage("Update Book successful");
                 return new ResponseCommon<>(ResponseCode.SUCCESS, updateBookResponse);
             }
         } catch (Exception e) {
@@ -131,9 +131,9 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public ResponseCommon<DeleteBookResponse> deleteBook(DeleteBookRequest deleteBookRequest) {
+    public ResponseCommon<DeleteBookResponse> deleteBook(DeleteBookRequest deleteBookRequest, MultipartFile file) {
         try {
-            Book bookExist = bookRepository.findBookByName(deleteBookRequest.getNameBook()).orElse(null);
+            Book bookExist = bookRepository.findBookByNameBook(deleteBookRequest.getNameBook()).orElse(null);
             User user = userRepository.findByEmail(deleteBookRequest.getEmail());
             // if bookExist is null -> tell the user
             if (Objects.isNull(bookExist)) {
@@ -146,17 +146,7 @@ public class BookServiceImpl implements BookService {
                 bookDelete.setUserUpdated(user);
                 bookRepository.save(bookDelete);
                 DeleteBookResponse deleteBookResponse = new DeleteBookResponse();
-                deleteBookResponse.setBookID(bookDelete.getId());
-                deleteBookResponse.setBookName(bookDelete.getName());
-                deleteBookResponse.setDescription(bookDelete.getDesc());
-                deleteBookResponse.setPrice(bookDelete.getPrice());
-                deleteBookResponse.setCategory(bookDelete.getCategory());
-                deleteBookResponse.setLinkThumail(bookDelete.getLinkThumnail());
-                deleteBookResponse.setCreatedAt(bookDelete.getCreatedAt());
-                deleteBookResponse.setDeleted(bookDelete.isDeleted());
-                deleteBookResponse.setCreatedBy(bookDelete.getUserCreated().getUsername());
-                deleteBookResponse.setUpdatedBy(bookDelete.getUserUpdated().getUsername());
-                log.debug("Delete Book successful");
+                deleteBookResponse.setMessage("Delete Book successful");
                 return new ResponseCommon<>(ResponseCode.SUCCESS, deleteBookResponse);
             }
         } catch (Exception e) {

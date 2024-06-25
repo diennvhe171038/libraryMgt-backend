@@ -13,6 +13,7 @@ import swp391.learning.domain.dto.request.user.authentication.RegisterRequest;
 import swp391.learning.domain.dto.response.user.authentication.AuthenticationResponse;
 import swp391.learning.domain.entity.Otp;
 import swp391.learning.domain.entity.User;
+import swp391.learning.domain.enums.EnumMembershipType;
 import swp391.learning.domain.enums.EnumTypeRole;
 import swp391.learning.domain.enums.EnumUserStatus;
 import swp391.learning.exception.*;
@@ -47,6 +48,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .email(registerRequest.getEmail())
                 .password(passwordEncoder.encode(registerRequest.getPassword()))
                 .role(EnumTypeRole.MEMBER)
+                .membershipType(EnumMembershipType.NORMAL)
                 .status(EnumUserStatus.ACTIVE)
                 .verified(false)
                 .build();

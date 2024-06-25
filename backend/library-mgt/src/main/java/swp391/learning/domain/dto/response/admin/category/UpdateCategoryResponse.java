@@ -12,12 +12,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UpdateCategoryResponse {
-    @NotNull
-    private int categoryID;
     @NotBlank
-    private String categoryName;
-    @NotBlank
-    private String createdBy;
-    @NotBlank
-    private String updatedBy;
+    private String message;
 }

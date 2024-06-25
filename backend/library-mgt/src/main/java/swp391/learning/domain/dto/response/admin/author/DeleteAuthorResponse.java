@@ -15,20 +15,6 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class DeleteAuthorResponse {
-    @NotNull
-    private int authorID;
     @NotBlank
-    private String nameAuthor;
-    @NotBlank
-    private String description;
-    @NotBlank
-    private String linkThumail;
-    @NotNull
-    private LocalDateTime createdAt;
-    @NotNull
-    private boolean isDeleted;
-    @NotBlank
-    private String createdBy;
-    @NotBlank
-    private String updatedBy;
+    private String message;
 }

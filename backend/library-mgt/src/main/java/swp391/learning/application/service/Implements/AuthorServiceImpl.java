@@ -48,6 +48,7 @@ public class AuthorServiceImpl implements AuthorService {
             author.setDesc(addAuthorRequest.getDescribe());
             LocalDateTime localDateTime = LocalDateTime.now();
             author.setUpdatedAt(localDateTime.now());
+            author.setUserCreated(user);
             // Save category to the database
             Author savedAuthor = authorRepository.save(author);
 
@@ -56,13 +57,8 @@ public class AuthorServiceImpl implements AuthorService {
                 log.debug("Add author failed: Unable to save the author");
                 return new ResponseCommon<>(ResponseCode.FAIL, null);
             }
-            log.debug("Add author successful");
             AddAuthorResponse addAuthorResponse = new AddAuthorResponse();
-            addAuthorResponse.setAuthorID(author.getId());
-            addAuthorResponse.setNameAuthor(author.getName());
-            addAuthorResponse.setDescribe(author.getDesc());
-            addAuthorResponse.setLink_thumnail(author.getLink_Thumnail());
-            addAuthorResponse.setUpdatedAt(author.getUpdatedAt());
+            addAuthorResponse.setMessage("Add author successful");
             return new ResponseCommon<>(ResponseCode.SUCCESS, addAuthorResponse);
         } catch (Exception e) {
             e.printStackTrace();
@@ -92,11 +88,7 @@ public class AuthorServiceImpl implements AuthorService {
                 authorRepository.save(authorUpdate);
                 //update du lieu
                 UpdateAuthorResponse updateAuthorResponse = new UpdateAuthorResponse();
-                updateAuthorResponse.setAuthorID(authorUpdate.getId());
-                updateAuthorResponse.setNameAuthor(authorUpdate.getName());
-                updateAuthorResponse.setDescription(authorUpdate.getDesc());
-                updateAuthorResponse.setLinkThumail(authorUpdate.getLink_Thumnail());
-                log.debug("Update author successful");
+                updateAuthorResponse.setMessage("Update author successful");
                 return new ResponseCommon<>(ResponseCode.SUCCESS, updateAuthorResponse);
             }
         } catch (Exception e) {
@@ -123,10 +115,7 @@ public class AuthorServiceImpl implements AuthorService {
                 authorRepository.save(authorUpdate);
 
                 DeleteAuthorResponse deleteAuthorResponse = new DeleteAuthorResponse();
-                deleteAuthorResponse.setAuthorID(authorUpdate.getId());
-                deleteAuthorResponse.setNameAuthor(authorUpdate.getName());
-                deleteAuthorResponse.setDeleted(authorUpdate.isDeleted());
-                log.debug("Delete Category successful");
+                deleteAuthorResponse.setMessage("Delete Category successful");
                 return new ResponseCommon<>(ResponseCode.SUCCESS, deleteAuthorResponse);
             }
         } catch (Exception e) {

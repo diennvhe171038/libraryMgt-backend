@@ -1,13 +1,12 @@
 package swp391.learning.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Table(name = "category")
@@ -32,4 +31,8 @@ public class Category {
     @ManyToOne
     @JoinColumn(name="updated_by",referencedColumnName = "id")
     private User userUpdated;
+
+    @ManyToMany(mappedBy = "category")
+    @JsonIgnore
+    private Set<Book> books;
 }

@@ -15,20 +15,6 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 public class UpdateAuthorResponse {
-    @NotNull
-    private int authorID;
     @NotBlank
-    private String nameAuthor;
-    @NotBlank
-    private String description;
-    @NotBlank
-    private String linkThumail;
-    @NotNull
-    private LocalDateTime updateAt; // thoi gian cap nhat
-    @NotNull
-    private LocalDateTime createAt; // thoi gian tao
-    @NotBlank
-    private String createdBy; // nguoi tao
-    @NotBlank
-    private String updatedBy; // nguoi sua
+    private String message;
 }

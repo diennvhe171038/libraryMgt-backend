@@ -13,11 +13,6 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class AddAuthorResponse {
-    private int authorID;
-    private String nameAuthor;
-    private String describe;
-    private double price;
-    private String link_thumnail;
-    private LocalDateTime updatedAt;
-
+    @NotBlank
+    private String message;
 }

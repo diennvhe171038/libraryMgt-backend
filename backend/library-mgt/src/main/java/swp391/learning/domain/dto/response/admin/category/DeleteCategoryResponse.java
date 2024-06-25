@@ -12,15 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class DeleteCategoryResponse {
-    @NotNull
-    private int categoryID;
     @NotBlank
-    private String categoryName;
-    @NotNull
-    private boolean isDeleted;
-    @NotBlank
-    private String createdBy;
-    @NotBlank
-    private String updatedBy;
+    private String message;
 }
 
