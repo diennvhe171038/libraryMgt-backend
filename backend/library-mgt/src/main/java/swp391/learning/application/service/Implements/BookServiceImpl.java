@@ -131,7 +131,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public ResponseCommon<DeleteBookResponse> deleteBook(DeleteBookRequest deleteBookRequest, MultipartFile file) {
+    public ResponseCommon<DeleteBookResponse> deleteBook(DeleteBookRequest deleteBookRequest) {
         try {
             Book bookExist = bookRepository.findBookByNameBook(deleteBookRequest.getNameBook()).orElse(null);
             User user = userRepository.findByEmail(deleteBookRequest.getEmail());

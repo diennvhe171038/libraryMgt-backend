@@ -35,7 +35,7 @@ public class MemberSubscriptionServiceImpl implements MemberSubscriptionService 
             User user = userRepository.findByEmail(addMemberSubscriptionRequest.getEmail());
             if (Objects.isNull(user)) {
                 log.debug("Add MemberSubscription failed: User does not exist");
-                return new ResponseCommon<>(ResponseCode.SUBSCRIPTION_NOT_EXIST, null);
+                return new ResponseCommon<>(ResponseCode.SUBSCRIPTION_EXIST, null);
             }
             if (Objects.isNull(memberSubscription)) {
                 memberSubscription = new MemberSubscription();
@@ -44,21 +44,22 @@ public class MemberSubscriptionServiceImpl implements MemberSubscriptionService 
             memberSubscription.setDeleted(false);
             memberSubscription.setNameSubscription(addMemberSubscriptionRequest.getNameSubscription());
             memberSubscription.setSubscriptionPlan(addMemberSubscriptionRequest.getSubscriptionPlan());
+            memberSubscription.setFeeMember(addMemberSubscriptionRequest.getFee_member());
             memberSubscription.setStartDate(addMemberSubscriptionRequest.getStartDate());
             memberSubscription.setEndDate(addMemberSubscriptionRequest.getEndDate());
             memberSubscription.setCreatedAt(LocalDateTime.now());
 
             MemberSubscription savedSubscription = memberSubscriptionRepository.save(memberSubscription);
             if (savedSubscription == null) {
-                log.debug("Add MemberSubscription failed: Unable to save the subscription");
+                log.debug("Add Member Subscription failed: Unable to save the subscription");
                 return new ResponseCommon<>(ResponseCode.FAIL, null);
             }
 
-            AddMemberSubscriptionResponse response = new AddMemberSubscriptionResponse("Add MemberSubscription successful");
+            AddMemberSubscriptionResponse response = new AddMemberSubscriptionResponse("Add Member Subscription successful");
             return new ResponseCommon<>(ResponseCode.SUCCESS, response);
         } catch (Exception e) {
             e.printStackTrace();
-            log.debug("Add MemberSubscription failed: " + e.getMessage());
+            log.debug("Add Member Subscription failed: " + e.getMessage());
             return new ResponseCommon<>(ResponseCode.FAIL, null);
         }
     }
@@ -78,21 +79,22 @@ public class MemberSubscriptionServiceImpl implements MemberSubscriptionService 
             memberSubscription.setDeleted(updateMemberSubscriptionRequest.isDeleted());
             memberSubscription.setNameSubscription(updateMemberSubscriptionRequest.getNameSubscription());
             memberSubscriptionUpdate.setSubscriptionPlan(updateMemberSubscriptionRequest.getSubscriptionPlan());
+            memberSubscriptionUpdate.setFeeMember(updateMemberSubscriptionRequest.getFee_member());
             memberSubscriptionUpdate.setStartDate(updateMemberSubscriptionRequest.getStartDate());
             memberSubscriptionUpdate.setEndDate(updateMemberSubscriptionRequest.getEndDate());
             memberSubscriptionUpdate.setCreatedAt(LocalDateTime.now());
 
             MemberSubscription updatedSubscription = memberSubscriptionRepository.save(memberSubscription);
             if (updatedSubscription == null) {
-                log.debug("Update MemberSubscription failed: Unable to update the subscription");
+                log.debug("Update Member Subscription failed: Unable to update the subscription");
                 return new ResponseCommon<>(ResponseCode.FAIL, null);
             }
 
-            UpdateMemberSubscriptionResponse response = new UpdateMemberSubscriptionResponse("Update MemberSubscription successful");
+            UpdateMemberSubscriptionResponse response = new UpdateMemberSubscriptionResponse("Update Member Subscription successful");
             return new ResponseCommon<>(ResponseCode.SUCCESS, response);
         } catch (Exception e) {
             e.printStackTrace();
-            log.debug("Update MemberSubscription failed: " + e.getMessage());
+            log.debug("Update Member Subscription failed: " + e.getMessage());
             return new ResponseCommon<>(ResponseCode.FAIL, null);
         }
     }
@@ -101,10 +103,10 @@ public class MemberSubscriptionServiceImpl implements MemberSubscriptionService 
         try {
             MemberSubscription memberSubscription = memberSubscriptionRepository.findMemberSubscriptionById(deleteMemberSubscriptionRequest.getSubscriptionID()).orElse(null);
             User user = userRepository.findByEmail(deleteMemberSubscriptionRequest.getEmail());
-            // if category is null -> tell the user
+            // if Member is null -> tell the user
             if (Objects.isNull(memberSubscription)) {
-                log.debug("Delete Category failed: Category does not exist");
-                return new ResponseCommon<>(ResponseCode.CATEGORY_NOT_EXIST, null);
+                log.debug("Delete Member Subscription failed: Member Subscription does not exist");
+                return new ResponseCommon<>(ResponseCode.SUBSCRIPTION_NOT_EXIST, null);
             } else {
                 MemberSubscription memberSubscriptionUpdate = memberSubscription;
                 memberSubscriptionUpdate.setDeleted(true);
@@ -112,12 +114,12 @@ public class MemberSubscriptionServiceImpl implements MemberSubscriptionService 
                 memberSubscriptionRepository.save(memberSubscriptionUpdate);
 
                 DeleteMemberSubscriptionResponse deleteMemberSubscriptionResponse = new DeleteMemberSubscriptionResponse();
-                deleteMemberSubscriptionResponse.setMessage("Delete Category successful");
+                deleteMemberSubscriptionResponse.setMessage("Delete Member Subscription successful");
                 return new ResponseCommon<>(ResponseCode.SUCCESS, deleteMemberSubscriptionResponse);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            log.debug("Delete Category failed: " + e.getMessage());
+            log.debug("Delete Member Subscription failed: " + e.getMessage());
             return new ResponseCommon<>(ResponseCode.FAIL, null);
         }
     }

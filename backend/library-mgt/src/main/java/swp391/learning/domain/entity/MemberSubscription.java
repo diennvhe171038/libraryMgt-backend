@@ -26,9 +26,11 @@ public class MemberSubscription {
     private String nameSubscription;
     @Column(name = "subscription_plan")
     private String subscriptionPlan;
+    @Column(name="fee_member")
+    private double feeMember;
     private boolean isDeleted;
     @Column(name = "start_date")
-    private LocalDateTime startDate;
+    private LocalDateTime startDate; 
 
     @Column(name = "end_date")
     private LocalDateTime endDate;

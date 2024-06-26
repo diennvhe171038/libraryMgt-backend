@@ -16,7 +16,7 @@ public interface BookService {
 
     ResponseCommon<UpdateBookResponse> updateBook(UpdateBookRequest updateBookRequest, MultipartFile file);
 
-    ResponseCommon<DeleteBookResponse> deleteBook(DeleteBookRequest deleteBookRequest, MultipartFile file);
+    ResponseCommon<DeleteBookResponse> deleteBook(DeleteBookRequest deleteBookRequest);
 
     ResponseCommon<SearchBookByNameAndCategoryResponse> searchBook(SearchBookByNameAndCategoryRequest searchBookByNameAndCategoryRequest);
 }
