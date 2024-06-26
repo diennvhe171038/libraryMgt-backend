@@ -6,7 +6,7 @@ import swp391.learning.domain.entity.Author;
 import java.util.Optional;
 
 public interface AuthorRepository extends JpaRepository<Author,Integer> {
-    Optional<Author> findAuthorByName(String name);
+    Optional<Author> findAuthorByNameAuthor(String name);
 
     Optional<Author> findAuthorById(int id);
 }

@@ -31,7 +31,7 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public ResponseCommon<AddAuthorResponse> addAuthor(AddAuthorRequest addAuthorRequest) {
         try {
-            Author author = authorRepository.findAuthorByName(addAuthorRequest.getNameAuthor()).orElse(null);
+            Author author = authorRepository.findAuthorByNameAuthor(addAuthorRequest.getNameAuthor()).orElse(null);
             User user = userRepository.findByEmail(addAuthorRequest.getEmail());
             // if category not null -> tell user
             if (!Objects.isNull(author)) {
@@ -42,9 +42,9 @@ public class AuthorServiceImpl implements AuthorService {
             if (Objects.isNull(author)) {
                 author = new Author();
             }
-            author.setName(addAuthorRequest.getNameAuthor());
+            author.setNameAuthor(addAuthorRequest.getNameAuthor());
             author.setDeleted(false);
-            author.setLink_Thumnail(addAuthorRequest.getLink_Thumnail());
+//            author.setLink_Thumnail(addAuthorRequest.getLink_Thumnail());
             author.setDesc(addAuthorRequest.getDescribe());
             LocalDateTime localDateTime = LocalDateTime.now();
             author.setUpdatedAt(localDateTime.now());
@@ -79,11 +79,11 @@ public class AuthorServiceImpl implements AuthorService {
             } else {
                 //tạo mảng để lưu dữ liệu mới
                 Author authorUpdate = author;
-                authorUpdate.setName(updateAuthorRequest.getNameAuthor());
+                authorUpdate.setNameAuthor(updateAuthorRequest.getNameAuthor());
                 authorUpdate.setUpdatedAt(LocalDateTime.now());
                 authorUpdate.setDeleted(updateAuthorRequest.isDeleted());
                 authorUpdate.setDesc(updateAuthorRequest.getDescription());
-                authorUpdate.setLink_Thumnail(updateAuthorRequest.getLink_thumnail());
+//                authorUpdate.setLink_Thumnail(updateAuthorRequest.getLink_thumnail());
                 authorUpdate.setUserUpdated(user);
                 authorRepository.save(authorUpdate);
                 //update du lieu
