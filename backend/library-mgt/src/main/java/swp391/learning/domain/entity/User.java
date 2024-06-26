@@ -9,6 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import swp391.learning.domain.enums.EnumTypeRole;
 import swp391.learning.domain.enums.EnumUserStatus;
+import swp391.learning.domain.enums.EnumMembershipType;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -29,6 +30,8 @@ public class User implements UserDetails, Serializable {
     @Column(name = "id")
     private int id;
 
+@Column(name = "member_ship")
+private EnumMembershipType membershipType;
 
     private String fullName;
     private String password;

@@ -58,9 +58,8 @@ public class BookController {
     }
 
     @PostMapping("/delete-book")
-    public ResponseEntity<ResponseCommon<DeleteBookResponse>> updateBook(@Valid @RequestBody DeleteBookRequest deleteBookRequest,
-                                                                         @RequestParam("image") MultipartFile file){
-        ResponseCommon<DeleteBookResponse> response = bookService.deleteBook(deleteBookRequest, file);
+    public ResponseEntity<ResponseCommon<DeleteBookResponse>> deleteBook(@Valid @RequestBody DeleteBookRequest deleteBookRequest){
+        ResponseCommon<DeleteBookResponse> response = bookService.deleteBook(deleteBookRequest);
         // if code of response equal code success -> return ok
         if(response.getCode()==ResponseCode.SUCCESS.getCode()){
             return ResponseEntity.ok(response);

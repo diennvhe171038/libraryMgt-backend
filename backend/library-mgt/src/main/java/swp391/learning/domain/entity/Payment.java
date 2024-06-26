@@ -32,12 +32,12 @@ public class Payment {
     @Column(name = "transaction_id")
     private String transactionId;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name="status_payment")
+    private EnumPaymentProcess enumPaymentProcess;
+
     @Column(name = "amount")
     private double amount;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status")
-    private EnumPaymentProcess status;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

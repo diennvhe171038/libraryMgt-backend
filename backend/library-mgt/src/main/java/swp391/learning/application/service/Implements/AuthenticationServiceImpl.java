@@ -134,15 +134,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             );
 
             User user = userRepository.findByEmail(loginRequest.getEmail());
+            System.out.println(user.getStatus());
 
             System.out.println(user.getVerified());
 
             if (!user.getVerified()) {
                 throw new UserDisabledException("Email chưa được xác thực");
-            }
-
-            if (user.getStatus() == EnumUserStatus.INACTIVE) {
-                throw new UserDisabledException("Tài khoản đã bị vô hiệu hóa");
+            }else if (user.getStatus() == EnumUserStatus.INACTIVE) {
+                System.out.println("Tài khoản đã bị vô hiệu hóa");
+                throw new AccountLockedException("Tài khoản đã bị vô hiệu hóa");
             }
 
             String jwtToken = jwtService.generateToken(user);
@@ -150,7 +150,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             return AuthenticationResponse.builder()
                     .token(jwtToken)
                     .build();
-        } catch (UserDisabledException e) {
+        } catch (UserDisabledException | AccountLockedException e) {
             throw e;
         } catch (Exception e) {
             throw new InvalidCredentialsException("Email hoặc mật khẩu không hợp lệ");

@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import swp391.learning.domain.entity.Author;
+import swp391.learning.domain.entity.Category;
 
 import java.sql.Blob;
 
@@ -19,7 +21,7 @@ public class UpdateBookRequest {
         @NotNull
         private int bookID;
         @NotBlank
-        private String name;
+        private String nameBook;
         @NotBlank
         private String description;
         @NotNull
@@ -27,9 +29,21 @@ public class UpdateBookRequest {
         @NotNull
         private int stock;
         @NotBlank
-        private Blob image;
-        @NotNull
-        private int categoryID;
+        private String imagePath;
+        @NotBlank
+        private String ISBN;
         @NotNull
         private boolean deleted;
+        @NotBlank
+        private Author author;
+        @NotBlank
+        private Category category;
+        @NotBlank
+        private String totalPage;
+        @NotBlank
+        private String language;
+        @NotBlank
+        private String publisher;
+        @NotBlank
+        private String publicationYear;
 }

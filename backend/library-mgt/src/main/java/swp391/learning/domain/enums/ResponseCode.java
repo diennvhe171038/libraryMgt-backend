@@ -23,8 +23,21 @@ public enum ResponseCode { // thang cong: 200, that bai: 400, khong tim thay: 40
     // book
     BOOK_EXIST(400,"BOOK exist"),
     BOOK_NOT_EXIST(401,"BOOK not exist"),
-    BOOK_LIST_IS_EMPTY(400,"BOOK list is empty"),;
-
+    BOOK_LIST_IS_EMPTY(400,"BOOK list is empty"),
+    //Payment
+    ORDER_NOT_EXIST(3800,"ORDER NOT EXIST"),
+    PAYMENT_FAIL(3900,"PAYMENT FAIL VNPAY"),
+    SEND_URL_PAYMENT_FAIL(4000,"SEND URL PAYMENT FAIL"),
+    CHANGE_PARAM(4100,"CHANGE PARAM"),
+    ORDER_NOT_FOUND(4200,"ORDER NOT FOUND"),
+    INVALID_AMOUNT(4300,"IVALID AMOUNT"),
+    ORDER_ALREADY_CONFIRM(4400,"ORDER ALREADY CONFIRM"),
+    USER_CANCEL_BILL(4500,"USER CANCEL BILL"),
+    //membership
+    SUBSCRIPTION_EXIST(400,"SUBSCRIPTION exist"),
+    SUBSCRIPTION_NOT_EXIST_LIST_IS_EMPTY(400,"SUBSCRIPTION list is empty"),
+    SUBSCRIPTION_NOT_EXIST(404,"SUBSCRIPTION not exits"),
+    ;
     private final int code;
     private final String message;
 

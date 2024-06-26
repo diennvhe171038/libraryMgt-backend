@@ -25,7 +25,8 @@ public class UpdateMemberSubscriptionRequest {
     private boolean deleted;
     @NotNull
     private String subscriptionPlan;
-
+    @NotNull
+    private double fee_member;
     @NotNull
     private LocalDateTime startDate;
 

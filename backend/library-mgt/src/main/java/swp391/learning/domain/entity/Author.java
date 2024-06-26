@@ -22,7 +22,7 @@ public class Author {
     private int id;
 
     @Column(name = "name")
-    private String name;
+    private String nameAuthor;
 
     @Column(name="deleted")
     private boolean isDeleted;
@@ -34,8 +34,8 @@ public class Author {
 
     @Column(name="description")
     private String desc; //gioi thieu tac gia
-    @Column(name = "link_thummail")
-    private String link_Thumnail; // anh tac gia
+//    @Column(name = "link_thummail")
+//    private String link_Thumnail; // anh tac gia
 
     @ManyToOne
     @JoinColumn (name="created_by",referencedColumnName = "id")
@@ -45,7 +45,7 @@ public class Author {
     @JoinColumn(name="updated_by",referencedColumnName = "id")
     private User userUpdated;
 
-    @OneToMany(mappedBy = "author")
+    @ManyToMany(mappedBy = "authors")
     @JsonIgnore
     private Set<Book> books;
 }
