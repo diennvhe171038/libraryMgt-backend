@@ -6,11 +6,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import swp391.learning.application.service.AuthenticationService;
-import swp391.learning.domain.dto.common.ResponseCommon;
 import swp391.learning.domain.dto.common.ResponseError;
 import swp391.learning.domain.dto.common.ResponseSuccess;
 import swp391.learning.domain.dto.request.user.authentication.*;
 import swp391.learning.domain.dto.response.user.authentication.AuthenticationResponse;
+import swp391.learning.exception.AccountLockedException;
 import swp391.learning.exception.InvalidCredentialsException;
 import swp391.learning.exception.UserDisabledException;
 
@@ -109,6 +109,9 @@ public class AuthenticationController {
         } catch (InvalidCredentialsException e) {
             log.error("Error: {}", e.getMessage());
             return new ResponseError(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
+        } catch (AccountLockedException e) {
+            log.error("Error: {}", e.getMessage());
+            return new ResponseError(HttpStatus.LOCKED.value(), e.getMessage());
         } catch (Exception e) {
             log.error("Error: {}", e.getMessage(), e);
             return new ResponseError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Authenticate failed");
