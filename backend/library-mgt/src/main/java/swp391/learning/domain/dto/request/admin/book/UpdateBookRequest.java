@@ -28,6 +28,8 @@ public class UpdateBookRequest {
         private int stock;
         @NotBlank
         private Blob image;
+        @NotBlank
+        private String ISBN;
         @NotNull
         private int categoryID;
         @NotNull

@@ -19,6 +19,8 @@ public class AddBookRequest {
     @NotBlank
     private String name;
     @NotBlank
+    private String ISBN;
+    @NotBlank
     private String description;
     @NotNull
     private double price;

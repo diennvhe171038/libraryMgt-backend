@@ -59,6 +59,7 @@ public class BookServiceImpl implements BookService {
             book.setNameBook(addBookRequest.getName());
             book.setDesc(addBookRequest.getDescription());
             book.setPrice(addBookRequest.getPrice());
+            book.setISBN(addBookRequest.getISBN());
             book.setCreatedAt(LocalDateTime.now());
             book.setImagePath(filePath);
             book.setStock(addBookRequest.getStock());
@@ -105,6 +106,7 @@ public class BookServiceImpl implements BookService {
                 bookUpdate.setNameBook(updateBookRequest.getName());
                 bookUpdate.setDesc(updateBookRequest.getDescription());
                 bookUpdate.setPrice(updateBookRequest.getPrice());
+                bookUpdate.setISBN(updateBookRequest.getISBN());
                 bookUpdate.setStock(updateBookRequest.getStock());
                 bookUpdate.setCreatedAt(LocalDateTime.now());
                 bookUpdate.setUpdatedAt(LocalDateTime.now());

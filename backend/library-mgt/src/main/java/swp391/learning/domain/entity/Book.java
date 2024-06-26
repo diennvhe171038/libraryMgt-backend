@@ -53,6 +53,9 @@ public class Book {
     @Column(name="stock")
     private int stock; // so luong sach
 
+    @Column(name="ISBN")
+    private String ISBN; // ma quyen sach
+
     @Column(name="updated_at")
     private LocalDateTime updatedAt;
 
