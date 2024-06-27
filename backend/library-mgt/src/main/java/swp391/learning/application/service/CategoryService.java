@@ -8,14 +8,17 @@ import swp391.learning.domain.dto.response.admin.category.AddCategoryResponse;
 import swp391.learning.domain.dto.response.admin.category.DeleteCategoryResponse;
 import swp391.learning.domain.dto.response.admin.category.FindAllCategoryResponse;
 import swp391.learning.domain.dto.response.admin.category.UpdateCategoryResponse;
+import swp391.learning.domain.entity.Category;
 
-public interface CategoryBookService {
-    ResponseCommon<AddCategoryResponse> addCategory(AddCategoryRequest addCategoryRequest);
+import java.util.List;
 
-    ResponseCommon<UpdateCategoryResponse> updateCategory(UpdateCategoryRequest addCategoryRequest);
+public interface CategoryService {
+    void addCategory(AddCategoryRequest addCategoryRequest);
 
-    ResponseCommon<DeleteCategoryResponse> deleteCategory(DeleteCategoryRequest deleteCategoryRequest);
+    void updateCategory(UpdateCategoryRequest addCategoryRequest);
 
-//    ResponseCommon<FindAllCategoryResponse> findAllCategory();
+    void deleteCategory(DeleteCategoryRequest deleteCategoryRequest);
+
+    List<FindAllCategoryResponse> findAllCategory();
 
 }

@@ -1,18 +1,21 @@
 package swp391.learning.application.service;
 
-import swp391.learning.domain.dto.common.ResponseCommon;
+import org.springframework.stereotype.Service;
 import swp391.learning.domain.dto.request.admin.author.AddAuthorRequest;
 import swp391.learning.domain.dto.request.admin.author.DeleteAuthorRequest;
 import swp391.learning.domain.dto.request.admin.author.UpdateAuthorRequest;
-import swp391.learning.domain.dto.response.admin.author.AddAuthorResponse;
-import swp391.learning.domain.dto.response.admin.author.DeleteAuthorResponse;
-import swp391.learning.domain.dto.response.admin.author.UpdateAuthorResponse;
+import swp391.learning.domain.dto.response.admin.author.FindAllAuthorResponse;
+
+import java.util.List;
+
 
 public interface AuthorService {
-    ResponseCommon<AddAuthorResponse> addAuthor(AddAuthorRequest addAuthorRequest);
+    void addAuthor(AddAuthorRequest addAuthorRequest);
 
-    ResponseCommon<UpdateAuthorResponse> updateAuthor(UpdateAuthorRequest updateAuthorRequest);
+    void updateAuthor(UpdateAuthorRequest updateAuthorRequest);
 
-    ResponseCommon<DeleteAuthorResponse> deleteAuthor(DeleteAuthorRequest deleteAuthorRequest);
+    void deleteAuthor(DeleteAuthorRequest deleteAuthorRequest);
+
+    List<FindAllAuthorResponse> findAllAuthor();
 
 }

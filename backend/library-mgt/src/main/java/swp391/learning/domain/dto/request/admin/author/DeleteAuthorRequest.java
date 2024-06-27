@@ -12,8 +12,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class DeleteAuthorRequest {
-    @NotBlank
-    private String email;
     @NotNull
     private int authorID;
 }

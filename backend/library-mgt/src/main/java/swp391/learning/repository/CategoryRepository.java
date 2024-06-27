@@ -6,9 +6,9 @@ import swp391.learning.domain.entity.Category;
 import java.util.Optional;
 
 public interface CategoryRepository extends JpaRepository<Category,Integer> {
-    Optional<Category> findCategoryByNameCategory(String nameCategory);
+    Category findCategoryByName(String name);
 
-    Optional<Category> findCategoryById(int id);
+    Category findCategoryById(int id);
 //    List<Category> findAllByIsDeleted(boolean isDeleted);
 
 }

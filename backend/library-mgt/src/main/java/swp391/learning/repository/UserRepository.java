@@ -14,6 +14,7 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Integer> {
     User findByEmail(String email);
     boolean existsByEmail(String email);
+    User findById(int id);
 
     @Query("SELECT u FROM User u WHERE u.role = :role1 OR u.role = :role2")
     List<User> findAllByLibrarianOrMemberRoles(EnumTypeRole role1, EnumTypeRole role2);

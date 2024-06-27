@@ -53,6 +53,88 @@
         }
       }
     },
+    "/api/v1/category/update-category/{id}": {
+      "put": {
+        "tags": [
+          "category-controller"
+        ],
+        "operationId": "updateCategory",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCategoryRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseSuccessObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/author/update-author/{id}": {
+      "put": {
+        "tags": [
+          "author-controller"
+        ],
+        "operationId": "updateAuthor",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAuthorRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseSuccessObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/user/add-user": {
       "post": {
         "tags": [
@@ -84,70 +166,10 @@
         }
       }
     },
-    "/api/v1/category/update-category": {
-      "post": {
-        "tags": [
-          "category-book-controller"
-        ],
-        "operationId": "updateCategory",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateCategoryRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResponseCommonUpdateCategoryResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/category/delete-category": {
-      "post": {
-        "tags": [
-          "category-book-controller"
-        ],
-        "operationId": "deleteCategory",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DeleteCategoryRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResponseCommonDeleteCategoryResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v1/category/add-category": {
       "post": {
         "tags": [
-          "category-book-controller"
+          "category-controller"
         ],
         "operationId": "addCategory",
         "requestBody": {
@@ -166,157 +188,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/ResponseCommonAddCategoryResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/book/update-book": {
-      "post": {
-        "tags": [
-          "book-controller"
-        ],
-        "operationId": "updateBook",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateBookRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResponseCommonUpdateBookResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/book/delete-book": {
-      "post": {
-        "tags": [
-          "book-controller"
-        ],
-        "operationId": "updateBook_1",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DeleteBookRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResponseCommonDeleteBookResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/book/add-book": {
-      "post": {
-        "tags": [
-          "book-controller"
-        ],
-        "operationId": "addBook",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AddBookRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResponseCommonAddBookResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/author/update-author": {
-      "post": {
-        "tags": [
-          "author-controller"
-        ],
-        "operationId": "updateCategory_1",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateAuthorRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResponseCommonUpdateAuthorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/author/delete-author": {
-      "post": {
-        "tags": [
-          "author-controller"
-        ],
-        "operationId": "deleteCategory_1",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DeleteAuthorRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResponseCommonDeleteAuthorResponse"
+                  "$ref": "#/components/schemas/ResponseSuccessObject"
                 }
               }
             }
@@ -329,7 +201,7 @@
         "tags": [
           "author-controller"
         ],
-        "operationId": "addCategory_1",
+        "operationId": "addAuthor",
         "requestBody": {
           "content": {
             "application/json": {
@@ -346,7 +218,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/ResponseCommonAddAuthorResponse"
+                  "$ref": "#/components/schemas/ResponseSuccessObject"
                 }
               }
             }
@@ -624,29 +496,99 @@
         }
       }
     },
-    "/api/v1/book/search-book": {
+    "/api/v1/category/find-all-category": {
       "get": {
         "tags": [
-          "book-controller"
+          "category-controller"
         ],
-        "operationId": "searchBook",
-        "parameters": [
-          {
-            "name": "searchBookByNameAndCategoryRequest",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/SearchBookByNameAndCategoryRequest"
-            }
-          }
-        ],
+        "operationId": "getAllCategories",
         "responses": {
           "200": {
             "description": "OK",
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/ResponseCommonSearchBookByNameAndCategoryResponse"
+                  "$ref": "#/components/schemas/ResponseSuccessObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/author/find-all-author": {
+      "get": {
+        "tags": [
+          "author-controller"
+        ],
+        "operationId": "getAllAuthor",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseSuccessObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/category/delete-category": {
+      "delete": {
+        "tags": [
+          "category-controller"
+        ],
+        "operationId": "deleteCategory",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteCategoryRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseSuccessObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/author/delete-author": {
+      "delete": {
+        "tags": [
+          "author-controller"
+        ],
+        "operationId": "deleteAuthor",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteAuthorRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseSuccessObject"
                 }
               }
             }
@@ -697,780 +639,89 @@
       },
       "UpdateCategoryRequest": {
         "required": [
-          "categoryID",
-          "categoryUpdate",
-          "deleted",
-          "email"
-        ],
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string"
-          },
-          "categoryID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "categoryUpdate": {
-            "type": "string"
-          },
-          "deleted": {
-            "type": "boolean"
-          }
-        }
-      },
-      "ResponseCommonUpdateCategoryResponse": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string"
-          },
-          "data": {
-            "$ref": "#/components/schemas/UpdateCategoryResponse"
-          }
-        }
-      },
-      "UpdateCategoryResponse": {
-        "required": [
-          "categoryID",
-          "categoryName",
-          "createdBy",
-          "updatedBy"
-        ],
-        "type": "object",
-        "properties": {
-          "categoryID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "categoryName": {
-            "type": "string"
-          },
-          "createdBy": {
-            "type": "string"
-          },
-          "updatedBy": {
-            "type": "string"
-          }
-        }
-      },
-      "DeleteCategoryRequest": {
-        "required": [
-          "categoryID",
-          "email"
-        ],
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string"
-          },
-          "categoryID": {
-            "type": "integer",
-            "format": "int32"
-          }
-        }
-      },
-      "DeleteCategoryResponse": {
-        "required": [
-          "categoryID",
-          "categoryName",
-          "createdBy",
-          "updatedBy"
-        ],
-        "type": "object",
-        "properties": {
-          "categoryID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "categoryName": {
-            "type": "string"
-          },
-          "createdBy": {
-            "type": "string"
-          },
-          "updatedBy": {
-            "type": "string"
-          },
-          "deleted": {
-            "type": "boolean"
-          }
-        }
-      },
-      "ResponseCommonDeleteCategoryResponse": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string"
-          },
-          "data": {
-            "$ref": "#/components/schemas/DeleteCategoryResponse"
-          }
-        }
-      },
-      "AddCategoryRequest": {
-        "required": [
-          "email",
-          "name"
-        ],
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          }
-        }
-      },
-      "AddCategoryResponse": {
-        "type": "object",
-        "properties": {
-          "categoryID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "categoryName": {
-            "type": "string"
-          },
-          "createdBy": {
-            "type": "string"
-          },
-          "updatedBy": {
-            "type": "string"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
-      "ResponseCommonAddCategoryResponse": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string"
-          },
-          "data": {
-            "$ref": "#/components/schemas/AddCategoryResponse"
-          }
-        }
-      },
-      "UpdateBookRequest": {
-        "required": [
-          "bookID",
-          "categoryID",
-          "deleted",
-          "description",
-          "email",
-          "link_thumnail",
           "name",
-          "price"
+          "updatedById"
         ],
         "type": "object",
         "properties": {
-          "email": {
-            "type": "string"
+          "updatedById": {
+            "type": "integer",
+            "format": "int32"
           },
-          "bookID": {
+          "parentId": {
             "type": "integer",
             "format": "int32"
           },
           "name": {
             "type": "string"
           },
-          "description": {
-            "type": "string"
-          },
-          "price": {
-            "type": "number",
-            "format": "double"
-          },
-          "link_thumnail": {
-            "type": "string"
-          },
-          "categoryID": {
+          "categoryId": {
             "type": "integer",
             "format": "int32"
-          },
-          "deleted": {
-            "type": "boolean"
-          }
-        }
-      },
-      "Category": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "name": {
-            "type": "string"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "userCreated": {
-            "$ref": "#/components/schemas/User"
-          },
-          "userUpdated": {
-            "$ref": "#/components/schemas/User"
-          },
-          "deleted": {
-            "type": "boolean"
-          }
-        }
-      },
-      "GrantedAuthority": {
-        "type": "object",
-        "properties": {
-          "authority": {
-            "type": "string"
-          }
-        }
-      },
-      "ResponseCommonUpdateBookResponse": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string"
-          },
-          "data": {
-            "$ref": "#/components/schemas/UpdateBookResponse"
-          }
-        }
-      },
-      "UpdateBookResponse": {
-        "required": [
-          "bookID",
-          "bookName",
-          "category",
-          "createAt",
-          "createdBy",
-          "description",
-          "linkThumail",
-          "price",
-          "updateAt",
-          "updatedBy"
-        ],
-        "type": "object",
-        "properties": {
-          "bookID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "bookName": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "price": {
-            "type": "number",
-            "format": "double"
-          },
-          "category": {
-            "$ref": "#/components/schemas/Category"
-          },
-          "linkThumail": {
-            "type": "string"
-          },
-          "updateAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "createAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "createdBy": {
-            "type": "string"
-          },
-          "updatedBy": {
-            "type": "string"
-          }
-        }
-      },
-      "User": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "fullName": {
-            "type": "string"
-          },
-          "password": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "role": {
-            "type": "string",
-            "enum": [
-              "ADMIN",
-              "LIBRARIAN",
-              "MEMBER"
-            ]
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "INACTIVE",
-              "ACTIVE"
-            ]
-          },
-          "phoneNumber": {
-            "type": "string"
-          },
-          "verified": {
-            "type": "boolean"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "enabled": {
-            "type": "boolean"
-          },
-          "authorities": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/GrantedAuthority"
-            }
-          },
-          "username": {
-            "type": "string"
-          },
-          "accountNonLocked": {
-            "type": "boolean"
-          },
-          "accountNonExpired": {
-            "type": "boolean"
-          },
-          "credentialsNonExpired": {
-            "type": "boolean"
-          }
-        }
-      },
-      "DeleteBookRequest": {
-        "required": [
-          "bookID",
-          "email",
-          "nameBook"
-        ],
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string"
-          },
-          "nameBook": {
-            "type": "string"
-          },
-          "bookID": {
-            "type": "integer",
-            "format": "int32"
-          }
-        }
-      },
-      "DeleteBookResponse": {
-        "required": [
-          "bookID",
-          "bookName",
-          "category",
-          "createdAt",
-          "createdBy",
-          "description",
-          "linkThumail",
-          "price",
-          "updatedBy"
-        ],
-        "type": "object",
-        "properties": {
-          "bookID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "bookName": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "category": {
-            "$ref": "#/components/schemas/Category"
-          },
-          "price": {
-            "type": "number",
-            "format": "double"
-          },
-          "linkThumail": {
-            "type": "string"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "createdBy": {
-            "type": "string"
-          },
-          "updatedBy": {
-            "type": "string"
-          },
-          "deleted": {
-            "type": "boolean"
-          }
-        }
-      },
-      "ResponseCommonDeleteBookResponse": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string"
-          },
-          "data": {
-            "$ref": "#/components/schemas/DeleteBookResponse"
-          }
-        }
-      },
-      "AddBookRequest": {
-        "required": [
-          "category",
-          "description",
-          "email",
-          "link_thumnail",
-          "name",
-          "price"
-        ],
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "price": {
-            "type": "number",
-            "format": "double"
-          },
-          "link_thumnail": {
-            "type": "string"
-          },
-          "category": {
-            "type": "string"
-          }
-        }
-      },
-      "AddBookResponse": {
-        "required": [
-          "bookID",
-          "bookName",
-          "category",
-          "createdAt",
-          "createdBy",
-          "description",
-          "linkThumail",
-          "price"
-        ],
-        "type": "object",
-        "properties": {
-          "bookID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "bookName": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "price": {
-            "type": "number",
-            "format": "double"
-          },
-          "category": {
-            "$ref": "#/components/schemas/Category"
-          },
-          "linkThumail": {
-            "type": "string"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "createdBy": {
-            "type": "string"
-          }
-        }
-      },
-      "ResponseCommonAddBookResponse": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string"
-          },
-          "data": {
-            "$ref": "#/components/schemas/AddBookResponse"
           }
         }
       },
       "UpdateAuthorRequest": {
         "required": [
-          "authorID",
-          "deleted",
           "description",
-          "email",
-          "link_thumnail",
+          "modifiedById",
           "nameAuthor"
         ],
         "type": "object",
         "properties": {
-          "email": {
-            "type": "string"
-          },
-          "authorID": {
-            "type": "integer",
-            "format": "int32"
-          },
           "nameAuthor": {
             "type": "string"
           },
           "description": {
             "type": "string"
           },
-          "link_thumnail": {
-            "type": "string"
-          },
-          "deleted": {
-            "type": "boolean"
-          }
-        }
-      },
-      "ResponseCommonUpdateAuthorResponse": {
-        "type": "object",
-        "properties": {
-          "code": {
+          "modifiedById": {
             "type": "integer",
             "format": "int32"
           },
-          "message": {
-            "type": "string"
-          },
-          "data": {
-            "$ref": "#/components/schemas/UpdateAuthorResponse"
+          "authorId": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       },
-      "UpdateAuthorResponse": {
+      "AddCategoryRequest": {
         "required": [
-          "authorID",
-          "createAt",
-          "createdBy",
-          "description",
-          "linkThumail",
-          "nameAuthor",
-          "updateAt",
-          "updatedBy"
+          "createdById",
+          "name"
         ],
         "type": "object",
         "properties": {
-          "authorID": {
+          "createdById": {
             "type": "integer",
             "format": "int32"
           },
-          "nameAuthor": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "linkThumail": {
-            "type": "string"
-          },
-          "updateAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "createAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "createdBy": {
-            "type": "string"
-          },
-          "updatedBy": {
-            "type": "string"
-          }
-        }
-      },
-      "DeleteAuthorRequest": {
-        "required": [
-          "authorID",
-          "email"
-        ],
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string"
-          },
-          "authorID": {
-            "type": "integer",
-            "format": "int32"
-          }
-        }
-      },
-      "DeleteAuthorResponse": {
-        "required": [
-          "authorID",
-          "createdAt",
-          "createdBy",
-          "description",
-          "linkThumail",
-          "nameAuthor",
-          "updatedBy"
-        ],
-        "type": "object",
-        "properties": {
-          "authorID": {
+          "parentId": {
             "type": "integer",
             "format": "int32"
           },
-          "nameAuthor": {
+          "name": {
             "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "linkThumail": {
-            "type": "string"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "createdBy": {
-            "type": "string"
-          },
-          "updatedBy": {
-            "type": "string"
-          },
-          "deleted": {
-            "type": "boolean"
-          }
-        }
-      },
-      "ResponseCommonDeleteAuthorResponse": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string"
-          },
-          "data": {
-            "$ref": "#/components/schemas/DeleteAuthorResponse"
           }
         }
       },
       "AddAuthorRequest": {
         "required": [
-          "describe",
-          "email",
-          "link_Thumnail",
+          "description",
+          "modifiedById",
           "nameAuthor"
         ],
         "type": "object",
         "properties": {
-          "email": {
-            "type": "string"
-          },
           "nameAuthor": {
             "type": "string"
           },
-          "link_Thumnail": {
+          "description": {
             "type": "string"
           },
-          "describe": {
-            "type": "string"
-          }
-        }
-      },
-      "AddAuthorResponse": {
-        "type": "object",
-        "properties": {
-          "authorID": {
+          "modifiedById": {
             "type": "integer",
             "format": "int32"
-          },
-          "nameAuthor": {
-            "type": "string"
-          },
-          "describe": {
-            "type": "string"
-          },
-          "price": {
-            "type": "number",
-            "format": "double"
-          },
-          "link_thumnail": {
-            "type": "string"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
-      "ResponseCommonAddAuthorResponse": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string"
-          },
-          "data": {
-            "$ref": "#/components/schemas/AddAuthorResponse"
           }
         }
       },
@@ -1532,85 +783,27 @@
           }
         }
       },
-      "SearchBookByNameAndCategoryRequest": {
+      "DeleteCategoryRequest": {
         "required": [
-          "keyword"
+          "categoryId"
         ],
         "type": "object",
         "properties": {
-          "keyword": {
-            "type": "string"
-          }
-        }
-      },
-      "Book": {
-        "type": "object",
-        "properties": {
-          "id": {
+          "categoryId": {
             "type": "integer",
             "format": "int32"
-          },
-          "name": {
-            "type": "string"
-          },
-          "desc": {
-            "type": "string"
-          },
-          "category": {
-            "$ref": "#/components/schemas/Category"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "linkThumnail": {
-            "type": "string"
-          },
-          "price": {
-            "type": "number",
-            "format": "double"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "userCreated": {
-            "$ref": "#/components/schemas/User"
-          },
-          "userUpdated": {
-            "$ref": "#/components/schemas/User"
-          },
-          "deleted": {
-            "type": "boolean"
           }
         }
       },
-      "ResponseCommonSearchBookByNameAndCategoryResponse": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string"
-          },
-          "data": {
-            "$ref": "#/components/schemas/SearchBookByNameAndCategoryResponse"
-          }
-        }
-      },
-      "SearchBookByNameAndCategoryResponse": {
+      "DeleteAuthorRequest": {
         "required": [
-          "bookList"
+          "authorID"
         ],
         "type": "object",
         "properties": {
-          "bookList": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Book"
-            }
+          "authorID": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       }

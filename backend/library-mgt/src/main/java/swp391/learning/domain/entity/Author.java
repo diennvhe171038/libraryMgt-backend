@@ -4,8 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -22,30 +25,27 @@ public class Author {
     private int id;
 
     @Column(name = "name")
-    private String nameAuthor;
-
-    @Column(name="deleted")
-    private boolean isDeleted;
-
-    @Column(name="created_at")
-    private LocalDateTime createdAt;
-    @Column(name="updated_at")
-    private LocalDateTime updatedAt;
+    private String name;
 
     @Column(name="description")
-    private String desc; //gioi thieu tac gia
-//    @Column(name = "link_thummail")
-//    private String link_Thumnail; // anh tac gia
+    private String desc;
 
     @ManyToOne
-    @JoinColumn (name="created_by",referencedColumnName = "id")
-    private User userCreated;
+    @JoinColumn(name = "created_by")
+    private User createdBy;
 
     @ManyToOne
-    @JoinColumn(name="updated_by",referencedColumnName = "id")
-    private User userUpdated;
+    @JoinColumn(name = "updated_by")
+    private User updatedBy;
+
+    @Column(name = "created_at")
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 
     @ManyToMany(mappedBy = "authors")
-    @JsonIgnore
-    private Set<Book> books;
+    private Set<Book> books = new HashSet<>();
 }

@@ -12,16 +12,12 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UpdateAuthorRequest {
-    @NotBlank
-    private String email; // userName nguoi sua
     @NotNull
-    private int authorID;
+    private int authorId;
     @NotBlank
-    private String nameAuthor; // ten tac gia
+    private String nameAuthor;
     @NotBlank
     private String description;
-    @NotBlank
-    private String link_thumnail;
     @NotNull
-    private boolean deleted;
+    private int updatedBy;
 }
