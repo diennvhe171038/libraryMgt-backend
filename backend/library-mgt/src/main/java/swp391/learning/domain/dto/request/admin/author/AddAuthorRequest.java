@@ -17,5 +17,5 @@ public class AddAuthorRequest {
     @NotBlank
     private String description;
     @NotNull
-    private int modifiedById;
+    private int createdBy;
 }

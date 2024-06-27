@@ -15,8 +15,7 @@ import swp391.learning.domain.entity.User;
 @Setter
 public class AddCategoryRequest {
     @NotNull
-    private int createdById;
-    private int parentId;
+    private int createdBy;
     @NotBlank
     private String name;
 }

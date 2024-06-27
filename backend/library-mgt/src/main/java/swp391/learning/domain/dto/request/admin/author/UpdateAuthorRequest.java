@@ -12,11 +12,12 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UpdateAuthorRequest {
+    @NotNull
+    private int authorId;
     @NotBlank
     private String nameAuthor;
     @NotBlank
     private String description;
     @NotNull
-    private int modifiedById;
-    private int authorId;
+    private int updatedBy;
 }

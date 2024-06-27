@@ -17,6 +17,6 @@ import java.util.List;
 public class FindAllCategoryResponse {
     private int categoryId;
     private String categoryName;
-    private int parentId;
-    private int createdById;
+    private int updatedBy;
+    private String fullName;
 }

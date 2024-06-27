@@ -17,5 +17,6 @@ public class FindAllAuthorResponse {
     private int authorId;
     private String authorName;
     private String description;
-    private int modifiedById;
+    private int updatedBy;
+    private String fullName;
 }

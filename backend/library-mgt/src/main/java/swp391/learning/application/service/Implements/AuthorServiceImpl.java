@@ -1,8 +1,7 @@
 package swp391.learning.application.service.Implements;
 
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import swp391.learning.application.service.AuthorService;
@@ -25,9 +24,8 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
-
+@Slf4j
 public class AuthorServiceImpl implements AuthorService {
-    private static final Logger log = LoggerFactory.getLogger(AuthorServiceImpl.class);
 
 
     private final AuthorRepository authorRepository;
@@ -37,7 +35,7 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public void addAuthor(AddAuthorRequest addAuthorRequest) {
         Author author = authorRepository.findAuthorByName(addAuthorRequest.getNameAuthor());
-        User user = userRepository.findById(addAuthorRequest.getModifiedById());
+        User user = userRepository.findById(addAuthorRequest.getCreatedBy());
 
         if(author != null){
             log.debug("Add Author failed: Author already exists");
@@ -51,8 +49,8 @@ public class AuthorServiceImpl implements AuthorService {
 
         Author newAuthor = new Author();
         newAuthor.setName(addAuthorRequest.getNameAuthor());
-        newAuthor.setModifiedBy(user);
-        newAuthor.setDescription(addAuthorRequest.getDescription());
+        newAuthor.setCreatedBy(user);
+        newAuthor.setDesc(addAuthorRequest.getDescription());
 
         authorRepository.save(newAuthor);
     }
@@ -60,7 +58,7 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public void updateAuthor(UpdateAuthorRequest updateAuthorRequest) {
         Author author = authorRepository.findById(updateAuthorRequest.getAuthorId());
-        User user = userRepository.findById(updateAuthorRequest.getModifiedById());
+        User user = userRepository.findById(updateAuthorRequest.getUpdatedBy());
 
         if(author == null){
             log.debug("Update Author failed: Author does not exist");
@@ -73,8 +71,8 @@ public class AuthorServiceImpl implements AuthorService {
         }
 
         author.setName(updateAuthorRequest.getNameAuthor());
-        author.setModifiedBy(user);
-        author.setDescription(updateAuthorRequest.getDescription());
+        author.setUpdatedBy(user);
+        author.setDesc(updateAuthorRequest.getDescription());
 
         authorRepository.save(author);
     }
@@ -109,8 +107,9 @@ public class AuthorServiceImpl implements AuthorService {
         return FindAllAuthorResponse.builder()
                 .authorId(author.getId())
                 .authorName(author.getName())
-                .description(author.getDescription())
-                .modifiedById(author.getModifiedBy() != null ? author.getModifiedBy().getId() : 0)
+                .description(author.getDesc())
+                .updatedBy(author.getUpdatedBy().getId())
+                .fullName(author.getUpdatedBy().getFullName())
                 .build();
     }
 

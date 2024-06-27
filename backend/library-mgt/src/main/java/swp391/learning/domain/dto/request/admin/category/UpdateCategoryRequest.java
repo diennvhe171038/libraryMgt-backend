@@ -13,10 +13,10 @@ import lombok.Setter;
 @Setter
 public class UpdateCategoryRequest {
     @NotNull
-    private int updatedById;
-    private int parentId;
+    private int updatedBy;
     @NotBlank
     private String name;
+    @NotNull
     private int categoryId;
 
 }

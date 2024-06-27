@@ -1,14 +1,11 @@
 package swp391.learning.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -27,20 +24,25 @@ public class Author {
     @Column(name = "name")
     private String name;
 
-    private String image;
-
-    private String description;
+    @Column(name="description")
+    private String desc;
 
     @ManyToOne
-    @JoinColumn(name = "modified_by")
-    private User modifiedBy;
+    @JoinColumn(name = "created_by")
+    private User createdBy;
+
+    @ManyToOne
+    @JoinColumn(name = "updated_by")
+    private User updatedBy;
 
     @Column(name = "created_at")
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
+    @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-//    @ManyToMany(mappedBy = "authors")
-//    private Set<Book> books = new HashSet<>();
+    @ManyToMany(mappedBy = "authors")
+    private Set<Book> books = new HashSet<>();
 }

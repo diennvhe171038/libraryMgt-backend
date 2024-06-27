@@ -81,45 +81,4 @@ public class CategoryController {
             return new ResponseError(HttpStatus.BAD_REQUEST.value(), "Lấy danh sách danh mục thất bại");
         }
     }
-
-//    public ResponseEntity<ResponseCommon<UpdateCategoryResponse>> updateCategory(@Valid @RequestBody UpdateCategoryRequest updateCategoryRequest){
-//        ResponseCommon<UpdateCategoryResponse> response = categoryService.updateCategory(updateCategoryRequest);
-//        // if code response equals code succes -> return ok
-//        if(response.getCode() == ResponseCode.SUCCESS.getCode()){
-//            return ResponseEntity.ok(response);
-//        } // if code response equals code category not exist -> return error
-//        else if(response.getCode() == ResponseCode.CATEGORY_NOT_EXIST.getCode()){
-//            return ResponseEntity.badRequest().body(new ResponseCommon<>(ResponseCode.CATEGORY_NOT_EXIST.getCode(),"Category not exist",null));
-//        } // else - return fail
-//        else {
-//            return ResponseEntity.badRequest().body(new ResponseCommon<>(ResponseCode.FAIL.getCode(),"Update Fail",null));
-//
-//        }
-//    }
-//    @PostMapping("/delete-category")
-//    public ResponseEntity<ResponseCommon<DeleteCategoryResponse>> deleteCategory(@Valid @RequestBody DeleteCategoryRequest deleteCategoryRequest){
-//        ResponseCommon<DeleteCategoryResponse> response = categoryService.deleteCategory(deleteCategoryRequest);
-//        // if code response equals code succes -> return ok
-//        if(response.getCode() == ResponseCode.SUCCESS.getCode()){
-//            return ResponseEntity.ok(response);
-//        } // if code response equals code category not exist -> return error
-//        else if(response.getCode() == ResponseCode.CATEGORY_NOT_EXIST.getCode()){
-//            return ResponseEntity.badRequest().body(new ResponseCommon<>(ResponseCode.CATEGORY_NOT_EXIST.getCode(),"Category not exist",null));
-//        } // else - return fail
-//        else {
-//            return ResponseEntity.badRequest().body(new ResponseCommon<>(ResponseCode.FAIL.getCode(),"Delete Fail",null));
-//        }
-//    }
-//    @GetMapping("/find-all-category")
-//    public ResponseEntity<ResponseCommon<FindAllCategoryResponse>> findAllCategory(){
-//        ResponseCommon<FindAllCategoryResponse> response = categoryBookService.findAllCategory();
-//        // if code response equals code success -> return ok
-//        if(response.getCode()==ResponseCode.SUCCESS.getCode()){
-//            return ResponseEntity.ok(response);
-//        } else if(response.getCode()==ResponseCode.CATEGORY_LIST_IS_EMPTY.getCode()){
-//            return ResponseEntity.badRequest().body(new ResponseCommon<>(ResponseCode.CATEGORY_LIST_IS_EMPTY.getCode(),"List Category is Empty",null));
-//        } else {
-//            return ResponseEntity.badRequest().body(new ResponseCommon<>(ResponseCode.FAIL.getCode(),"Find All category fail",null));
-//        }
-//    }
 }
