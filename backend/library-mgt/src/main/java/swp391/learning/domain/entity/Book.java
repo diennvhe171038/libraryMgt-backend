@@ -1,12 +1,10 @@
-    package swp391.learning.domain.entity;
+package swp391.learning.domain.entity;
 
-    import jakarta.persistence.*;
-    import lombok.*;
-    import lombok.experimental.Accessors;
+import jakarta.persistence.*;
+import lombok.*;
+import lombok.experimental.Accessors;
 
-import java.sql.Blob;
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -49,38 +47,38 @@ public class Book {
     @Column(name = "imagePath")
     private String imagePath;
 
-    @Column(name="price")
+    @Column(name = "price")
     private double price; // gia quyen sach ben ngoai
 
-    @Column(name="deleted")
+    @Column(name = "deleted")
     private boolean isDeleted;
 
-    @Column(name="stock")
+    @Column(name = "stock")
     private int stock; // so luong sach
 
-    @Column(name="ISBN")
+    @Column(name = "ISBN")
     private String ISBN; // ma quyen sach
 
-    @Column(name="total_page")
+    @Column(name = "total_page")
     private String totalPage;
 
-    @Column(name="language")
+    @Column(name = "language")
     private String language;
 
-    @Column(name="publisher")
+    @Column(name = "publisher")
     private String publisher; // nha xuat ban
 
-    @Column(name="publication_year")
+    @Column(name = "publication_year")
     private String publicationYear; // nam xuat ban
 
-    @Column(name="updated_at")
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt; // thời gian cap nhat
 
     @ManyToOne
-    @JoinColumn (name="created_by",referencedColumnName = "id")
+    @JoinColumn(name = "created_by", referencedColumnName = "id")
     private User userCreated; // nguoi tạo
 
     @ManyToOne
-    @JoinColumn(name="updated_by",referencedColumnName = "id")
+    @JoinColumn(name = "updated_by", referencedColumnName = "id")
     private User userUpdated; // nguoi sua
 }

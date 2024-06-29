@@ -28,7 +28,9 @@ public class Payment {
     @Enumerated(EnumType.STRING)
     @Column(name = "payment_gateway")
     private EnumPaymentGateway paymentGateway;
-
+    @OneToOne
+    @JoinColumn(name = "member_subscription_id", referencedColumnName = "id")
+    private MemberSubscription memberSubscription;
     @Column(name = "transaction_id")
     private String transactionId;
 
