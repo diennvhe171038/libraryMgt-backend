@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import swp391.learning.domain.enums.EnumMembershipType;
 
 import java.time.LocalDateTime;
 
@@ -26,6 +27,9 @@ public class MemberSubscription {
     @Column(name="fee_member")
     private double feeMember;
     private boolean isDeleted = false;
+    @Column(name="membership")
+    private EnumMembershipType membershipType;
+
     @Column(name = "start_date")
     private LocalDateTime startDate; 
 

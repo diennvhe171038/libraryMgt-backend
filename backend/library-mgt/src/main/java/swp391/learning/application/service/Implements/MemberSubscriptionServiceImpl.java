@@ -23,10 +23,7 @@ import swp391.learning.domain.entity.MemberSubscription;
 import swp391.learning.domain.entity.Order;
 import swp391.learning.domain.entity.Payment;
 import swp391.learning.domain.entity.User;
-import swp391.learning.domain.enums.EnumPaymentGateway;
-import swp391.learning.domain.enums.EnumPaymentProcess;
-import swp391.learning.domain.enums.EnumTypeProcessPayment;
-import swp391.learning.domain.enums.ResponseCode;
+import swp391.learning.domain.enums.*;
 import swp391.learning.repository.MemberSubscriptionRepository;
 import swp391.learning.repository.OrderRepository;
 import swp391.learning.repository.PaymentRepository;
@@ -65,6 +62,7 @@ public class MemberSubscriptionServiceImpl implements MemberSubscriptionService 
             memberSubscription.setSubscriptionPlan(addMemberSubscriptionRequest.getSubscriptionPlan());
             memberSubscription.setFeeMember(addMemberSubscriptionRequest.getFee_member());
             memberSubscription.setStartDate(addMemberSubscriptionRequest.getStartDate());
+            memberSubscription.setMembershipType(addMemberSubscriptionRequest.getMembershipType());
             memberSubscription.setEndDate(addMemberSubscriptionRequest.getEndDate());
             memberSubscription.setCreatedAt(LocalDateTime.now());
 
@@ -99,6 +97,7 @@ public class MemberSubscriptionServiceImpl implements MemberSubscriptionService 
             memberSubscription.setNameSubscription(updateMemberSubscriptionRequest.getNameSubscription());
             memberSubscriptionUpdate.setSubscriptionPlan(updateMemberSubscriptionRequest.getSubscriptionPlan());
             memberSubscriptionUpdate.setFeeMember(updateMemberSubscriptionRequest.getFee_member());
+            memberSubscriptionUpdate.setMembershipType(updateMemberSubscriptionRequest.getMembershipType());
             memberSubscriptionUpdate.setStartDate(updateMemberSubscriptionRequest.getStartDate());
             memberSubscriptionUpdate.setEndDate(updateMemberSubscriptionRequest.getEndDate());
             memberSubscriptionUpdate.setCreatedAt(LocalDateTime.now());
@@ -217,36 +216,13 @@ public class MemberSubscriptionServiceImpl implements MemberSubscriptionService 
             payment.setPaymentGateway(EnumPaymentGateway.VN_PAY);
             payment.setAmount(amountReturn);
             payment.setEnumPaymentProcess(EnumPaymentProcess.SUCCESS);
-//            payment.getTransactionId(order.getChecksum());
-//            payment.getCreatedAt(LocalDateTime.now());
+            payment.setTransactionId(order.getChecksum());
+            payment.setCreatedAt(LocalDateTime.now());
             paymentRepository.save(payment);
             // Update order
             order.setPayment(payment);
             order.setEnumTypeProcessPayment(EnumTypeProcessPayment.DONE);
             orderRepository.save(order);
-
-            // Create historyRegisterCourse here if needed
-//            HistoryRegisterCourse historyRegisterCourse = new HistoryRegisterCourse();
-//            historyRegisterCourse.setCourse(payment.getCourse());
-//            historyRegisterCourse.setUser(payment.getUser());
-//            historyRegisterCourse.setSttLessonCurrent(1);
-//            historyRegisterCourse.setPayment(payment);
-//            historyRegisterCourse.setProcess(EnumTypeProcessAccount.NOT_READY);
-//            historyRegisterCourse.setCreatedAt(LocalDateTime.now());
-//            historyRegisterCourse.setOrder(order);
-//            historyRegisterCourseRepository.save(historyRegisterCourse);
-
-            // Send the email
-//            log.info("START... Sending email");
-//            emailService.sendEmail(setUpMailPayment(
-//                    payment.getUser().getEmail(),
-//                    payment.getUser().getFullName(),
-//                    payment.getCourse().getName(),
-//                    payment.getAmount(),
-//                    payment.getTransaction_id(),
-//                    payment.getCreated_at()
-//            ));
-//            log.info("END... Email sent success");
 
             return new ResponseCommon<>(ResponseCode.SUCCESS.getCode(), "Confirm success", null);
         } catch (Exception e) {
