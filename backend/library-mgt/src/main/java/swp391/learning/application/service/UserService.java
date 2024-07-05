@@ -3,7 +3,7 @@ package swp391.learning.application.service;
 
 
 import swp391.learning.domain.dto.request.user.authentication.UserRequest;
-import swp391.learning.domain.dto.response.user.authentication.UserResponse;
+import swp391.learning.domain.dto.response.admin.user.UserResponse;
 
 import java.util.List;
 

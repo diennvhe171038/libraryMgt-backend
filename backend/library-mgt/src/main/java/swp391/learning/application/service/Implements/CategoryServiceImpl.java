@@ -4,10 +4,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import swp391.learning.application.service.CategoryService;
-import swp391.learning.domain.dto.request.admin.category.AddCategoryRequest;
-import swp391.learning.domain.dto.request.admin.category.DeleteCategoryRequest;
-import swp391.learning.domain.dto.request.admin.category.UpdateCategoryRequest;
-import swp391.learning.domain.dto.response.admin.category.FindAllCategoryResponse;
+import swp391.learning.domain.dto.request.admin.category.CategoryRequest;
+import swp391.learning.domain.dto.response.admin.category.CategoryResponse;
+import swp391.learning.domain.dto.response.admin.category.ParentCategoryResponse;
 import swp391.learning.domain.entity.Category;
 import swp391.learning.domain.entity.User;
 import swp391.learning.exception.DuplicateResourceException;
@@ -15,7 +14,7 @@ import swp391.learning.exception.ResourceNotFoundException;
 import swp391.learning.repository.CategoryRepository;
 import swp391.learning.repository.UserRepository;
 
-import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -27,89 +26,151 @@ public class CategoryServiceImpl implements CategoryService {
     private final UserRepository userRepository;
 
     @Override
-    public void addCategory(AddCategoryRequest addCategoryRequest) {
+    public void addCategory(CategoryRequest addCategoryRequest) {
+        log.info("Adding category with name: {} and userId: {}", addCategoryRequest.getName(), addCategoryRequest.getUserId());
 
-        Category category = categoryRepository.findCategoryByName(addCategoryRequest.getName());
-        User user = userRepository.findById(addCategoryRequest.getCreatedBy());
-
+        User user = userRepository.findById(addCategoryRequest.getUserId());
         if (user == null) {
-            log.debug("Add Category failed: User is null");
+            log.info("User with id {} not found", addCategoryRequest.getUserId());
             throw new ResourceNotFoundException("Người dùng không tồn tại");
         }
 
-        if (category != null) {
-            log.debug("Add Category failed: Category already exists");
-            throw new DuplicateResourceException("Danh mục " + category.getName() + " đã tồn tại");
-        } else {
-            Category newCategory = new Category();
-            newCategory.setName(addCategoryRequest.getName());
-            newCategory.setCreatedBy(user);
-
-            categoryRepository.save(newCategory);
+        Category existedCategory = categoryRepository.findCategoryByName(addCategoryRequest.getName());
+        if (existedCategory != null) {
+            log.error("Add Category failed: Category is existed");
+            throw new DuplicateResourceException("Danh mục đã tồn tại");
         }
 
+        Category newCategory = new Category();
+        newCategory.setName(addCategoryRequest.getName());
+        newCategory.setCreatedBy(user);
+        newCategory.setUpdatedBy(user);
 
+        if (addCategoryRequest.getParentId() != 0) {
+            Category parentCategory = categoryRepository.findCategoryById(addCategoryRequest.getParentId());
+            if (parentCategory == null) {
+                log.info("Parent category with id {} not found", addCategoryRequest.getParentId());
+                throw new ResourceNotFoundException("Danh mục cha không tồn tại");
+            }
+            newCategory.setParentCategory(parentCategory);
+        }
 
+        categoryRepository.save(newCategory);
+        log.info("Category {} added successfully", newCategory.getName());
     }
 
-    @Override
-    public void updateCategory(UpdateCategoryRequest updateCategoryRequest) {
-        Category category = categoryRepository.findCategoryById(updateCategoryRequest.getCategoryId());
-        User user = userRepository.findById(updateCategoryRequest.getUpdatedBy());
-
-        if (user == null) {
-            log.debug("Update Category failed: User is null");
-            throw new ResourceNotFoundException("Người dùng không tồn tại");
-        }
-
-        if (category != null) {
-            log.debug("Update Category failed: Category does not exist");
-            throw new DuplicateResourceException("Danh mục " + category.getName() + " đã tồn tại");
-        } else {
-            category.setName(updateCategoryRequest.getName());
-            category.setUpdatedBy(user);
-
-            categoryRepository.save(category);
-        }
-
-
-
-
-    }
 
     @Override
-    public void deleteCategory(DeleteCategoryRequest deleteCategoryRequest) {
-        Category category = categoryRepository.findCategoryById(deleteCategoryRequest.getCategoryId());
+    public void updateCategory(int id, CategoryRequest updateCategoryRequest) {
+        log.info("Updating category with id: {} and userId: {}", id, updateCategoryRequest.getUserId());
 
+        Category category = categoryRepository.findCategoryById(id);
         if (category == null) {
-            log.debug("Delete Category failed: Category does not exist");
+            log.info("Category with id {} not found", id);
+            throw new ResourceNotFoundException("Danh mục không tồn tại");
+        }
+
+        User user = userRepository.findById(updateCategoryRequest.getUserId());
+        if (user == null) {
+            log.info("User with id {} not found", updateCategoryRequest.getUserId());
+            throw new ResourceNotFoundException("Người dùng không tồn tại");
+        }
+
+        category.setName(updateCategoryRequest.getName());
+        category.setUpdatedBy(user);
+        if (updateCategoryRequest.getParentId() == 0) {
+            category.setParentCategory(null);
+        } else {
+            Category parentCategory = categoryRepository.findById(updateCategoryRequest.getParentId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Danh mục cha không tồn tại"));
+            category.setParentCategory(parentCategory);
+        }
+
+        categoryRepository.save(category);
+        log.info("Category {} updated successfully", category.getName());
+
+    }
+
+    @Override
+    public void deleteCategory(int id) {
+        log.info("Deleting category with id: {}", id);
+
+        Category category = categoryRepository.findCategoryById(id);
+        if (category == null) {
+            log.info("Category with id {} not found", id);
             throw new ResourceNotFoundException("Danh mục không tồn tại");
         }
 
         categoryRepository.delete(category);
+        log.info("Category {} deleted successfully", category.getName());
     }
 
     @Override
-    public List<FindAllCategoryResponse> findAllCategory() {
+    public List<CategoryResponse> findAllCategory() {
+        log.info("Retrieving all categories from the repository");
+
         List<Category> categories = categoryRepository.findAll();
 
-        if (categories.isEmpty()) {
-            log.debug("Find All Category failed: Category is empty");
-            throw new ResourceNotFoundException("Danh mục rỗng");
-        }
-
-
-        return categories.stream()
+        List<CategoryResponse> categoryResponses = categories.stream()
                 .map(this::mapToCategoryResponse)
                 .collect(Collectors.toList());
+
+        log.info("Returning {} category responses", categoryResponses.size());
+
+        return categoryResponses;
     }
 
-    private FindAllCategoryResponse mapToCategoryResponse(Category category) {
-        return FindAllCategoryResponse.builder()
-                .categoryId(category.getId())
-                .categoryName(category.getName())
-                .updatedBy(category.getUpdatedBy().getId())
-                .fullName(category.getUpdatedBy().getFullName())
+    @Override
+    public List<ParentCategoryResponse> findAllParentCategories() {
+        log.info("Retrieving all parent categories from the repository");
+
+        List<Category> parentCategories = categoryRepository.findAllByParentCategoryIsNull();
+
+        List<ParentCategoryResponse> parentCategoryResponses = parentCategories.stream()
+                .map(this::mapToParentCategoryResponse)
+                .collect(Collectors.toList());
+
+        log.info("Returning {} parent category responses", parentCategoryResponses.size());
+
+        return parentCategoryResponses;
+    }
+
+
+
+    public CategoryResponse getCategoryById(int id) {
+        log.info("Getting category with id: {}", id);
+        Category category = categoryRepository.findCategoryById(id);
+        if (category == null) {
+            log.info("Category with id {} not found", id);
+            throw new ResourceNotFoundException("Danh mục không tồn tại");
+        }
+
+        return mapToCategoryResponse(category);
+    }
+
+    private CategoryResponse mapToCategoryResponse(Category category) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        String formattedDateTime = category.getUpdatedAt().format(formatter);
+
+        int parentId = category.getParentCategory() != null ? category.getParentCategory().getId() : 0;
+        String parentName = category.getParentCategory() != null ? category.getParentCategory().getName() : null;
+
+        return CategoryResponse.builder()
+                .id(category.getId())
+                .userId(category.getCreatedBy().getId())
+                .name(category.getName())
+                .parentId(parentId)
+                .parentName(parentName)
+                .updatedBy(category.getUpdatedBy().getFullName())
+                .updatedAt(formattedDateTime)
+                .build();
+    }
+
+
+    private ParentCategoryResponse mapToParentCategoryResponse(Category category) {
+        return ParentCategoryResponse.builder()
+                .id(category.getId())
+                .name(category.getName())
                 .build();
     }
 

@@ -1,26 +1,11 @@
 package swp391.learning.application.service.Implements;
 
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import swp391.learning.application.service.PaymentService;
 import swp391.learning.config.VnPayConfig;
 import swp391.learning.domain.dto.common.PaymentRes;
 import swp391.learning.domain.dto.common.ResponseCommon;
-import swp391.learning.domain.dto.request.user.book.PaymentConfirmRequest;
-import swp391.learning.domain.dto.request.user.payment.GetPaymentByUserRequest;
-import swp391.learning.domain.dto.response.user.payment.ResponsePayment;
-import swp391.learning.domain.dto.response.user.book.PaymentConfirmResponse;
-import swp391.learning.domain.dto.response.user.payment.GetPaymentByUserResponse;
-import swp391.learning.domain.entity.Order;
-import swp391.learning.domain.entity.Payment;
-import swp391.learning.domain.entity.User;
-import swp391.learning.domain.enums.EnumPaymentGateway;
-import swp391.learning.domain.enums.EnumPaymentProcess;
-import swp391.learning.domain.enums.EnumTypeProcessPayment;
-import swp391.learning.domain.enums.ResponseCode;
-import swp391.learning.repository.OrderRepository;
 import swp391.learning.repository.PaymentRepository;
 import swp391.learning.repository.UserRepository;
 
@@ -28,13 +13,18 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
+import java.util.*;
+
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+
 @Service
 @RequiredArgsConstructor
 public class PaymentImpl implements PaymentService {
+    private final PaymentRepository paymentRepository;
+    private final UserRepository userRepository;
 //    private final PaymentRepository paymentRepository;
 //    private final UserRepository userRepository;
 //    private final OrderRepository orderRepository;
