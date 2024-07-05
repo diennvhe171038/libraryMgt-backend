@@ -23,7 +23,12 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(name = "name")
     private String name;
+
+    @ManyToOne
+    @JoinColumn(name = "parent_id")
+    private Category parentCategory;
 
     @ManyToOne
     @JoinColumn(name = "created_by")
@@ -41,7 +46,7 @@ public class Category {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "categories", fetch = FetchType.LAZY)
     private Set<Book> books = new HashSet<>();
 
 }

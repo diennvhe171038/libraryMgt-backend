@@ -1,26 +1,12 @@
 package swp391.learning.application.service.Implements;
 
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import swp391.learning.application.service.PaymentService;
 import swp391.learning.config.VnPayConfig;
 import swp391.learning.domain.dto.common.PaymentRes;
 import swp391.learning.domain.dto.common.ResponseCommon;
-import swp391.learning.domain.dto.request.user.book.PaymentConfirmRequest;
-import swp391.learning.domain.dto.request.user.payment.GetPaymentByUserRequest;
-import swp391.learning.domain.dto.response.user.payment.ResponsePayment;
-import swp391.learning.domain.dto.response.user.book.PaymentConfirmResponse;
-import swp391.learning.domain.dto.response.user.payment.GetPaymentByUserResponse;
-import swp391.learning.domain.entity.Order;
-import swp391.learning.domain.entity.Payment;
-import swp391.learning.domain.entity.User;
-import swp391.learning.domain.enums.EnumPaymentGateway;
-import swp391.learning.domain.enums.EnumPaymentProcess;
-import swp391.learning.domain.enums.EnumTypeProcessPayment;
 import swp391.learning.domain.enums.ResponseCode;
-import swp391.learning.repository.OrderRepository;
 import swp391.learning.repository.PaymentRepository;
 import swp391.learning.repository.UserRepository;
 
@@ -28,18 +14,13 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class PaymentImpl implements PaymentService {
-//    private final PaymentRepository paymentRepository;
-//    private final UserRepository userRepository;
-//    private final OrderRepository orderRepository;
-//    private static final Logger log = LoggerFactory.getLogger(PaymentImpl.class);
-
+    private final PaymentRepository paymentRepository;
+    private final UserRepository userRepository;
 
     @Override
     public ResponseCommon<PaymentRes> addPayment(double amount) throws UnsupportedEncodingException {
@@ -109,30 +90,6 @@ public class PaymentImpl implements PaymentService {
 
         return new ResponseCommon<>(ResponseCode.SUCCESS, paymentRes);
     }
-
-//    @Override
-//    public ResponseCommon<ResponsePayment> getPaymentByUser(GetPaymentByUserRequest getPaymentByUserRequest) {
-//        try {
-//            User user = userRepository.findByEmail(getPaymentByUserRequest.getUsername()).orElse(null);
-//            List<Payment> paymentList = paymentRepository.findPaymentByUser(user);
-//            ResponsePayment responsePayment = new ResponsePayment();
-//            List<GetPaymentByUserResponse> getPaymentByUserResponses = paymentList.stream()
-//                    .map(payment -> {
-//                        GetPaymentByUserResponse response = new GetPaymentByUserResponse();
-//                        response.setCreatedAt(payment.getCreatedAt());
-//                        response.setStatus(String.valueOf(payment.getEnumPaymentProcess()));
-//                        response.setAmount(payment.getAmount());
-////                        response.setCourseName(payment.getCourse().getName()); thay bang goi vip
-//                        return response;
-//                    })
-//                    .collect(Collectors.toList());
-//            responsePayment.setListPayment(getPaymentByUserResponses);
-//            return new ResponseCommon<>(ResponseCode.SUCCESS,responsePayment);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return new ResponseCommon<>(ResponseCode.FAIL, null);
-//        }
-//    }
 
 
 }
