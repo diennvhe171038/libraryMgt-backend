@@ -5,12 +5,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import swp391.learning.application.service.UserService;
 import swp391.learning.domain.dto.request.user.authentication.UserRequest;
-import swp391.learning.domain.dto.response.user.authentication.UserResponse;
+import swp391.learning.domain.dto.response.admin.user.UserResponse;
 import swp391.learning.domain.entity.User;
 import swp391.learning.domain.enums.EnumTypeRole;
 import swp391.learning.domain.enums.EnumUserStatus;
 import swp391.learning.exception.DuplicateResourceException;
-import swp391.learning.exception.ResourceNotFoundException;
 import swp391.learning.repository.UserRepository;
 
 import java.util.List;

@@ -15,6 +15,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -30,8 +31,12 @@ public class User implements UserDetails, Serializable {
     @Column(name = "id")
     private int id;
 
-@Column(name = "member_ship")
-private EnumMembershipType membershipType;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "member_subscription_id")
+    private MemberSubscription memberSubscription;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Review> reviews;
 
     private String fullName;
     private String password;

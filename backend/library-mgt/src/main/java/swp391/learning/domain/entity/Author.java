@@ -27,7 +27,7 @@ public class Author {
     @Column(name = "name")
     private String name;
 
-    @Column(name="description")
+    @Column(name="description", columnDefinition = "TEXT")
     private String desc;
 
     @ManyToOne
@@ -46,6 +46,6 @@ public class Author {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    @ManyToMany(mappedBy = "authors")
+    @ManyToMany(mappedBy = "authors", fetch = FetchType.LAZY)
     private Set<Book> books = new HashSet<>();
 }

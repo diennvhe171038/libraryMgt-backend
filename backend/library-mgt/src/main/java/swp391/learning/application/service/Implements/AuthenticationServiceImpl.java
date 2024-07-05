@@ -48,7 +48,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .email(registerRequest.getEmail())
                 .password(passwordEncoder.encode(registerRequest.getPassword()))
                 .role(EnumTypeRole.MEMBER)
-                .membershipType(EnumMembershipType.NORMAL)
                 .status(EnumUserStatus.ACTIVE)
                 .verified(false)
                 .build();

@@ -9,6 +9,7 @@ import swp391.learning.application.service.UserService;
 import swp391.learning.domain.dto.common.ResponseError;
 import swp391.learning.domain.dto.common.ResponseSuccess;
 import swp391.learning.domain.dto.request.user.authentication.UserRequest;
+import swp391.learning.exception.DuplicateResourceException;
 
 
 @RestController
@@ -50,6 +51,9 @@ public class UserController {
         try {
             userService.addUser(userRequest);
             return new ResponseSuccess<>(HttpStatus.CREATED.value(), "Thêm thành công");
+        } catch (DuplicateResourceException e) {
+            log.error("Add user failed: " + e.getMessage());
+            return new ResponseError(HttpStatus.CONFLICT.value(), e.getMessage());
         } catch (Exception e) {
             log.error("Add user failed: " + e.getMessage());
             return new ResponseError(HttpStatus.BAD_REQUEST.value(), e.getMessage());

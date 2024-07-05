@@ -2,23 +2,18 @@ package swp391.learning.application.service.Implements;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import swp391.learning.application.service.AuthorService;
-import swp391.learning.domain.dto.request.admin.author.AddAuthorRequest;
-import swp391.learning.domain.dto.request.admin.author.DeleteAuthorRequest;
-import swp391.learning.domain.dto.request.admin.author.UpdateAuthorRequest;
-import swp391.learning.domain.dto.response.admin.author.FindAllAuthorResponse;
-import swp391.learning.domain.dto.response.admin.category.FindAllCategoryResponse;
+import swp391.learning.domain.dto.request.admin.author.AuthorRequest;
+import swp391.learning.domain.dto.response.admin.author.AuthorResponse;
 import swp391.learning.domain.entity.Author;
-import swp391.learning.domain.entity.Category;
 import swp391.learning.domain.entity.User;
 import swp391.learning.exception.DuplicateResourceException;
 import swp391.learning.exception.ResourceNotFoundException;
 import swp391.learning.repository.AuthorRepository;
 import swp391.learning.repository.UserRepository;
 
-import java.util.ArrayList;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,83 +28,109 @@ public class AuthorServiceImpl implements AuthorService {
     private final UserRepository userRepository;
 
     @Override
-    public void addAuthor(AddAuthorRequest addAuthorRequest) {
-        Author author = authorRepository.findAuthorByName(addAuthorRequest.getNameAuthor());
-        User user = userRepository.findById(addAuthorRequest.getCreatedBy());
+    public void addAuthor(AuthorRequest addAuthorRequest) {
+        log.info("Adding author with name: {} and userId: {}", addAuthorRequest.getName(), addAuthorRequest.getUserId());
 
-        if(author != null){
-            log.debug("Add Author failed: Author already exists");
-            throw new DuplicateResourceException("Tác giả " + author.getName() + " đã tồn tại");
+        User user = userRepository.findById(addAuthorRequest.getUserId());
+        if (user == null) {
+            log.info("User with id {} not found", addAuthorRequest.getUserId());
+            throw new ResourceNotFoundException("Người dùng không tồn tại");
         }
 
-        if(user == null){
-            log.debug("Add Author failed: User is null");
-            throw new ResourceNotFoundException("Người dùng không tồn tại");
+        Author author = authorRepository.findAuthorByName(addAuthorRequest.getName());
+        if (author != null) {
+            log.error("Add Author failed: Author is existed");
+            throw new DuplicateResourceException("Tác giả đã tồn tại");
         }
 
         Author newAuthor = new Author();
-        newAuthor.setName(addAuthorRequest.getNameAuthor());
-        newAuthor.setCreatedBy(user);
+        newAuthor.setName(addAuthorRequest.getName());
         newAuthor.setDesc(addAuthorRequest.getDescription());
+        newAuthor.setCreatedBy(user);
+        newAuthor.setUpdatedBy(user);
 
         authorRepository.save(newAuthor);
+        log.info("Author {} added successfully", newAuthor.getName());
     }
 
     @Override
-    public void updateAuthor(UpdateAuthorRequest updateAuthorRequest) {
-        Author author = authorRepository.findById(updateAuthorRequest.getAuthorId());
-        User user = userRepository.findById(updateAuthorRequest.getUpdatedBy());
+    public void updateAuthor(int id, AuthorRequest updateAuthorRequest) {
+        log.info("Updating author with id: {} and userId: {}", id, updateAuthorRequest.getUserId());
 
-        if(author == null){
-            log.debug("Update Author failed: Author does not exist");
+        Author author = authorRepository.findById(id);
+        if (author == null) {
+            log.info("Author with id {} not found", id);
             throw new ResourceNotFoundException("Tác giả không tồn tại");
         }
 
-        if(user == null){
-            log.debug("Update Author failed: User is null");
+        User user = userRepository.findById(updateAuthorRequest.getUserId());
+        if (user == null) {
+            log.info("User with id {} not found", updateAuthorRequest.getUserId());
             throw new ResourceNotFoundException("Người dùng không tồn tại");
         }
 
-        author.setName(updateAuthorRequest.getNameAuthor());
-        author.setUpdatedBy(user);
+        Author existedAuthor = authorRepository.findAuthorByName(updateAuthorRequest.getName());
+        if (existedAuthor != null) {
+            log.error("Add Author failed: Author is existed");
+            throw new DuplicateResourceException("Tác giả đã tồn tại");
+        }
+
+        author.setName(updateAuthorRequest.getName());
         author.setDesc(updateAuthorRequest.getDescription());
+        author.setUpdatedBy(user);
 
         authorRepository.save(author);
+        log.info("Author {} updated successfully", author.getName());
     }
 
     @Override
-    public void deleteAuthor(DeleteAuthorRequest deleteAuthorRequest) {
-        Author author = authorRepository.findById(deleteAuthorRequest.getAuthorID());
-
-        if(author == null){
-            log.debug("Delete Author failed: Author does not exist");
+    public void deleteAuthor(int id) {
+        log.info("Deleting author with id: {}", id);
+        Author author = authorRepository.findById(id);
+        if (author == null) {
+            log.info("Author with id {} not found", id);
             throw new ResourceNotFoundException("Tác giả không tồn tại");
         }
 
         authorRepository.delete(author);
+        log.info("Author {} deleted successfully", author.getName());
     }
 
     @Override
-    public List<FindAllAuthorResponse> findAllAuthor() {
+    public List<AuthorResponse> findAllAuthor() {
+        log.info("Getting all authors");
         List<Author> authors = authorRepository.findAll();
 
-        if(authors.isEmpty()){
-            log.debug("Find All Author failed: Author is empty");
-            throw new ResourceNotFoundException("Chưa có tác giả nào trong danh sách");
-        }
-
-        return authors.stream()
+        List<AuthorResponse> authorResponses = authors.stream()
                 .map(this::mapToAuthorResponse)
                 .collect(Collectors.toList());
+
+        log.info("Found {} authors", authors.size());
+        return authorResponses;
     }
 
-    private FindAllAuthorResponse mapToAuthorResponse(Author author) {
-        return FindAllAuthorResponse.builder()
-                .authorId(author.getId())
-                .authorName(author.getName())
+    public AuthorResponse getAuthorById(int id) {
+        log.info("Getting author with id: {}", id);
+        Author author = authorRepository.findById(id);
+        if (author == null) {
+            log.info("Author with id {} not found", id);
+            throw new ResourceNotFoundException("Tác giả không tồn tại");
+        }
+
+        return mapToAuthorResponse(author);
+    }
+
+    private AuthorResponse mapToAuthorResponse(Author author) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDateTime = author.getUpdatedAt().format(formatter);
+
+        return AuthorResponse.builder()
+                .id(author.getId())
+                .userId(author.getCreatedBy().getId())
+                .name(author.getName())
                 .description(author.getDesc())
-                .updatedBy(author.getUpdatedBy().getId())
-                .fullName(author.getUpdatedBy().getFullName())
+                .updatedBy(author.getUpdatedBy().getFullName())
+                .updatedAt(formattedDateTime)
                 .build();
     }
 
