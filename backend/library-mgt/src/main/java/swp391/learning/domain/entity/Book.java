@@ -1,4 +1,4 @@
-package swp391.learning.domain.entity;
+    package swp391.learning.domain.entity;
 
     import jakarta.persistence.*;
     import lombok.*;
@@ -9,8 +9,8 @@ package swp391.learning.domain.entity;
 
     import java.math.BigDecimal;
     import java.sql.Blob;
-
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -59,32 +59,19 @@ public class Book {
     @Column(name = "imagePath")
     private String imagePath;
 
-
     @Column(name="price")
     private BigDecimal price; // gia quyen sach ben ngoai
-  
-    @Column(name = "price")
-    private double price; // gia quyen sach ben ngoai
 
-    @Column(name = "deleted")
-    private boolean isDeleted;
-
-    @Column(name = "stock")
-    private int stock; // so luong sach
-
-
-    @Column(name = "ISBN")
+    @Column(name="ISBN")
     private String ISBN; // ma quyen sach
-
 
     @Column(name="total_page")
     private int totalPage;
 
-
-    @Column(name = "language")
+    @Column(name="language")
     private String language;
 
-    @Column(name = "publisher")
+    @Column(name="publisher")
     private String publisher; // nha xuat ban
 
     @Column(name="publication_year")
@@ -100,15 +87,13 @@ public class Book {
 
     @Column(name="updated_at")
     @UpdateTimestamp
-    @Column(name = "updated_at")
-
     private LocalDateTime updatedAt; // thời gian cap nhat
 
     @ManyToOne
-    @JoinColumn(name = "created_by", referencedColumnName = "id")
+    @JoinColumn (name="created_by",referencedColumnName = "id")
     private User userCreated; // nguoi tạo
 
     @ManyToOne
-    @JoinColumn(name = "updated_by", referencedColumnName = "id")
+    @JoinColumn(name="updated_by",referencedColumnName = "id")
     private User userUpdated; // nguoi sua
 }

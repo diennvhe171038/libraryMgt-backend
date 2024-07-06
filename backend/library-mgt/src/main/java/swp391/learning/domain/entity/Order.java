@@ -21,7 +21,9 @@ public class Order {
     @OneToOne
     @JoinColumn(name="payment",referencedColumnName = "id")
     private Payment payment;
-
+    @OneToOne
+    @JoinColumn(name = "member_subscription_id", referencedColumnName = "id")
+    private MemberSubscription memberSubscription;
     @Column(name="amount")
     private double amount;
     @Enumerated(EnumType.STRING)

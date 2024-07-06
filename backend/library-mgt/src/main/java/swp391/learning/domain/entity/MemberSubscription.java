@@ -5,13 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import swp391.learning.domain.enums.EnumMembershipType;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "member_subscription")
@@ -24,34 +20,24 @@ public class MemberSubscription {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "name")
-    private String name; // tên gói
+    @Column(name = "nameSubscription")
+    private String nameSubscription;
+    @Column(name = "subscription_plan")
+    private String subscriptionPlan;
+    @Column(name="fee_member")
+    private double feeMember;
+    private boolean isDeleted = false;
+    @Column(name="membership")
+    private EnumMembershipType membershipType;
 
-    @Column(name = "price")
-    private BigDecimal price; // giá gói
+    @Column(name = "start_date")
+    private LocalDateTime startDate; 
 
-    @Column(name="max_book")
-    private int maxBook; // số lượng mượn sách tối đa
-
-    @Column(name = "loan_duration")
-    private int loanDuration; // thời gian mượn sách (số ngày)
-
-    @Column(name = "renew_limit")
-    private int renewLimit; // số lần gia hạn tối đa
-
-    @Column(name = "renew_duration")
-    private int renewDuration; // thời gian gia hạn (số ngày)
-
-    @OneToMany(mappedBy = "memberSubscription", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<User> users;
+    @Column(name = "end_date")
+    private LocalDateTime endDate;
 
     @Column(name = "created_at")
-    @CreationTimestamp
     private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    @UpdateTimestamp
-    private LocalDateTime updateAt;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
