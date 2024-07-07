@@ -29,24 +29,17 @@ public class BookRequest {
     @NotBlank
     private String language;
 
-    @NotBlank
+
     private String publisher;
 
-    @NotNull
+
     private int publicationYear;
 
-    @NotNull
     private String description;
-
-    @NotNull
-    private MultipartFile bookImage;
+    private String status;
 
     @NotEmpty
-    private Set<MultipartFile> sampleBookImages;
+    private Set<Integer> authors;
 
-    @NotEmpty
-    private Set<Integer> authorIds;
-
-    @NotEmpty
-    private Set<Integer> categoryIds;
+    private Set<Integer> categories;
 }

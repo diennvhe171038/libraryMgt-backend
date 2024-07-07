@@ -1,12 +1,16 @@
     package swp391.learning.domain.entity;
 
+    import com.fasterxml.jackson.annotation.JsonIgnore;
     import jakarta.persistence.*;
     import lombok.*;
     import lombok.experimental.Accessors;
     import org.hibernate.annotations.CreationTimestamp;
+    import org.hibernate.annotations.JdbcTypeCode;
     import org.hibernate.annotations.UpdateTimestamp;
+    import org.hibernate.type.SqlTypes;
     import swp391.learning.domain.enums.EnumBookStatus;
 
+    import java.io.Serializable;
     import java.math.BigDecimal;
     import java.sql.Blob;
 import java.time.LocalDateTime;
@@ -20,7 +24,7 @@ import java.util.Set;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Book {
+public class Book implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private int id;
@@ -31,6 +35,7 @@ public class Book {
     @Column(name = "description", columnDefinition = "TEXT")
     private String desc; // gioi thieu sach
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "book_author",
@@ -39,6 +44,7 @@ public class Book {
     )
     private Set<Author> authors;
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "book_category",
@@ -47,6 +53,7 @@ public class Book {
     )
     private Set<Category> categories;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<SampleBook> sampleBooks;
 
@@ -81,7 +88,7 @@ public class Book {
     @Enumerated(EnumType.STRING)
     private EnumBookStatus status;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt; // thoi gian tao
 

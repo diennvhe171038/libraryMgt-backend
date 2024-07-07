@@ -16,6 +16,5 @@ public class CategoryRequest {
     private int userId;
     @NotBlank
     private String name;
-    @NotNull
     private int parentId;
 }

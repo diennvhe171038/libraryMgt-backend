@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-public class MemberSubscription {
+public class MemberSubscription implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -45,7 +46,7 @@ public class MemberSubscription {
     @OneToMany(mappedBy = "memberSubscription", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<User> users;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
 

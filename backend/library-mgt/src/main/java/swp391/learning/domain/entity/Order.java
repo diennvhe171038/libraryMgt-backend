@@ -5,13 +5,14 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 import swp391.learning.domain.enums.EnumTypeProcessPayment;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "orders")
 @Accessors(chain = true)
 @Data
-public class Order {
+public class Order implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

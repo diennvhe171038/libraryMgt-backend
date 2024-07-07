@@ -8,6 +8,7 @@ import lombok.Setter;
 import swp391.learning.domain.enums.EnumPaymentGateway;
 import swp391.learning.domain.enums.EnumPaymentProcess;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
@@ -16,7 +17,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Payment {
+public class Payment implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
