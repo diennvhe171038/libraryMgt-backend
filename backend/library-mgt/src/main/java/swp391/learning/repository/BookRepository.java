@@ -8,9 +8,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import swp391.learning.domain.entity.Book;
+import swp391.learning.domain.entity.BookCopy;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, Integer> {

@@ -32,16 +32,18 @@ public class BookCopy implements Serializable {
     private Set<Loan> loans;
 
     @Column(name = "bar_code", unique = true)
-    private String barCode;
+    private String barcode;
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private EnumBookStatus status;
 
-    @Column(name = "created_by")
+    @ManyToOne
+    @JoinColumn(name = "created_by")
     private User createdBy;
 
-    @Column(name = "updated_by")
+    @ManyToOne()
+    @JoinColumn(name = "updated_by")
     private User updatedBy;
 
     @Column(name = "created_at", updatable = false)

@@ -14,6 +14,7 @@ import swp391.learning.application.service.BookService;
 import swp391.learning.application.specification.BookSpecifications;
 import swp391.learning.domain.dto.common.PageResponse;
 import swp391.learning.domain.dto.request.admin.book.BookRequest;
+import swp391.learning.domain.dto.response.admin.BookCopy.BookCopyResponse;
 import swp391.learning.domain.dto.response.admin.author.AuthorResponse;
 import swp391.learning.domain.dto.response.admin.book.BookResponse;
 import swp391.learning.domain.dto.response.admin.category.CategoryResponse;
@@ -21,10 +22,7 @@ import swp391.learning.domain.entity.*;
 import swp391.learning.domain.enums.EnumBookStatus;
 import swp391.learning.exception.DuplicateResourceException;
 import swp391.learning.exception.ResourceNotFoundException;
-import swp391.learning.repository.AuthorRepository;
-import swp391.learning.repository.BookRepository;
-import swp391.learning.repository.CategoryRepository;
-import swp391.learning.repository.UserRepository;
+import swp391.learning.repository.*;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
@@ -38,11 +36,12 @@ import java.util.stream.Collectors;
 @Slf4j
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
+    private final BookCopyRepository bookCopyRepository;
     private final CategoryRepository categoryRepository;
     private final AuthorRepository authorRepository;
     private final UserRepository userRepository;
     private final FileService fileUploadService;
-    private  final ZipService zipService;
+    private final ZipService zipService;
 
 
     @Override
@@ -242,6 +241,8 @@ public class BookServiceImpl implements BookService {
 
 
 
+
+
         List<BookResponse> bookResponses = bookPage.getContent().stream()
                 .map(this::mapToBookResponse)
                 .collect(Collectors.toList());
@@ -358,8 +359,31 @@ public class BookServiceImpl implements BookService {
                 })
                 .collect(Collectors.toSet());
         response.setAuthors(authorResponses);
+
+        Set<BookCopyResponse> bookCopyResponses = bookCopyRepository.findByBookId(book.getId()).stream()
+                .map(this::mapToBookCopyResponse)
+                .collect(Collectors.toSet());
+        response.setBookCopies(bookCopyResponses);
+
         return response;
     }
+
+    private BookCopyResponse mapToBookCopyResponse(BookCopy bookCopy) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDateTime = bookCopy.getUpdatedAt().format(formatter);
+
+        BookCopyResponse bookCopyResponse = new BookCopyResponse();
+        bookCopyResponse.setId(bookCopy.getId());
+        bookCopyResponse.setUserId(bookCopy.getCreatedBy().getId());
+        bookCopyResponse.setBarcode(bookCopy.getBarcode());
+        bookCopyResponse.setStatus(bookCopy.getStatus().toString());
+        bookCopyResponse.setUpdatedBy(bookCopy.getUpdatedBy().getFullName());
+        bookCopyResponse.setUpdatedAt(formattedDateTime);
+
+        return bookCopyResponse;
+    }
+
+
 
 
 

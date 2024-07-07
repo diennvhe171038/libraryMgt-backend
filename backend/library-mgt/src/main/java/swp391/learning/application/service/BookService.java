@@ -1,17 +1,12 @@
 package swp391.learning.application.service;
 
 import org.springframework.core.io.Resource;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 import swp391.learning.domain.dto.common.PageResponse;
-import swp391.learning.domain.dto.common.ResponseSuccess;
 import swp391.learning.domain.dto.request.admin.book.BookRequest;
 import swp391.learning.domain.dto.response.admin.book.BookResponse;
 import swp391.learning.domain.entity.Book;
 
-import java.util.List;
 import java.util.Set;
 
 public interface BookService {
@@ -31,6 +26,7 @@ public interface BookService {
     BookResponse getBookById(int id);
 
     Resource getBookImage(int id);
+
     Resource getSampleBookImages(int id);
 
 }
