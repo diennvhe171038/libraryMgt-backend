@@ -29,7 +29,7 @@ public class Otp implements Serializable{
 
     private LocalDateTime expirationTime;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false)
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;

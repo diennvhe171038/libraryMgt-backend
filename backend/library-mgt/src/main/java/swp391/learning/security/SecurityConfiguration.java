@@ -26,7 +26,20 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/api/v1/auth/**").permitAll()
+                                .requestMatchers(
+                                        "/api/v1/auth/**",
+                                        "/api/v1/book/get-books",
+                                        "/api/v1/book/{bookId}/get-book-by-id",
+                                        "/api/v1/book/{bookId}/get-book-image",
+                                        "/api/v1/book/{bookId}/get-sample-book-images",
+                                        "/api/v1/book-copy/{bookCopyId}/get-all-book-copy",
+                                        "/api/v1/book-copy/{bookCopyId}/get-book-copy-by-id",
+                                        "/api/v1/category/get-all-category",
+                                        "/api/v1/category/get-category-by-id/{id}",
+                                        "/api/v1/category/get-all-parent-category",
+                                        "/api/v1/author/get-all-author",
+                                        "/api/v1/author/get-author-by-id/{id}"
+                                ).permitAll()
                                 .anyRequest().authenticated()
 
                 )
