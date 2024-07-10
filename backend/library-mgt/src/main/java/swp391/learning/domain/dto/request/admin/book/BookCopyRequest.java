@@ -11,11 +11,16 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class DeleteBookRequest {
-    @NotBlank
-    private String email;
-    @NotBlank
-    private String nameBook;
+public class BookCopyRequest {
     @NotNull
-    private int bookID;
+    private int bookId;
+
+    @NotNull
+    private int userId;
+
+    @NotBlank
+    private String barCode;
+
+    @NotBlank
+    private String status;
 }

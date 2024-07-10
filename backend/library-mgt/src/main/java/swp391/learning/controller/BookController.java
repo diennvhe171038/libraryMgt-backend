@@ -1,13 +1,10 @@
 package swp391.learning.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,28 +12,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import swp391.learning.application.service.BookService;
-import swp391.learning.domain.dto.common.ResponseCommon;
 import swp391.learning.domain.dto.common.ResponseError;
 import swp391.learning.domain.dto.common.ResponseSuccess;
-import swp391.learning.domain.dto.request.admin.book.AddBookRequest;
 import swp391.learning.domain.dto.request.admin.book.BookRequest;
-import swp391.learning.domain.dto.request.admin.book.DeleteBookRequest;
-import swp391.learning.domain.dto.request.admin.book.UpdateBookRequest;
-import swp391.learning.domain.dto.request.user.book.SearchBookByNameAndCategoryRequest;
-import swp391.learning.domain.dto.response.admin.book.AddBookResponse;
-import swp391.learning.domain.dto.response.admin.book.DeleteBookResponse;
-import swp391.learning.domain.dto.response.user.book.SearchBookByNameAndCategoryResponse;
-import swp391.learning.domain.dto.response.admin.book.UpdateBookResponse;
 import swp391.learning.domain.entity.Book;
-import swp391.learning.domain.enums.ResponseCode;
 import swp391.learning.exception.DuplicateResourceException;
-import swp391.learning.exception.InvalidRequestException;
 import swp391.learning.exception.ResourceNotFoundException;
 
-import java.io.IOException;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/book")
