@@ -16,6 +16,7 @@ import swp391.learning.domain.dto.common.ResponseError;
 import swp391.learning.domain.dto.common.ResponseSuccess;
 import swp391.learning.domain.dto.request.admin.book.BookRequest;
 import swp391.learning.domain.entity.Book;
+import swp391.learning.domain.enums.EnumBookStatus;
 import swp391.learning.exception.DuplicateResourceException;
 import swp391.learning.exception.ResourceNotFoundException;
 
@@ -117,11 +118,17 @@ public class BookController {
     public ResponseSuccess<?> getBooks(@RequestParam(defaultValue = "0", required = false) int pageNo,
                                        @Min(4) @RequestParam(defaultValue = "10", required = false) int pageSize,
                                        @RequestParam(required = false) String search,
-                                       @RequestParam(required = false) Integer categoryId) {
+                                       @RequestParam(required = false) Integer categoryId,
+                                       @RequestParam(required = false) String status) {
 
         log.info("Get books");
         try {
-            return new ResponseSuccess<>(HttpStatus.OK.value(), "Lấy danh sách sách thành công", bookService.getBooks(pageNo, pageSize, search, categoryId));
+            EnumBookStatus enumBookStatus = null;
+            if (status != null) {
+                enumBookStatus = EnumBookStatus.valueOf(status);
+            }
+
+            return new ResponseSuccess<>(HttpStatus.OK.value(), "Lấy danh sách sách thành công", bookService.getBooks(pageNo, pageSize, search, categoryId, enumBookStatus));
         } catch (Exception e) {
             log.error("Get books failed: " + e.getMessage());
             return new ResponseError(HttpStatus.BAD_REQUEST.value(), "Lấy danh sách sách thất bại");
@@ -172,7 +179,7 @@ public class BookController {
             Resource resource = bookService.getSampleBookImages(bookId);
             return ResponseEntity.ok()
                     .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"images.zip\"")
                     .body(resource);
         } catch (ResourceNotFoundException e) {
             log.error("Get sample book images failed: " + e.getMessage());
@@ -180,6 +187,42 @@ public class BookController {
         } catch (Exception e) {
             log.error("Get sample book images failed: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+    @Operation(summary = "Get newest books")
+    @GetMapping("/get-newest-books")
+    public ResponseSuccess<?> getNewestBooks() {
+        log.info("Get newest books");
+        try {
+            return new ResponseSuccess<>(HttpStatus.OK.value(), "Lấy danh sách sách mới nhất thành công", bookService.getNewestBooks());
+        } catch (Exception e) {
+            log.error("Get newest books failed: " + e.getMessage());
+            return new ResponseError(HttpStatus.BAD_REQUEST.value(), "Lấy danh sách sách mới nhất thất bại");
+        }
+    }
+
+    @Operation(summary = "Get all books by sub category and status")
+    @GetMapping("/{parentCategoryId}/get-all-books-by-sub-category")
+    public ResponseSuccess<?> getAllBooksBySubCategory(@PathVariable int parentCategoryId) {
+        log.info("Get all books by sub category and status");
+        try {
+            return new ResponseSuccess<>(HttpStatus.OK.value(), "Lấy danh sách sách theo danh mục con và trạng thái thành công", bookService.getAllBooksBySubCategoryAndStatus(parentCategoryId));
+        } catch (Exception e) {
+            log.error("Get all books by sub category and status failed: " + e.getMessage());
+            return new ResponseError(HttpStatus.BAD_REQUEST.value(), "Lấy danh sách sách theo danh mục con và trạng thái thất bại");
+        }
+    }
+
+    @Operation(summary = "Get books by category id")
+    @GetMapping("/{subCategoryId}/get-books-by-category-id")
+    public ResponseSuccess<?> getBooksByCategoryId(@PathVariable int subCategoryId) {
+        log.info("Get books by category id");
+        try {
+            return new ResponseSuccess<>(HttpStatus.OK.value(), "Lấy danh sách sách theo danh mục thành công", bookService.getBooksBySubCategoryId(subCategoryId));
+        } catch (Exception e) {
+            log.error("Get books by category id failed: " + e.getMessage());
+            return new ResponseError(HttpStatus.BAD_REQUEST.value(), "Lấy danh sách sách theo danh mục thất bại");
         }
     }
 
