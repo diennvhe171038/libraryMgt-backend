@@ -29,6 +29,9 @@ public class SecurityConfiguration {
                                 .requestMatchers(
                                         "/api/v1/auth/**",
                                         "/api/v1/book/get-books",
+                                        "/api/v1/book/get-newest-books",
+                                        "/api/v1/book/{parentCategoryId}/get-all-books-by-sub-category",
+                                        "/api/v1/book/{subCategoryId}/get-books-by-category-id",
                                         "/api/v1/book/{bookId}/get-book-by-id",
                                         "/api/v1/book/{bookId}/get-book-image",
                                         "/api/v1/book/{bookId}/get-sample-book-images",

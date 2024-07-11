@@ -7,8 +7,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import swp391.learning.domain.dto.response.admin.book.BookResponse;
 import swp391.learning.domain.entity.Book;
 import swp391.learning.domain.entity.BookCopy;
+import swp391.learning.domain.enums.EnumBookStatus;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +24,12 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
     Book findByISBN(String isbn);
 
     Page<Book> findAll(Specification<Book> spec, Pageable pageable);
+
+    @Query("SELECT b FROM Book b WHERE b.status = :statusParam ORDER BY b.publicationYear DESC")
+    List<Book> findNewestBooksByStatus(EnumBookStatus statusParam, Pageable pageable);
+
+    @Query("SELECT b FROM Book b JOIN b.categories c WHERE c.id = :categoryId AND b.status = :statusParam")
+    List<Book> findAllByCategoryIdAndStatus(int categoryId, EnumBookStatus statusParam);
 
 
 }

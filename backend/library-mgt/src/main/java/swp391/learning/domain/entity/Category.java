@@ -31,6 +31,9 @@ public class Category implements Serializable {
     @JoinColumn(name = "parent_id")
     private Category parentCategory;
 
+    @OneToMany(mappedBy = "parentCategory", fetch = FetchType.LAZY)
+    private Set<Category> subCategories;
+
     @ManyToOne
     @JoinColumn(name = "created_by")
     private User createdBy;
