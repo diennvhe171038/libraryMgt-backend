@@ -53,6 +53,48 @@
         }
       }
     },
+    "/api/v1/review/update-review/{id}": {
+      "put": {
+        "tags": [
+          "review-controller"
+        ],
+        "summary": "Update review",
+        "operationId": "updateReview",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseSuccessObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/category/update-category/{id}": {
       "put": {
         "tags": [
@@ -76,6 +118,48 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/CategoryRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseSuccessObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/book/{bookId}/update-book": {
+      "put": {
+        "tags": [
+          "book-controller"
+        ],
+        "summary": "Update book",
+        "operationId": "updateBook",
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookRequest"
               }
             }
           },
@@ -149,6 +233,37 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/UserRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseSuccessObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/review/add-review": {
+      "post": {
+        "tags": [
+          "review-controller"
+        ],
+        "summary": "Add review",
+        "operationId": "addReview",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewRequest"
               }
             }
           },
@@ -635,6 +750,28 @@
         }
       }
     },
+    "/api/v1/review/get-all-review": {
+      "get": {
+        "tags": [
+          "review-controller"
+        ],
+        "summary": "Get all review",
+        "operationId": "getAllReviews",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseSuccessObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/category/get-category-by-id/{id}": {
       "get": {
         "tags": [
@@ -920,6 +1057,38 @@
         }
       }
     },
+    "/api/v1/review/delete-review/{id}": {
+      "delete": {
+        "tags": [
+          "review-controller"
+        ],
+        "summary": "Delete review",
+        "operationId": "deleteReview",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseSuccessObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/category/delete-category/{id}": {
       "delete": {
         "tags": [
@@ -930,6 +1099,38 @@
         "parameters": [
           {
             "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseSuccessObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/book/{bookId}/delete-book": {
+      "delete": {
+        "tags": [
+          "book-controller"
+        ],
+        "summary": "Delete book",
+        "operationId": "deleteBook",
+        "parameters": [
+          {
+            "name": "bookId",
             "in": "path",
             "required": true,
             "schema": {
@@ -1025,6 +1226,31 @@
           }
         }
       },
+      "ReviewRequest": {
+        "required": [
+          "bookId",
+          "rating",
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "bookId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "rating": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "feedback": {
+            "type": "string"
+          }
+        }
+      },
       "CategoryRequest": {
         "required": [
           "name",
@@ -1042,25 +1268,6 @@
           "parentId": {
             "type": "integer",
             "format": "int32"
-          }
-        }
-      },
-      "AuthorRequest": {
-        "required": [
-          "name",
-          "userId"
-        ],
-        "type": "object",
-        "properties": {
-          "userId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "name": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
           }
         }
       },
@@ -1106,6 +1313,9 @@
           "description": {
             "type": "string"
           },
+          "status": {
+            "type": "string"
+          },
           "authors": {
             "uniqueItems": true,
             "type": "array",
@@ -1121,6 +1331,25 @@
               "type": "integer",
               "format": "int32"
             }
+          }
+        }
+      },
+      "AuthorRequest": {
+        "required": [
+          "name",
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
           }
         }
       },
