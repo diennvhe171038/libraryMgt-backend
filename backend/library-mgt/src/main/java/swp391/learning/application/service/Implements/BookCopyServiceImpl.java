@@ -22,7 +22,7 @@ public class BookCopyServiceImpl implements BookCopyService {
     @Override
     public void addBookCopy(BookCopyRequest bookCopyRequest) {
         log.info("Add book copy");
-        BookCopy bookCopy = bookCopyRepository.findByBarCode(bookCopyRequest.getBarCode());
+        BookCopy bookCopy = bookCopyRepository.findByBarcode(bookCopyRequest.getBarcode());
         if (bookCopy != null) {
             log.error("Book copy already exists");
             throw new DuplicateResourceException("Bản sao sách đã tồn tại");
@@ -35,8 +35,7 @@ public class BookCopyServiceImpl implements BookCopyService {
         }
 
         BookCopy newBookCopy = new BookCopy();
-        newBookCopy.setBarCode(bookCopyRequest.getBarCode());
-        newBookCopy.setBarCode(bookCopyRequest.getBarCode());
+        newBookCopy.setBarcode(bookCopyRequest.getBarcode());
         newBookCopy.setStatus(EnumBookStatus.valueOf(bookCopyRequest.getStatus()));
         newBookCopy.setCreatedBy(user);
         newBookCopy.setUpdatedBy(user);
