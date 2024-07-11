@@ -33,7 +33,7 @@ public class Review implements Serializable {
     private Book book;
 
     @Column(name = "rating")
-    private double rating;
+    private int rating;
 
     @Column(name = "feedback")
     private String feedback;

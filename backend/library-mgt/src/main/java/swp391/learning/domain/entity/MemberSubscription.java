@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import swp391.learning.domain.enums.EnumMembershipType;
+//import swp391.learning.domain.enums.EnumMembershipType;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -28,8 +28,8 @@ public class MemberSubscription implements Serializable {
     @Column(name="fee_member")
     private double feeMember; // phí gói thành viên
     private boolean isDeleted = false;
-    @Column(name="membership")
-    private EnumMembershipType membershipType; //type member
+//    @Column(name="membership")
+//    private EnumMembershipType membershipType; //type member
 
     @Column(name = "start_date")
     private LocalDateTime startDate; // ngay bat dau goi

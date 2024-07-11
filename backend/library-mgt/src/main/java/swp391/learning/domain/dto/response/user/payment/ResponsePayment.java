@@ -8,6 +8,6 @@ import java.util.List;
 
 @Data
 public class ResponsePayment {
-//    @NotEmpty
-//    List<GetPaymentByUserResponse> listPayment;
+    @NotEmpty
+    List<GetPaymentByUserResponse> listPayment;
 }

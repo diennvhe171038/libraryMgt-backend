@@ -62,7 +62,7 @@ public class MemberSubscriptionServiceImpl implements MemberSubscriptionService 
 //            memberSubscription.setSubscriptionPlan(addMemberSubscriptionRequest.getSubscriptionPlan());
             memberSubscription.setFeeMember(addMemberSubscriptionRequest.getFee_member());
             memberSubscription.setStartDate(addMemberSubscriptionRequest.getStartDate());
-            memberSubscription.setMembershipType(addMemberSubscriptionRequest.getMembershipType());
+//            memberSubscription.setMembershipType(addMemberSubscriptionRequest.getMembershipType());
             memberSubscription.setEndDate(addMemberSubscriptionRequest.getEndDate());
             memberSubscription.setCreatedAt(LocalDateTime.now());
 
@@ -97,7 +97,7 @@ public class MemberSubscriptionServiceImpl implements MemberSubscriptionService 
             memberSubscription.setNameSubscription(updateMemberSubscriptionRequest.getNameSubscription());
 //            memberSubscriptionUpdate.setSubscriptionPlan(updateMemberSubscriptionRequest.getSubscriptionPlan());
             memberSubscriptionUpdate.setFeeMember(updateMemberSubscriptionRequest.getFee_member());
-            memberSubscriptionUpdate.setMembershipType(updateMemberSubscriptionRequest.getMembershipType());
+//            memberSubscriptionUpdate.setMembershipType(updateMemberSubscriptionRequest.getMembershipType());
             memberSubscriptionUpdate.setStartDate(updateMemberSubscriptionRequest.getStartDate());
             memberSubscriptionUpdate.setEndDate(updateMemberSubscriptionRequest.getEndDate());
             memberSubscriptionUpdate.setCreatedAt(LocalDateTime.now());
@@ -191,8 +191,7 @@ public class MemberSubscriptionServiceImpl implements MemberSubscriptionService 
             System.out.println(vnp_TnxRef);
             double amountDB = order.getAmount();
             double amountReturn = Double.parseDouble(paymentConfirmRequest.getVnp_Amount());
-            System.out.println("amount in db: " + amountDB);
-            System.out.println("amount return: " + amountReturn);
+
 
             if (vnp_SecureHash.isEmpty()) {
                 log.debug("Handle with vnp_secureHash: " + vnp_SecureHash);

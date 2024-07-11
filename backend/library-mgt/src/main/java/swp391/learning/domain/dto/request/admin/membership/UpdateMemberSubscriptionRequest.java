@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import swp391.learning.domain.enums.EnumMembershipType;
+//import swp391.learning.domain.enums.EnumMembershipType;
 
 import java.time.LocalDateTime;
 
@@ -28,8 +28,8 @@ public class UpdateMemberSubscriptionRequest {
 //    private String subscriptionPlan;
     @NotNull
     private double fee_member;
-    @NotNull
-    private EnumMembershipType membershipType;
+//    @NotNull
+//    private EnumMembershipType membershipType;
 
     @NotNull
     private LocalDateTime startDate;
