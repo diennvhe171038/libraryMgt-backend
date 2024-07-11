@@ -10,6 +10,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import swp391.learning.domain.enums.EnumBookStatus;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 
@@ -19,7 +20,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Table(name = "sample_book")
-public class SampleBook {
+public class SampleBook implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -27,7 +28,7 @@ public class SampleBook {
     @Column(name = "sample_book_image")
     private String sampleBookImage;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
 

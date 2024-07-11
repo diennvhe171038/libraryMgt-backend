@@ -16,6 +16,5 @@ public class AuthorRequest {
     private int userId;
     @NotBlank
     private String name;
-    @NotBlank
     private String description;
 }

@@ -51,7 +51,7 @@ public class User implements UserDetails, Serializable {
     private String phoneNumber;
     private Boolean verified;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false)
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;

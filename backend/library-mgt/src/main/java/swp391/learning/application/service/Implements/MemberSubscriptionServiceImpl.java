@@ -59,7 +59,7 @@ public class MemberSubscriptionServiceImpl implements MemberSubscriptionService 
             memberSubscription.setUserCreated(user);
             memberSubscription.setDeleted(false);
             memberSubscription.setNameSubscription(addMemberSubscriptionRequest.getNameSubscription());
-            memberSubscription.setSubscriptionPlan(addMemberSubscriptionRequest.getSubscriptionPlan());
+//            memberSubscription.setSubscriptionPlan(addMemberSubscriptionRequest.getSubscriptionPlan());
             memberSubscription.setFeeMember(addMemberSubscriptionRequest.getFee_member());
             memberSubscription.setStartDate(addMemberSubscriptionRequest.getStartDate());
             memberSubscription.setMembershipType(addMemberSubscriptionRequest.getMembershipType());
@@ -95,7 +95,7 @@ public class MemberSubscriptionServiceImpl implements MemberSubscriptionService 
             memberSubscriptionUpdate.setUserCreated(user);
             memberSubscription.setDeleted(updateMemberSubscriptionRequest.isDeleted());
             memberSubscription.setNameSubscription(updateMemberSubscriptionRequest.getNameSubscription());
-            memberSubscriptionUpdate.setSubscriptionPlan(updateMemberSubscriptionRequest.getSubscriptionPlan());
+//            memberSubscriptionUpdate.setSubscriptionPlan(updateMemberSubscriptionRequest.getSubscriptionPlan());
             memberSubscriptionUpdate.setFeeMember(updateMemberSubscriptionRequest.getFee_member());
             memberSubscriptionUpdate.setMembershipType(updateMemberSubscriptionRequest.getMembershipType());
             memberSubscriptionUpdate.setStartDate(updateMemberSubscriptionRequest.getStartDate());

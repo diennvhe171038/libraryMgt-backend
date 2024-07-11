@@ -24,8 +24,8 @@ public class UpdateMemberSubscriptionRequest {
     private String NameSubscription;
     @NotNull
     private boolean deleted;
-    @NotNull
-    private String subscriptionPlan;
+//    @NotNull
+//    private String subscriptionPlan;
     @NotNull
     private double fee_member;
     @NotNull
