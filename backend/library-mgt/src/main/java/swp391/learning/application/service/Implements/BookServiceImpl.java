@@ -9,13 +9,16 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import swp391.learning.application.service.BookService;
 import swp391.learning.application.specification.BookSpecifications;
 import swp391.learning.domain.dto.common.PageResponse;
 import swp391.learning.domain.dto.request.admin.book.BookRequest;
 import swp391.learning.domain.dto.response.admin.BookCopy.BookCopyResponse;
+import swp391.learning.domain.dto.response.admin.SampleBook.SampleBookResponse;
 import swp391.learning.domain.dto.response.admin.author.AuthorResponse;
+import swp391.learning.domain.dto.response.admin.book.SubCategoryBookResponse;
 import swp391.learning.domain.dto.response.admin.book.BookResponse;
 import swp391.learning.domain.dto.response.admin.category.CategoryResponse;
 import swp391.learning.domain.entity.*;
@@ -26,6 +29,7 @@ import swp391.learning.repository.*;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -221,11 +225,15 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public PageResponse<?> getBooks(int pageNo, int pageSize, String search, Integer categoryId) {
-        log.info("Getting books with page: {}, size: {}, search: {}, categoryId: {}", pageNo, pageSize, search, categoryId);
+    public PageResponse<?> getBooks(int pageNo, int pageSize, String search, Integer categoryId, EnumBookStatus status) {
+        log.info("Getting books with page: {}, size: {}, search: {}, categoryId: {}, status: {}", pageNo, pageSize, search, categoryId, status);
         int page = pageNo > 0 ? pageNo - 1 : 0;
 
         Specification<Book> spec = Specification.where(null);
+
+        if (status != null) {
+            spec = spec.and(BookSpecifications.hasStatus(status));
+        }
 
         if (categoryId != null) {
             spec = spec.and(BookSpecifications.hasCategoryId(categoryId));
@@ -240,12 +248,11 @@ public class BookServiceImpl implements BookService {
         log.info("Found {} books", bookPage.getTotalPages());
 
 
-
-
-
         List<BookResponse> bookResponses = bookPage.getContent().stream()
                 .map(this::mapToBookResponse)
                 .collect(Collectors.toList());
+
+        System.out.println("bookResponses: " + bookResponses);
 
         return PageResponse.builder()
                 .pageNo(pageNo)
@@ -254,6 +261,58 @@ public class BookServiceImpl implements BookService {
                 .items(bookResponses)
                 .build();
     }
+
+    @Override
+    public List<BookResponse> getNewestBooks() {
+        log.info("Getting newest books");
+        Pageable pageable = PageRequest.of(0, 10);
+        List<Book> newestBooks = bookRepository.findNewestBooksByStatus(EnumBookStatus.ACTIVE, pageable);
+        log.info("Found {} newest books", newestBooks.size());
+        return newestBooks.stream()
+                .map(this::mapToBookResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<SubCategoryBookResponse> getAllBooksBySubCategoryAndStatus(int parentCategoryId) {
+        log.info("Getting all books by sub category and status");
+        List<Category> subCategories;
+        if (parentCategoryId == 0) {
+            subCategories = categoryRepository.findAllSubCategories();
+        } else {
+            subCategories = categoryRepository.findAllByParentCategory(parentCategoryId);
+        }
+
+        List<SubCategoryBookResponse> subCategoryBookResponses = new ArrayList<>();
+
+        for (Category subCategory : subCategories) {
+            SubCategoryBookResponse subCategoryBookResponse = new SubCategoryBookResponse();
+            subCategoryBookResponse.setSubCategoryName(subCategory.getName());
+
+            List<BookResponse> books = subCategory.getBooks().stream()
+                    .filter(book -> book.getStatus().equals(EnumBookStatus.ACTIVE))
+                    .distinct()
+                    .map(this::mapToBookResponse)
+                    .limit(10)
+                    .collect(Collectors.toList());
+
+            subCategoryBookResponse.setBooks(books);
+            subCategoryBookResponses.add(subCategoryBookResponse);
+        }
+
+        return subCategoryBookResponses;
+    }
+
+    @Override
+    public List<BookResponse> getBooksBySubCategoryId(int categoryId) {
+        log.info("Getting books by category id: {}", categoryId);
+        List<Book> books = bookRepository.findAllByCategoryIdAndStatus(categoryId, EnumBookStatus.ACTIVE);
+        log.info("Found {} books", books.size());
+        return books.stream()
+                .map(this::mapToBookResponse)
+                .collect(Collectors.toList());
+    }
+
 
     @Override
     public BookResponse getBookById(int id) {
@@ -296,12 +355,17 @@ public class BookServiceImpl implements BookService {
         List<Resource> sampleBookImages = book.getSampleBooks().stream()
                 .map(sampleBook -> {
                     try {
-                        return fileUploadService.getImage("sample-books", sampleBook.getSampleBookImage());
+                        if (StringUtils.hasText(sampleBook.getSampleBookImage())) {
+                            return fileUploadService.getImage("sample-books", sampleBook.getSampleBookImage());
+                        } else {
+                            return null;
+                        }
                     } catch (Exception e) {
                         log.error("Lỗi khi tải ảnh mẫu sách: {}", e.getMessage());
                         throw new ResourceNotFoundException("Không tìm thấy ảnh mẫu sách");
                     }
                 })
+                .filter(resource -> resource != null)
                 .collect(Collectors.toList());
 
         try {
@@ -331,7 +395,7 @@ public class BookServiceImpl implements BookService {
         response.setPublisher(book.getPublisher());
         response.setDescription(book.getDesc());
         response.setPublicationYear(book.getPublicationYear());
-        response.setStock(5);
+        response.setStock(countByStatusAndBookId(EnumBookStatus.AVAILABLE, book.getId()));
         response.setStatus(book.getStatus().toString());
         response.setImagePath(book.getImagePath());
 
@@ -365,6 +429,16 @@ public class BookServiceImpl implements BookService {
                 .collect(Collectors.toSet());
         response.setBookCopies(bookCopyResponses);
 
+        Set<SampleBookResponse> sampleBookResponses = book.getSampleBooks().stream()
+                .map(sampleBook -> {
+                    SampleBookResponse sampleBookResponse = new SampleBookResponse();
+                    sampleBookResponse.setId(sampleBook.getId());
+                    sampleBookResponse.setSampleBookImage(sampleBook.getSampleBookImage());
+                    return sampleBookResponse;
+                })
+                .collect(Collectors.toSet());
+        response.setSampleBooks(sampleBookResponses);
+
         return response;
     }
 
@@ -381,6 +455,10 @@ public class BookServiceImpl implements BookService {
         bookCopyResponse.setUpdatedAt(formattedDateTime);
 
         return bookCopyResponse;
+    }
+
+    private int countByStatusAndBookId(EnumBookStatus status, int bookId) {
+        return bookCopyRepository.countByStatusAndBookId(status, bookId);
     }
 
 
