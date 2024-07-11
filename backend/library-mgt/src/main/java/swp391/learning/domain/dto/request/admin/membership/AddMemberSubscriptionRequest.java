@@ -19,8 +19,8 @@ public class AddMemberSubscriptionRequest {
     private String email;
     @NotBlank
     private String NameSubscription;
-    @NotNull
-    private String subscriptionPlan;
+//    @NotNull
+//    private String subscriptionPlan;
     @NotNull
     private double fee_member;
     @NotNull

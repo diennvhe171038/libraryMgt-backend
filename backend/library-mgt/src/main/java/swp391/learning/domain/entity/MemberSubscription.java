@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import swp391.learning.domain.enums.EnumMembershipType;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
@@ -21,23 +22,23 @@ public class MemberSubscription implements Serializable {
     private int id;
 
     @Column(name = "nameSubscription")
-    private String nameSubscription;
-    @Column(name = "subscription_plan")
-    private String subscriptionPlan;
+    private String nameSubscription; //tên gói
+//    @Column(name = "subscription_plan")
+//    private String subscriptionPlan;
     @Column(name="fee_member")
-    private double feeMember;
+    private double feeMember; // phí gói thành viên
     private boolean isDeleted = false;
     @Column(name="membership")
-    private EnumMembershipType membershipType;
+    private EnumMembershipType membershipType; //type member
 
     @Column(name = "start_date")
-    private LocalDateTime startDate; 
+    private LocalDateTime startDate; // ngay bat dau goi
 
     @Column(name = "end_date")
-    private LocalDateTime endDate;
+    private LocalDateTime endDate; // ngay het han
 
     @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt; // ngay goi duoc tạo ra
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
