@@ -119,7 +119,7 @@ public class ReviewServiceImpl implements ReviewService {
         log.info("Found {} reviews for book with id {}", reviews.size(), id);
         return reviewResponses;
     }
-
+    
     private ReviewResponse mapToReviewResponse(Review review){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         String formattedDateTime = review.getUpdatedAt().format(formatter);
