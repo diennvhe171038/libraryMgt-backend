@@ -31,10 +31,12 @@ public class BookCopy implements Serializable {
     @OneToMany(mappedBy = "bookCopy", fetch = FetchType.LAZY)
     private Set<Loan> loans;
 
+    private int userId;
+
     @Column(name = "bar_code", unique = true)
     private String barcode;
 
-    @Column(name = "status")
+    @Column(name = "status", length = 50)
     @Enumerated(EnumType.STRING)
     private EnumBookStatus status;
 

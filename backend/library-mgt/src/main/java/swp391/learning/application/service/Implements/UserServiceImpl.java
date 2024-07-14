@@ -74,8 +74,8 @@ public class UserServiceImpl implements UserService {
         return mapToUserResponse(user);
     }
 
-
-    private UserResponse mapToUserResponse(User user) {
+    @Override
+    public UserResponse mapToUserResponse(User user) {
         return UserResponse.builder()
                 .id(user.getId())
                 .fullName(user.getFullName())
@@ -84,7 +84,14 @@ public class UserServiceImpl implements UserService {
                 .status(user.getStatus().toString())
                 .role(user.getRole().name())
                 .verified(user.getVerified())
+                .membershipSubscriptionId(user.getMemberSubscription().getId())
                 .build();
+    }
+
+    @Override
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+
     }
 
 

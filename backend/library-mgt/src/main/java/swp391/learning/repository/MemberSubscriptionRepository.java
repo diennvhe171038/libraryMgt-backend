@@ -10,5 +10,6 @@ import java.util.Optional;
 public interface MemberSubscriptionRepository extends JpaRepository<MemberSubscription, Integer> {
     Optional<MemberSubscription> findMemberSubscriptionByNameSubscription(String nameSubscription);
     Optional<MemberSubscription> findMemberSubscriptionById(int id);
+    // MemberSubscription findMemberSubscriptionById(int id);
 }
 

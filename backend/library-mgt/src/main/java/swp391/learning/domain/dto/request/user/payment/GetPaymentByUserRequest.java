@@ -7,4 +7,6 @@ import lombok.Data;
 public class GetPaymentByUserRequest {
     @NotBlank
     private String username;
+    @NotBlank
+    private double amount;
 }

@@ -1,5 +1,7 @@
 package swp391.learning.domain.dto.response.admin.BookCopy;
 
+import java.util.List;
+
 import lombok.*;
 
 @AllArgsConstructor
@@ -15,4 +17,14 @@ public class BookCopyResponse {
     private String status;
     private String updatedBy;
     private String updatedAt;
+    private List<LoanInfo> loanInfo;
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    @Setter
+    public static class LoanInfo {
+        private int loanId;
+        private String note;
+    }
 }

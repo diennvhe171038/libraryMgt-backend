@@ -2,6 +2,7 @@ package swp391.learning.application.service.Implements;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
@@ -23,6 +24,7 @@ import swp391.learning.domain.dto.response.admin.book.BookResponse;
 import swp391.learning.domain.dto.response.admin.category.CategoryResponse;
 import swp391.learning.domain.entity.*;
 import swp391.learning.domain.enums.EnumBookStatus;
+import swp391.learning.domain.enums.EnumLoanStatus;
 import swp391.learning.exception.DuplicateResourceException;
 import swp391.learning.exception.ResourceNotFoundException;
 import swp391.learning.repository.*;
@@ -46,7 +48,8 @@ public class BookServiceImpl implements BookService {
     private final UserRepository userRepository;
     private final FileService fileUploadService;
     private final ZipService zipService;
-
+    @Autowired
+    private final LoanRepository loanRepository;
 
     @Override
     public Book addBook(BookRequest addBookRequest) {
@@ -225,8 +228,10 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public PageResponse<?> getBooks(int pageNo, int pageSize, String search, Integer categoryId, EnumBookStatus status) {
-        log.info("Getting books with page: {}, size: {}, search: {}, categoryId: {}, status: {}", pageNo, pageSize, search, categoryId, status);
+    public PageResponse<?> getBooks(int pageNo, int pageSize, String search, Integer categoryId,
+            EnumBookStatus status) {
+        log.info("Getting books with page: {}, size: {}, search: {}, categoryId: {}, status: {}", pageNo, pageSize,
+                search, categoryId, status);
         int page = pageNo > 0 ? pageNo - 1 : 0;
 
         Specification<Book> spec = Specification.where(null);
@@ -246,7 +251,6 @@ public class BookServiceImpl implements BookService {
         Pageable pageable = PageRequest.of(page, pageSize);
         Page<Book> bookPage = bookRepository.findAll(spec, pageable);
         log.info("Found {} books", bookPage.getTotalPages());
-
 
         List<BookResponse> bookResponses = bookPage.getContent().stream()
                 .map(this::mapToBookResponse)
@@ -313,16 +317,15 @@ public class BookServiceImpl implements BookService {
                 .collect(Collectors.toList());
     }
 
-
     @Override
-    public BookResponse getBookById(int id) {
+    public BookResponse getBookById(int id, int userId) {
         Book book = bookRepository.findById(id);
         if (book == null) {
             log.info("Không tìm thấy sách với id {}", id);
             throw new ResourceNotFoundException("Không tìm thấy sách");
         }
 
-        return mapToBookResponse(book);
+        return mapToBookResponse(book, userId);
     }
 
     @Override
@@ -378,6 +381,10 @@ public class BookServiceImpl implements BookService {
     }
 
     public BookResponse mapToBookResponse(Book book) {
+        return mapToBookResponse(book, 0); // Call the overloaded method with null userId
+    }
+
+    public BookResponse mapToBookResponse(Book book, int userId) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formattedDateTime = book.getUpdatedAt().format(formatter);
 
@@ -399,7 +406,6 @@ public class BookServiceImpl implements BookService {
         response.setStatus(book.getStatus().toString());
         response.setImagePath(book.getImagePath());
 
-
         Set<CategoryResponse> categoryResponses = book.getCategories().stream()
                 .map(category -> {
                     CategoryResponse categoryResponse = new CategoryResponse();
@@ -412,7 +418,6 @@ public class BookServiceImpl implements BookService {
                 .collect(Collectors.toSet());
         response.setCategories(categoryResponses);
 
-
         Set<AuthorResponse> authorResponses = book.getAuthors().stream()
                 .map(author -> {
                     AuthorResponse authorResponse = new AuthorResponse();
@@ -424,10 +429,19 @@ public class BookServiceImpl implements BookService {
                 .collect(Collectors.toSet());
         response.setAuthors(authorResponses);
 
-        Set<BookCopyResponse> bookCopyResponses = bookCopyRepository.findByBookId(book.getId()).stream()
-                .map(this::mapToBookCopyResponse)
-                .collect(Collectors.toSet());
-        response.setBookCopies(bookCopyResponses);
+        if (userId > 0) {
+            Set<BookCopyResponse> bookCopyResponses = bookCopyRepository.findByBookIdAndUserId(book.getId(), userId)
+                    .stream()
+                    .map(this::mapToBookCopyResponse)
+                    .collect(Collectors.toSet());
+            response.setBookCopies(bookCopyResponses);
+        }
+        // }else{
+        //     Set<BookCopyResponse> bookCopyResponses = bookCopyRepository.findByBookId(book.getId()).stream()
+        //         .map(this::mapToBookCopyResponse)
+        //         .collect(Collectors.toSet());
+        // response.setBookCopies(bookCopyResponses);
+        // }
 
         Set<SampleBookResponse> sampleBookResponses = book.getSampleBooks().stream()
                 .map(sampleBook -> {
@@ -446,6 +460,8 @@ public class BookServiceImpl implements BookService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formattedDateTime = bookCopy.getUpdatedAt().format(formatter);
 
+        List<Loan> loans = loanRepository.getLoansByBookCopyId(bookCopy.getId());
+
         BookCopyResponse bookCopyResponse = new BookCopyResponse();
         bookCopyResponse.setId(bookCopy.getId());
         bookCopyResponse.setUserId(bookCopy.getCreatedBy().getId());
@@ -453,17 +469,21 @@ public class BookServiceImpl implements BookService {
         bookCopyResponse.setStatus(bookCopy.getStatus().toString());
         bookCopyResponse.setUpdatedBy(bookCopy.getUpdatedBy().getFullName());
         bookCopyResponse.setUpdatedAt(formattedDateTime);
+        bookCopyResponse.setLoanInfo(mapLoanToLoanInfos(loans));
 
         return bookCopyResponse;
+    }
+
+    public List<BookCopyResponse.LoanInfo> mapLoanToLoanInfos(List<Loan> loans) {
+        List<BookCopyResponse.LoanInfo> list = new ArrayList<>();
+        for (Loan l : loans) {
+            list.add(new BookCopyResponse.LoanInfo(l.getId(), l.getNote()));
+        }
+        return list;
     }
 
     private int countByStatusAndBookId(EnumBookStatus status, int bookId) {
         return bookCopyRepository.countByStatusAndBookId(status, bookId);
     }
-
-
-
-
-
 
 }
