@@ -4,12 +4,19 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import swp391.learning.application.service.AuthenticationService;
+import swp391.learning.application.service.UserService;
 import swp391.learning.domain.dto.common.ResponseError;
 import swp391.learning.domain.dto.common.ResponseSuccess;
 import swp391.learning.domain.dto.request.user.authentication.*;
+import swp391.learning.domain.dto.response.admin.user.UserResponse;
 import swp391.learning.domain.dto.response.user.authentication.AuthenticationResponse;
+import swp391.learning.domain.entity.User;
 import swp391.learning.exception.AccountLockedException;
 import swp391.learning.exception.InvalidCredentialsException;
 import swp391.learning.exception.UserDisabledException;
@@ -20,6 +27,18 @@ import swp391.learning.exception.UserDisabledException;
 @RequestMapping("/api/v1/auth")
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
+    private final UserService userService;
+
+    @GetMapping("/whoami")
+    public ResponseEntity<UserResponse> whoami(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+        String userEmail = userDetails.getUsername();
+        // get user by email
+        User user = userService.getUserByEmail(userEmail);
+        return ResponseEntity.ok().body(userService.mapToUserResponse(user));
+    }
 
     @Operation(summary = "Register a new user")
     @PostMapping("/register")

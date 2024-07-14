@@ -17,6 +17,7 @@ public interface BookCopyRepository extends JpaRepository<BookCopy, Integer> {
     BookCopy findById(int id);
 
     Set<BookCopy> findByBookId(int bookId);
+    Set<BookCopy> findByBookIdAndUserId(int bookId, int userId);
 
     int countByStatusAndBookId(EnumBookStatus status, int bookId);
 }

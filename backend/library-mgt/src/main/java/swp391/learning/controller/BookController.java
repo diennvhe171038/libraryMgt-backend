@@ -9,13 +9,18 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import swp391.learning.application.service.BookService;
+import swp391.learning.application.service.UserService;
 import swp391.learning.domain.dto.common.ResponseError;
 import swp391.learning.domain.dto.common.ResponseSuccess;
 import swp391.learning.domain.dto.request.admin.book.BookRequest;
 import swp391.learning.domain.entity.Book;
+import swp391.learning.domain.entity.User;
 import swp391.learning.domain.enums.EnumBookStatus;
 import swp391.learning.exception.DuplicateResourceException;
 import swp391.learning.exception.ResourceNotFoundException;
@@ -28,7 +33,8 @@ import java.util.Set;
 @Slf4j
 public class BookController {
     private BookService bookService;
-//    private final int TOP_BOOK = 10;
+    private UserService userService;
+    // private final int TOP_BOOK = 10;
 
     @Operation(summary = "Add book")
     @PostMapping("/add-book")
@@ -99,7 +105,8 @@ public class BookController {
 
     @Operation(summary = "Upload sample book images")
     @PostMapping("/{bookId}/upload-sample-book-images")
-    public ResponseSuccess<?> uploadSampleBookImages(@PathVariable int bookId, @RequestParam("files") Set<MultipartFile> files) {
+    public ResponseSuccess<?> uploadSampleBookImages(@PathVariable int bookId,
+            @RequestParam("files") Set<MultipartFile> files) {
         log.info("Upload sample book images");
         try {
             bookService.uploadSampleBookImages(bookId, files);
@@ -116,10 +123,10 @@ public class BookController {
     @Operation(summary = "get books")
     @GetMapping("/get-books")
     public ResponseSuccess<?> getBooks(@RequestParam(defaultValue = "0", required = false) int pageNo,
-                                       @Min(4) @RequestParam(defaultValue = "10", required = false) int pageSize,
-                                       @RequestParam(required = false) String search,
-                                       @RequestParam(required = false) Integer categoryId,
-                                       @RequestParam(required = false) String status) {
+            @Min(4) @RequestParam(defaultValue = "10", required = false) int pageSize,
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) Integer categoryId,
+            @RequestParam(required = false) String status) {
 
         log.info("Get books");
         try {
@@ -128,7 +135,8 @@ public class BookController {
                 enumBookStatus = EnumBookStatus.valueOf(status);
             }
 
-            return new ResponseSuccess<>(HttpStatus.OK.value(), "Lấy danh sách sách thành công", bookService.getBooks(pageNo, pageSize, search, categoryId, enumBookStatus));
+            return new ResponseSuccess<>(HttpStatus.OK.value(), "Lấy danh sách sách thành công",
+                    bookService.getBooks(pageNo, pageSize, search, categoryId, enumBookStatus));
         } catch (Exception e) {
             log.error("Get books failed: " + e.getMessage());
             return new ResponseError(HttpStatus.BAD_REQUEST.value(), "Lấy danh sách sách thất bại");
@@ -140,7 +148,28 @@ public class BookController {
     public ResponseSuccess<?> getBookById(@PathVariable int bookId) {
         log.info("Get book by id");
         try {
-            return new ResponseSuccess<>(HttpStatus.OK.value(), "Lấy sách thành công", bookService.getBookById(bookId));
+            return new ResponseSuccess<>(HttpStatus.OK.value(), "Lấy sách thành công", bookService.getBookById(bookId, 0));
+        } catch (ResourceNotFoundException e) {
+            log.error("Get book by id failed: " + e.getMessage());
+            return new ResponseError(HttpStatus.NOT_FOUND.value(), e.getMessage());
+        } catch (Exception e) {
+            log.error("Get book by id failed: " + e.getMessage());
+            return new ResponseError(HttpStatus.BAD_REQUEST.value(), "Lấy sách thất bại");
+        }
+    }
+
+    @Operation(summary = "Get book by id")
+    @GetMapping("/get-book-by-id-auth")
+    public ResponseSuccess<?> getBookByIdAuth(@RequestParam(name = "bookId") int bookId) {
+        log.info("Get book by id");
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+            String userEmail = userDetails.getUsername();
+            // get user by email
+            User user = userService.getUserByEmail(userEmail);
+            return new ResponseSuccess<>(HttpStatus.OK.value(), "Lấy sách thành công", bookService.getBookById(bookId, user.getId()));
         } catch (ResourceNotFoundException e) {
             log.error("Get book by id failed: " + e.getMessage());
             return new ResponseError(HttpStatus.NOT_FOUND.value(), e.getMessage());
@@ -156,7 +185,8 @@ public class BookController {
         log.info("Get book image");
         try {
             Resource resource = bookService.getBookImage(bookId);
-            log.info("Get book image success: " + resource.getFilename() + " - " + resource.contentLength() + " bytes ");
+            log.info(
+                    "Get book image success: " + resource.getFilename() + " - " + resource.contentLength() + " bytes ");
             log.info("Header Content-Disposition: attachment; filename=\"" + resource.getFilename() + "\"");
             return ResponseEntity.ok()
                     .contentType(MediaType.APPLICATION_OCTET_STREAM)
@@ -195,7 +225,8 @@ public class BookController {
     public ResponseSuccess<?> getNewestBooks() {
         log.info("Get newest books");
         try {
-            return new ResponseSuccess<>(HttpStatus.OK.value(), "Lấy danh sách sách mới nhất thành công", bookService.getNewestBooks());
+            return new ResponseSuccess<>(HttpStatus.OK.value(), "Lấy danh sách sách mới nhất thành công",
+                    bookService.getNewestBooks());
         } catch (Exception e) {
             log.error("Get newest books failed: " + e.getMessage());
             return new ResponseError(HttpStatus.BAD_REQUEST.value(), "Lấy danh sách sách mới nhất thất bại");
@@ -207,10 +238,13 @@ public class BookController {
     public ResponseSuccess<?> getAllBooksBySubCategory(@PathVariable int parentCategoryId) {
         log.info("Get all books by sub category and status");
         try {
-            return new ResponseSuccess<>(HttpStatus.OK.value(), "Lấy danh sách sách theo danh mục con và trạng thái thành công", bookService.getAllBooksBySubCategoryAndStatus(parentCategoryId));
+            return new ResponseSuccess<>(HttpStatus.OK.value(),
+                    "Lấy danh sách sách theo danh mục con và trạng thái thành công",
+                    bookService.getAllBooksBySubCategoryAndStatus(parentCategoryId));
         } catch (Exception e) {
             log.error("Get all books by sub category and status failed: " + e.getMessage());
-            return new ResponseError(HttpStatus.BAD_REQUEST.value(), "Lấy danh sách sách theo danh mục con và trạng thái thất bại");
+            return new ResponseError(HttpStatus.BAD_REQUEST.value(),
+                    "Lấy danh sách sách theo danh mục con và trạng thái thất bại");
         }
     }
 
@@ -219,12 +253,12 @@ public class BookController {
     public ResponseSuccess<?> getBooksByCategoryId(@PathVariable int subCategoryId) {
         log.info("Get books by category id");
         try {
-            return new ResponseSuccess<>(HttpStatus.OK.value(), "Lấy danh sách sách theo danh mục thành công", bookService.getBooksBySubCategoryId(subCategoryId));
+            return new ResponseSuccess<>(HttpStatus.OK.value(), "Lấy danh sách sách theo danh mục thành công",
+                    bookService.getBooksBySubCategoryId(subCategoryId));
         } catch (Exception e) {
             log.error("Get books by category id failed: " + e.getMessage());
             return new ResponseError(HttpStatus.BAD_REQUEST.value(), "Lấy danh sách sách theo danh mục thất bại");
         }
     }
-
 
 }

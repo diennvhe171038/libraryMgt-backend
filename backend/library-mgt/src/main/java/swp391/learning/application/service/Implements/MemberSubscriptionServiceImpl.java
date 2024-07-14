@@ -1,6 +1,8 @@
 package swp391.learning.application.service.Implements;
 
 import lombok.RequiredArgsConstructor;
+
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,7 @@ import swp391.learning.repository.PaymentRepository;
 import swp391.learning.repository.UserRepository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -43,6 +46,14 @@ public class MemberSubscriptionServiceImpl implements MemberSubscriptionService 
     private final PaymentRepository paymentRepository;
     private final MemberSubscriptionRepository memberSubscriptionRepository;
     private static final Logger log = LoggerFactory.getLogger(MemberSubscriptionServiceImpl.class);
+
+    @Override
+    public ResponseCommon<List<MemberSubscription>> getAllMemberships(){
+        List<MemberSubscription> memberSubscription = memberSubscriptionRepository.findAll();
+        log.debug("Get all membership with " + memberSubscription.size() + " records");
+        return new ResponseCommon<>(ResponseCode.SUCCESS, memberSubscription);
+    }
+
 
     @Override
     public ResponseCommon<AddMemberSubscriptionResponse> addMemberSubscription(AddMemberSubscriptionRequest addMemberSubscriptionRequest) {
@@ -247,5 +258,11 @@ public class MemberSubscriptionServiceImpl implements MemberSubscriptionService 
         String queryString = VnPayConfig.hashAllFields(fields);
 
         return queryString;
+    }
+
+
+    @Override
+    public MemberSubscription findById(int id) {
+        return memberSubscriptionRepository.findMemberSubscriptionById(id).orElse(null);
     }
 }

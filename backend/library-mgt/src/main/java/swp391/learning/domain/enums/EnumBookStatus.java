@@ -8,5 +8,9 @@ public enum EnumBookStatus {
     OUT_OF_STOCK,
     BORROWED,
     LOST,
-    DAMAGED
+    DAMAGED,
+    PENDING,
+    REJECT,
+    RETURNED,
+    RETURNING
 }

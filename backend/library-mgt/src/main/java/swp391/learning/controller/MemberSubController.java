@@ -17,7 +17,9 @@ import swp391.learning.domain.dto.response.admin.membership.DeleteMemberSubscrip
 import swp391.learning.domain.dto.response.admin.membership.UpdateMemberSubscriptionResponse;
 import swp391.learning.domain.dto.response.user.membership.EnrollMembershipResponse;
 import swp391.learning.domain.dto.response.user.membership.PaymentConfirmResponse;
+import swp391.learning.domain.entity.MemberSubscription;
 import swp391.learning.domain.enums.ResponseCode;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/v1/membership")
@@ -25,6 +27,11 @@ import swp391.learning.domain.enums.ResponseCode;
 public class MemberSubController {
 
     private final MemberSubscriptionService memberSubscriptionService;
+
+    @GetMapping("/memberships")
+    public ResponseEntity<ResponseCommon<List<MemberSubscription>>> getAllMembershipSubscription(){
+        return ResponseEntity.ok(memberSubscriptionService.getAllMemberships());
+    }
 
     @PostMapping("/add-subscription")
     public ResponseEntity<ResponseCommon<AddMemberSubscriptionResponse>> addMemberSubscription(
@@ -75,6 +82,7 @@ public class MemberSubController {
             return ResponseEntity.ok().body(new ResponseCommon<>(ResponseCode.SUCCESS.getCode(),"Send url payment success",response.getData()));
         }
     }
+
     @PostMapping("/confirm-payment")
     public ResponseEntity<ResponseCommon<PaymentConfirmResponse>> enrollMembership(@Valid @RequestBody PaymentConfirmRequest paymentConfirmRequest) {
         ResponseCommon<PaymentConfirmResponse> response = memberSubscriptionService.paymentConfirm(paymentConfirmRequest);

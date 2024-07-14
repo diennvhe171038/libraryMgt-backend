@@ -41,7 +41,8 @@ public class SecurityConfiguration {
                                         "/api/v1/category/get-category-by-id/{id}",
                                         "/api/v1/category/get-all-parent-category",
                                         "/api/v1/author/get-all-author",
-                                        "/api/v1/author/get-author-by-id/{id}"
+                                        "/api/v1/author/get-author-by-id/{id}",
+                                        "/api/v1/membership/memberships"
                                 ).permitAll()
                                 .anyRequest().authenticated()
 

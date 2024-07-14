@@ -31,8 +31,7 @@ public interface BookService {
 
     List<BookResponse> getBooksBySubCategoryId(int categoryId);
 
-    BookResponse getBookById(int id);
-
+    BookResponse getBookById(int id, int userId);
     Resource getBookImage(int id);
 
     Resource getSampleBookImages(int id);

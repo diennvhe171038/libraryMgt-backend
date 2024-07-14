@@ -29,7 +29,7 @@ public class PaymentImpl implements PaymentService {
     private final UserRepository userRepository;
 
     @Override
-    public ResponseCommon<PaymentRes> addPayment(double amount) throws UnsupportedEncodingException {
+    public ResponseCommon<PaymentRes> addPayment(double amount) {
 
         String vnp_TxnRef = VnPayConfig.getRandomNumber(8);
         String vnp_TmnCode = VnPayConfig.vnp_TmnCode;
@@ -42,59 +42,62 @@ public class PaymentImpl implements PaymentService {
         vnp_Params.put("vnp_Amount", String.valueOf(lastAmount));
         vnp_Params.put("vnp_Command", VnPayConfig.vnp_Command);
         vnp_Params.put("vnp_CreateDate", vnp_CreateDate);
-        vnp_Params.put("vnp_IpAddr","127.0.0.1");
+        vnp_Params.put("vnp_IpAddr", "127.0.0.1");
         vnp_Params.put("vnp_CurrCode", "VND");
         vnp_Params.put("vnp_Locale", "vn");
         vnp_Params.put("vnp_OrderInfo", "Payment" + vnp_TxnRef);
-        vnp_Params.put("vnp_OrderType","other");
+        vnp_Params.put("vnp_OrderType", "other");
         vnp_Params.put("vnp_ReturnUrl", VnPayConfig.vnp_ReturnUrl);
         vnp_Params.put("vnp_TmnCode", vnp_TmnCode);
         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
         vnp_Params.put("vnp_Version", VnPayConfig.vnp_Version);
-//        vnp_Params.put("vnp_BankCode", "NCB");
+        // vnp_Params.put("vnp_BankCode", "NCB");
 
+        try {
+            cld.add(Calendar.MINUTE, 15);
+            String vnp_ExpireDate = formatter.format(cld.getTime());
+            vnp_Params.put("vnp_ExpireDate", vnp_ExpireDate);
 
-
-        cld.add(Calendar.MINUTE, 15);
-        String vnp_ExpireDate = formatter.format(cld.getTime());
-        vnp_Params.put("vnp_ExpireDate", vnp_ExpireDate);
-
-        List<String> fieldNames = new ArrayList<>(vnp_Params.keySet());
-        Collections.sort(fieldNames);
-        StringBuilder hashData = new StringBuilder();
-        StringBuilder query = new StringBuilder();
-        Iterator<String> itr = fieldNames.iterator();
-        while (itr.hasNext()) {
-            String fieldName = itr.next();
-            String fieldValue = vnp_Params.get(fieldName);
-            if (fieldValue != null && fieldValue.length() > 0) {
-                //Build hash data
-                hashData.append(fieldName);
-                hashData.append('=');
-                hashData.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
-                //Build query
-                query.append(URLEncoder.encode(fieldName, StandardCharsets.US_ASCII.toString()));
-                query.append('=');
-                query.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
-                if (itr.hasNext()) {
-                    query.append('&');
-                    hashData.append('&');
+            List<String> fieldNames = new ArrayList<>(vnp_Params.keySet());
+            Collections.sort(fieldNames);
+            StringBuilder hashData = new StringBuilder();
+            StringBuilder query = new StringBuilder();
+            Iterator<String> itr = fieldNames.iterator();
+            while (itr.hasNext()) {
+                String fieldName = itr.next();
+                String fieldValue = vnp_Params.get(fieldName);
+                if (fieldValue != null && fieldValue.length() > 0) {
+                    // Build hash data
+                    hashData.append(fieldName);
+                    hashData.append('=');
+                    hashData.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
+                    // Build query
+                    query.append(URLEncoder.encode(fieldName, StandardCharsets.US_ASCII.toString()));
+                    query.append('=');
+                    query.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
+                    if (itr.hasNext()) {
+                        query.append('&');
+                        hashData.append('&');
+                    }
                 }
             }
+            String queryUrl = query.toString();
+            String vnp_SecureHash = VnPayConfig.hmacSHA512(VnPayConfig.secretKey, hashData.toString());
+            queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
+            String paymentUrl = VnPayConfig.vnp_PayUrl + "?" + queryUrl;
+
+            PaymentRes paymentRes = new PaymentRes();
+            paymentRes.setStatus("Done");
+            paymentRes.setMessage("Successfully");
+            paymentRes.setUrl(paymentUrl);
+            paymentRes.setVnp_TxnRef(vnp_TxnRef);
+
+            return new ResponseCommon<>(ResponseCode.SUCCESS, paymentRes);
+        } catch (Exception e) {
+            // TODO: handle exception
         }
+        return null;
 
-        String queryUrl = query.toString();
-        String vnp_SecureHash = VnPayConfig.hmacSHA512(VnPayConfig.secretKey, hashData.toString());
-        queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
-        String paymentUrl = VnPayConfig.vnp_PayUrl + "?" + queryUrl;
-
-        PaymentRes paymentRes = new PaymentRes();
-        paymentRes.setStatus("Done");
-        paymentRes.setMessage("Successfully");
-        paymentRes.setUrl(paymentUrl);
-        paymentRes.setVnp_TxnRef(vnp_TxnRef);
-
-        return new ResponseCommon<>(ResponseCode.SUCCESS, paymentRes);
     }
 
     @Override
@@ -114,7 +117,7 @@ public class PaymentImpl implements PaymentService {
                     })
                     .collect(Collectors.toList());
             responsePayment.setListPayment(getPaymentByUserResponses);
-            return new ResponseCommon<>(ResponseCode.SUCCESS,responsePayment);
+            return new ResponseCommon<>(ResponseCode.SUCCESS, responsePayment);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseCommon<>(ResponseCode.FAIL, null);
