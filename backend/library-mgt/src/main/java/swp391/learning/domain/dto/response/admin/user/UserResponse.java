@@ -17,4 +17,5 @@ public class UserResponse {
     private String status;
     private String role;
     private boolean verified;
+    private int membershipSubscriptionId;
 }
