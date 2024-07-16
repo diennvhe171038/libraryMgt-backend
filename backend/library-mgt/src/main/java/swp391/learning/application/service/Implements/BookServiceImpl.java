@@ -471,6 +471,7 @@ public class BookServiceImpl implements BookService {
                     ReviewResponse reviewResponse = new ReviewResponse();
                     reviewResponse.setId(review.getId());
                     reviewResponse.setMemberId(review.getUser().getId());
+                    reviewResponse.setMemberName(review.getUser().getFullName());
                     reviewResponse.setRating(review.getRating());
                     reviewResponse.setFeedback(review.getFeedback());
                     reviewResponse.setUpdatedAt(review.getCreatedAt().format(formatter));
