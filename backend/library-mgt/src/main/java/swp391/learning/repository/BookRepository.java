@@ -32,5 +32,6 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
     List<Book> findAllByCategoryIdAndStatus(int categoryId, EnumBookStatus statusParam);
 
 
+
 }
 

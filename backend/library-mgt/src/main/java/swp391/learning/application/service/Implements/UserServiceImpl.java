@@ -23,11 +23,10 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     @Override
     public List<UserResponse> getAllUserByRole() {
-        List<User> users = userRepository.findAllByLibrarianOrMemberRoles(EnumTypeRole.MEMBER, EnumTypeRole.LIBRARIAN);
+        List<User> users = userRepository.findAllByRoles(List.of(EnumTypeRole.MEMBER, EnumTypeRole.LIBRARIAN));
         return users.stream()
                 .map(this::mapToUserResponse)
                 .collect(Collectors.toList());
-
     }
 
     @Override
@@ -84,7 +83,9 @@ public class UserServiceImpl implements UserService {
                 .status(user.getStatus().toString())
                 .role(user.getRole().name())
                 .verified(user.getVerified())
-                .membershipSubscriptionId(user.getMemberSubscription().getId())
+                .membershipSubscriptionId(
+                        user.getMemberSubscription() != null ? user.getMemberSubscription().getId() : 0
+                )
                 .build();
     }
 

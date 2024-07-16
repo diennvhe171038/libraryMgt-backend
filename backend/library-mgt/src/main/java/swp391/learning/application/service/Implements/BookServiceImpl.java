@@ -17,6 +17,7 @@ import swp391.learning.application.specification.BookSpecifications;
 import swp391.learning.domain.dto.common.PageResponse;
 import swp391.learning.domain.dto.request.admin.book.BookRequest;
 import swp391.learning.domain.dto.response.admin.BookCopy.BookCopyResponse;
+import swp391.learning.domain.dto.response.admin.Review.ReviewResponse;
 import swp391.learning.domain.dto.response.admin.SampleBook.SampleBookResponse;
 import swp391.learning.domain.dto.response.admin.author.AuthorResponse;
 import swp391.learning.domain.dto.response.admin.book.SubCategoryBookResponse;
@@ -48,6 +49,7 @@ public class BookServiceImpl implements BookService {
     private final UserRepository userRepository;
     private final FileService fileUploadService;
     private final ZipService zipService;
+    private final ReviewRepository reviewRepository;
     @Autowired
     private final LoanRepository loanRepository;
 
@@ -395,7 +397,8 @@ public class BookServiceImpl implements BookService {
         response.setTitle(book.getTitle());
         response.setUpdatedAt(formattedDateTime);
         response.setUpdatedBy(book.getUserUpdated().getFullName());
-        response.setRating("4.5");
+        response.setRating(findAverageRatingByBookId(book.getId()));
+        response.setTotalReviews(countReviewsByBookId(book.getId()));
         response.setPrice(book.getPrice());
         response.setTotalPage(book.getTotalPage());
         response.setLanguage(book.getLanguage());
@@ -453,6 +456,19 @@ public class BookServiceImpl implements BookService {
                 .collect(Collectors.toSet());
         response.setSampleBooks(sampleBookResponses);
 
+        Set<ReviewResponse> reviewResponses = book.getReviews().stream()
+                .map(review -> {
+                    ReviewResponse reviewResponse = new ReviewResponse();
+                    reviewResponse.setId(review.getId());
+                    reviewResponse.setMemberId(review.getUser().getId());
+                    reviewResponse.setRating(review.getRating());
+                    reviewResponse.setFeedback(review.getFeedback());
+                    reviewResponse.setUpdatedAt(review.getCreatedAt().format(formatter));
+                    return reviewResponse;
+                })
+                .collect(Collectors.toSet());
+        response.setReviews(reviewResponses);
+
         return response;
     }
 
@@ -485,5 +501,16 @@ public class BookServiceImpl implements BookService {
     private int countByStatusAndBookId(EnumBookStatus status, int bookId) {
         return bookCopyRepository.countByStatusAndBookId(status, bookId);
     }
+
+    private double findAverageRatingByBookId(int bookId) {
+        return reviewRepository.findAverageRatingByBookId(bookId);
+    }
+
+    private int countReviewsByBookId(int bookId) {
+        return reviewRepository.countReviewsByBookId(bookId);
+    }
+
+
+
 
 }
