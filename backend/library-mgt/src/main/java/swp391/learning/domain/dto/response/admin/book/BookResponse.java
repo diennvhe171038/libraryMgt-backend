@@ -25,7 +25,8 @@ public class BookResponse {
     private String title;
     private String updatedAt;
     private String updatedBy;
-    private String rating;
+    private double rating;
+    private int totalReviews;
     private String description;
     private BigDecimal price;
     private int totalPage;
