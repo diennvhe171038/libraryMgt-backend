@@ -31,6 +31,7 @@ import swp391.learning.exception.ResourceNotFoundException;
 import swp391.learning.repository.*;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -397,7 +398,6 @@ public class BookServiceImpl implements BookService {
         response.setTitle(book.getTitle());
         response.setUpdatedAt(formattedDateTime);
         response.setUpdatedBy(book.getUserUpdated().getFullName());
-        response.setRating(findAverageRatingByBookId(book.getId()));
         response.setTotalReviews(countReviewsByBookId(book.getId()));
         response.setPrice(book.getPrice());
         response.setTotalPage(book.getTotalPage());
@@ -439,6 +439,7 @@ public class BookServiceImpl implements BookService {
                     .collect(Collectors.toSet());
             response.setBookCopies(bookCopyResponses);
         }
+
         // }else{
         //     Set<BookCopyResponse> bookCopyResponses = bookCopyRepository.findByBookId(book.getId()).stream()
         //         .map(this::mapToBookCopyResponse)
@@ -456,11 +457,21 @@ public class BookServiceImpl implements BookService {
                 .collect(Collectors.toSet());
         response.setSampleBooks(sampleBookResponses);
 
+        Double averageRating = reviewRepository.findAverageRatingByBookId(book.getId());
+        if (averageRating != null) {
+            DecimalFormat df = new DecimalFormat("#.#");
+            double roundedRating = Double.parseDouble(df.format(averageRating));
+            response.setRating(roundedRating);
+        } else {
+            response.setRating(0.0);
+        }
+
         Set<ReviewResponse> reviewResponses = book.getReviews().stream()
                 .map(review -> {
                     ReviewResponse reviewResponse = new ReviewResponse();
                     reviewResponse.setId(review.getId());
                     reviewResponse.setMemberId(review.getUser().getId());
+                    reviewResponse.setMemberName(review.getUser().getFullName());
                     reviewResponse.setRating(review.getRating());
                     reviewResponse.setFeedback(review.getFeedback());
                     reviewResponse.setUpdatedAt(review.getCreatedAt().format(formatter));
