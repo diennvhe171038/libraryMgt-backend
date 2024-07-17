@@ -1,12 +1,7 @@
 package swp391.learning.application.service.Implements;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import swp391.learning.application.service.BookCopyService;
 import swp391.learning.application.service.LoanService;
 import swp391.learning.application.service.MemberSubscriptionService;
@@ -17,6 +12,10 @@ import swp391.learning.domain.enums.EnumBookStatus;
 import swp391.learning.domain.enums.EnumLoanStatus;
 import swp391.learning.repository.BookCopyRepository;
 import swp391.learning.repository.LoanRepository;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class LoanServiceImpl implements LoanService {
@@ -39,6 +38,8 @@ public class LoanServiceImpl implements LoanService {
     private RentResponse mapLoanToRentResponse(Loan loan) {
         RentResponse rentResponse = RentResponse.builder()
                 .loanId(loan.getId())
+                .userName(loan.getUser().getUsername())
+                .maxBook(memberSubscriptionService.findById(loan.getUser().getMemberSubscription().getId()).getMaxBook())
                 .bookCopyResponse(bookCopyService.mapBookCopyToBookCopyResponse(loan.getBookCopy()))
                 .memberId(loan.getUser().getMemberSubscription().getId())
                 .memFee(memberSubscriptionService.findById(loan.getUser().getMemberSubscription().getId())
@@ -57,8 +58,9 @@ public class LoanServiceImpl implements LoanService {
     @Override
     public List<RentResponse> getLoansByUserIdAndActive(int userId) {
         List<RentResponse> list = new ArrayList<>();
-
-        List<Loan> listLoan = loanRepository.findByUserIdAndStatusIn(userId, Arrays.asList(EnumLoanStatus.ACTIVE, EnumLoanStatus.PENDING));
+        List<String> statusList = Arrays.asList(EnumLoanStatus.ACTIVE.name(), EnumLoanStatus.PENDING.name());
+        List<Loan> listLoan = loanRepository.findByUserIdAndStatusIn(userId, statusList);
+        
         for (Loan loan : listLoan) {
             list.add(mapLoanToRentResponse(loan));
         }

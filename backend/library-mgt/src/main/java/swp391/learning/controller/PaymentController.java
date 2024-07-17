@@ -14,9 +14,9 @@ import swp391.learning.domain.dto.request.user.payment.GetPaymentByUserRequest;
 import swp391.learning.domain.dto.response.user.payment.ResponsePayment;
 import swp391.learning.domain.enums.ResponseCode;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("/api/v1/payment")
-@AllArgsConstructor
 public class PaymentController {
     private final PaymentImpl paymentService;
 
@@ -32,8 +32,8 @@ public class PaymentController {
     }
 
     @GetMapping("/get-payment-url")
-    public ResponseEntity<ResponseCommon<PaymentRes>> getPaymentUrl(@RequestParam(name = "amount") double amount) {
-        ResponseCommon<PaymentRes> response = paymentService.addPayment(amount);
+    public ResponseEntity<ResponseCommon<PaymentRes>> getPaymentUrl(@RequestParam(name = "amount") double amount, @RequestParam(name = "memberId") int memberId) {
+        ResponseCommon<PaymentRes> response = paymentService.addPayment(amount, memberId);
 
         if (response.getCode() == ResponseCode.SUCCESS.getCode()) {
             return ResponseEntity.ok(response);

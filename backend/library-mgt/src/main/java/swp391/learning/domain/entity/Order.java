@@ -36,4 +36,5 @@ public class Order implements Serializable {
     private boolean isDeleted;
     @Column(name = "checksum")
     private String checksum;
+    private String status;
 }
