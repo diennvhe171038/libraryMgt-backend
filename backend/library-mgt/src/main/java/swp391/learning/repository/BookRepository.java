@@ -5,16 +5,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import swp391.learning.domain.dto.response.admin.book.BookResponse;
 import swp391.learning.domain.entity.Book;
-import swp391.learning.domain.entity.BookCopy;
 import swp391.learning.domain.enums.EnumBookStatus;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, Integer> {
@@ -30,7 +25,6 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
 
     @Query("SELECT b FROM Book b JOIN b.categories c WHERE c.id = :categoryId AND b.status = :statusParam")
     List<Book> findAllByCategoryIdAndStatus(int categoryId, EnumBookStatus statusParam);
-
 
 
 }

@@ -1,13 +1,9 @@
 package swp391.learning.domain.dto.response.user.rent;
 
-import java.time.LocalDateTime;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import swp391.learning.domain.dto.response.admin.BookCopy.BookCopyResponse;
+
+import java.time.LocalDateTime;
 
 @Builder
 @AllArgsConstructor
@@ -16,8 +12,10 @@ import swp391.learning.domain.dto.response.admin.BookCopy.BookCopyResponse;
 @Setter
 public class RentResponse {
     private int loanId;
+    private String userName;
     private BookCopyResponse bookCopyResponse;
     private int memberId;
+    private int maxBook;
     private double memFee;
     private double price;
     private int userId;

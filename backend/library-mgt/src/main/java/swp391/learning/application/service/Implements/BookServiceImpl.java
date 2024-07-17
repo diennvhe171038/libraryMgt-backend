@@ -2,7 +2,6 @@ package swp391.learning.application.service.Implements;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
@@ -20,12 +19,11 @@ import swp391.learning.domain.dto.response.admin.BookCopy.BookCopyResponse;
 import swp391.learning.domain.dto.response.admin.Review.ReviewResponse;
 import swp391.learning.domain.dto.response.admin.SampleBook.SampleBookResponse;
 import swp391.learning.domain.dto.response.admin.author.AuthorResponse;
-import swp391.learning.domain.dto.response.admin.book.SubCategoryBookResponse;
 import swp391.learning.domain.dto.response.admin.book.BookResponse;
+import swp391.learning.domain.dto.response.admin.book.SubCategoryBookResponse;
 import swp391.learning.domain.dto.response.admin.category.CategoryResponse;
 import swp391.learning.domain.entity.*;
 import swp391.learning.domain.enums.EnumBookStatus;
-import swp391.learning.domain.enums.EnumLoanStatus;
 import swp391.learning.exception.DuplicateResourceException;
 import swp391.learning.exception.ResourceNotFoundException;
 import swp391.learning.repository.*;
@@ -50,9 +48,8 @@ public class BookServiceImpl implements BookService {
     private final UserRepository userRepository;
     private final FileService fileUploadService;
     private final ZipService zipService;
-    private final ReviewRepository reviewRepository;
-    @Autowired
     private final LoanRepository loanRepository;
+    private final ReviewRepository reviewRepository;
 
     @Override
     public Book addBook(BookRequest addBookRequest) {
@@ -439,7 +436,6 @@ public class BookServiceImpl implements BookService {
                     .collect(Collectors.toSet());
             response.setBookCopies(bookCopyResponses);
         }
-
         // }else{
         //     Set<BookCopyResponse> bookCopyResponses = bookCopyRepository.findByBookId(book.getId()).stream()
         //         .map(this::mapToBookCopyResponse)
@@ -512,16 +508,11 @@ public class BookServiceImpl implements BookService {
     private int countByStatusAndBookId(EnumBookStatus status, int bookId) {
         return bookCopyRepository.countByStatusAndBookId(status, bookId);
     }
-
-    private double findAverageRatingByBookId(int bookId) {
-        return reviewRepository.findAverageRatingByBookId(bookId);
-    }
+//    private double findAverageRatingByBookId(int bookId) {
+//        return reviewRepository.findAverageRatingByBookId(bookId);
+//    }
 
     private int countReviewsByBookId(int bookId) {
         return reviewRepository.countReviewsByBookId(bookId);
     }
-
-
-
-
 }

@@ -15,7 +15,6 @@ import swp391.learning.domain.enums.ResponseCode;
 import swp391.learning.repository.PaymentRepository;
 import swp391.learning.repository.UserRepository;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
@@ -29,7 +28,7 @@ public class PaymentImpl implements PaymentService {
     private final UserRepository userRepository;
 
     @Override
-    public ResponseCommon<PaymentRes> addPayment(double amount) {
+    public ResponseCommon<PaymentRes> addPayment(double amount, int memberId) {
 
         String vnp_TxnRef = VnPayConfig.getRandomNumber(8);
         String vnp_TmnCode = VnPayConfig.vnp_TmnCode;
@@ -45,7 +44,7 @@ public class PaymentImpl implements PaymentService {
         vnp_Params.put("vnp_IpAddr", "127.0.0.1");
         vnp_Params.put("vnp_CurrCode", "VND");
         vnp_Params.put("vnp_Locale", "vn");
-        vnp_Params.put("vnp_OrderInfo", "Payment" + vnp_TxnRef);
+        vnp_Params.put("vnp_OrderInfo", "" + memberId);
         vnp_Params.put("vnp_OrderType", "other");
         vnp_Params.put("vnp_ReturnUrl", VnPayConfig.vnp_ReturnUrl);
         vnp_Params.put("vnp_TmnCode", vnp_TmnCode);
