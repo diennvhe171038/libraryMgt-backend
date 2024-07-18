@@ -23,12 +23,13 @@ import swp391.learning.domain.dto.response.admin.book.BookResponse;
 import swp391.learning.domain.dto.response.admin.category.CategoryResponse;
 import swp391.learning.domain.entity.*;
 import swp391.learning.domain.enums.EnumBookStatus;
-import swp391.learning.domain.enums.EnumLoanStatus;
+import swp391.learning.domain.dto.response.admin.Review.ReviewResponse;
 import swp391.learning.exception.DuplicateResourceException;
 import swp391.learning.exception.ResourceNotFoundException;
 import swp391.learning.repository.*;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -48,6 +49,7 @@ public class BookServiceImpl implements BookService {
     private final FileService fileUploadService;
     private final ZipService zipService;
     private final LoanRepository loanRepository;
+    private final ReviewRepository reviewRepository;
 
     @Override
     public Book addBook(BookRequest addBookRequest) {
@@ -227,7 +229,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public PageResponse<?> getBooks(int pageNo, int pageSize, String search, Integer categoryId,
-            EnumBookStatus status) {
+                                    EnumBookStatus status) {
         log.info("Getting books with page: {}, size: {}, search: {}, categoryId: {}, status: {}", pageNo, pageSize,
                 search, categoryId, status);
         int page = pageNo > 0 ? pageNo - 1 : 0;
@@ -393,7 +395,7 @@ public class BookServiceImpl implements BookService {
         response.setTitle(book.getTitle());
         response.setUpdatedAt(formattedDateTime);
         response.setUpdatedBy(book.getUserUpdated().getFullName());
-        response.setRating("4.5");
+        response.setTotalReviews(countReviewsByBookId(book.getId()));
         response.setPrice(book.getPrice());
         response.setTotalPage(book.getTotalPage());
         response.setLanguage(book.getLanguage());
@@ -403,6 +405,20 @@ public class BookServiceImpl implements BookService {
         response.setStock(countByStatusAndBookId(EnumBookStatus.AVAILABLE, book.getId()));
         response.setStatus(book.getStatus().toString());
         response.setImagePath(book.getImagePath());
+
+        Set<ReviewResponse> reviewResponses = book.getReviews().stream()
+                .map(review -> {
+                    ReviewResponse reviewResponse = new ReviewResponse();
+                    reviewResponse.setId(review.getId());
+                    reviewResponse.setMemberId(review.getUser().getId());
+                    reviewResponse.setMemberName(review.getUser().getFullName());
+                    reviewResponse.setRating(review.getRating());
+                    reviewResponse.setFeedback(review.getFeedback());
+                    reviewResponse.setUpdatedAt(review.getCreatedAt().format(formatter));
+                    return reviewResponse;
+                })
+                .collect(Collectors.toSet());
+        response.setReviews(reviewResponses);
 
         Set<CategoryResponse> categoryResponses = book.getCategories().stream()
                 .map(category -> {
@@ -440,7 +456,14 @@ public class BookServiceImpl implements BookService {
         //         .collect(Collectors.toSet());
         // response.setBookCopies(bookCopyResponses);
         // }
-
+        Double averageRating = reviewRepository.findAverageRatingByBookId(book.getId());
+        if (averageRating != null) {
+            DecimalFormat df = new DecimalFormat("#.#");
+            double roundedRating = Double.parseDouble(df.format(averageRating));
+            response.setRating(roundedRating);
+        } else {
+            response.setRating(0.0);
+        }
         Set<SampleBookResponse> sampleBookResponses = book.getSampleBooks().stream()
                 .map(sampleBook -> {
                     SampleBookResponse sampleBookResponse = new SampleBookResponse();
@@ -484,4 +507,11 @@ public class BookServiceImpl implements BookService {
         return bookCopyRepository.countByStatusAndBookId(status, bookId);
     }
 
+    private double findAverageRatingByBookId(int bookId) {
+        return reviewRepository.findAverageRatingByBookId(bookId);
+    }
+
+    private int countReviewsByBookId(int bookId) {
+        return reviewRepository.countReviewsByBookId(bookId);
+    }
 }
