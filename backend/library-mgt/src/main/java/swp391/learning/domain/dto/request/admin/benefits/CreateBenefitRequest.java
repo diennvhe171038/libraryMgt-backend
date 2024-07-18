@@ -17,7 +17,5 @@ public class CreateBenefitRequest {
     @NotBlank
     private String description;
     @NotNull
-    private int numberOfRent;
-    @NotNull
     private int memberSubscription;
 }

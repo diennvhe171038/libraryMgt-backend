@@ -29,7 +29,6 @@ public class BenefitsServiceImpl implements BenefitsService {
     //     Benefits benefits = new Benefits();
     //     benefits.setName(createBenefitRequest.getName());
     //     benefits.setDescription(createBenefitRequest.getDescription());
-    //     benefits.setNumberOfRent(createBenefitRequest.getNumberOfRent());
     //     benefits.setMemberSubscription(memberSubscriptionRepository.findById(memberSubscriptionId).get());
     //     return benefitsRepository.save(benefits);
     // }
@@ -46,7 +45,6 @@ public class BenefitsServiceImpl implements BenefitsService {
     //     Benefits benefits = benefitsRepository.findById(benefitsId).get();
     //     benefits.setName(updateBenefitRequest.getName());
     //     benefits.setDescription(updateBenefitRequest.getDescription());
-    //     benefits.setNumberOfRent(updateBenefitRequest.getNumberOfRent());
     //     benefits.setMemberSubscription(memberSubscriptionRepository.findById(memberSubscriptionId).get());
     //     return benefitsRepository.save(benefits);
     // }
@@ -67,7 +65,7 @@ public class BenefitsServiceImpl implements BenefitsService {
             throw new ResourceNotFoundException("Benefit not found");
         }
         Benefits benefit = benefitsRepository.findById(benefitId).get();
-        return new BenefitResponse(benefit.getId(), benefit.getName(), benefit.getDescription(), benefit.getNumberOfRent());
+        return new BenefitResponse(benefit.getId(), benefit.getName(), benefit.getDescription());
     }
 
     @Override
@@ -75,7 +73,7 @@ public class BenefitsServiceImpl implements BenefitsService {
         List<Benefits> list = benefitsRepository.findAll();
         List<BenefitResponse> results = new ArrayList<>();
         for (Benefits b : list) {
-            results.add(new BenefitResponse(b.getId(), b.getName(), b.getDescription(), b.getNumberOfRent()));
+            results.add(new BenefitResponse(b.getId(), b.getName(), b.getDescription()));
         }
         return results;
     }

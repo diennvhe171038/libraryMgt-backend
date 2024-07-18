@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -26,9 +27,6 @@ public class Benefits implements Serializable {
 
     @Column(name = "description")
     private String description;
-
-    @Column(name = "number_of_rent")
-    private int numberOfRent;
 
     @OneToMany(mappedBy = "benefits")
     Set<MemberBenefit> memberBenefits;

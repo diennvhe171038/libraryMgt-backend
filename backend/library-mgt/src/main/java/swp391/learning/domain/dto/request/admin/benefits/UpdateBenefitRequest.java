@@ -15,6 +15,5 @@ public class UpdateBenefitRequest {
     private int id;
     private String name;
     private String description;
-    private int numberOfRent;
     private int memberSubscription;
 }

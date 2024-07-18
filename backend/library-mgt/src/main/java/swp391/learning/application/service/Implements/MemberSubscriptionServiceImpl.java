@@ -1,6 +1,7 @@
 package swp391.learning.application.service.Implements;
 
 import lombok.RequiredArgsConstructor;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -20,17 +21,31 @@ import swp391.learning.domain.dto.response.admin.membership.DeleteMemberSubscrip
 import swp391.learning.domain.dto.response.admin.membership.UpdateMemberSubscriptionResponse;
 import swp391.learning.domain.dto.response.user.membership.EnrollMembershipResponse;
 import swp391.learning.domain.dto.response.user.membership.MembershipResponse;
-import swp391.learning.domain.dto.response.user.membership.MembershipResponse.BenefitDTO;
 import swp391.learning.domain.dto.response.user.membership.PaymentConfirmResponse;
-import swp391.learning.domain.entity.*;
-import swp391.learning.domain.enums.EnumPaymentGateway;
-import swp391.learning.domain.enums.EnumPaymentProcess;
-import swp391.learning.domain.enums.EnumTypeProcessPayment;
-import swp391.learning.domain.enums.ResponseCode;
-import swp391.learning.repository.*;
+import swp391.learning.domain.dto.response.user.membership.MembershipResponse.BenefitDTO;
+import swp391.learning.domain.entity.Benefits;
+import swp391.learning.domain.entity.MemberBenefit;
+import swp391.learning.domain.entity.MemberBenefitKey;
+import swp391.learning.domain.entity.MemberSubscription;
+import swp391.learning.domain.entity.Order;
+import swp391.learning.domain.entity.Payment;
+import swp391.learning.domain.entity.User;
+import swp391.learning.domain.enums.*;
+import swp391.learning.repository.BenefitsRepository;
+import swp391.learning.repository.MemberBenefitRepository;
+import swp391.learning.repository.MemberSubscriptionRepository;
+import swp391.learning.repository.OrderRepository;
+import swp391.learning.repository.PaymentRepository;
+import swp391.learning.repository.UserRepository;
+import swp391.learning.utils.CommonUtils;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -66,7 +81,7 @@ public class MemberSubscriptionServiceImpl implements MemberSubscriptionService 
         for (MemberSubscription memberSubscription : list) {
             MembershipResponse membershipResponse = new MembershipResponse();
             List<MemberBenefit> memberBenefit = memberSubscription.getMemberBenefits().stream().filter(m -> m.getId().getMemberId() == memberSubscription.getId()).toList();
-            List<BenefitDTO> benefits = memberBenefit.stream().map(m -> new BenefitDTO(m.getBenefits().getId(), m.getBenefits().getName())).toList();
+            List<BenefitDTO> benefits = memberBenefit.stream().map(m -> new MembershipResponse.BenefitDTO(m.getBenefits().getId(), m.getBenefits().getName())).toList();
             BeanUtils.copyProperties(memberSubscription, membershipResponse);
             membershipResponse.setBenefits(benefits);
             result.add(membershipResponse);
