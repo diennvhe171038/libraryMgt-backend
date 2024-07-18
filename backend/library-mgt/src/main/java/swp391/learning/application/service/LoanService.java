@@ -1,9 +1,9 @@
 package swp391.learning.application.service;
 
-import java.util.List;
-
 import swp391.learning.domain.dto.response.user.rent.RentResponse;
 import swp391.learning.domain.entity.Loan;
+
+import java.util.List;
 
 public interface LoanService {
     void addLoan(Loan loan);

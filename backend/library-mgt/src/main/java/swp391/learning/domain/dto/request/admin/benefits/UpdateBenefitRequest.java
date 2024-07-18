@@ -1,6 +1,5 @@
-package swp391.learning.domain.dto.request.admin.membership;
+package swp391.learning.domain.dto.request.admin.benefits;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,9 +10,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class DeleteMemberSubscriptionRequest {
-    @NotBlank
-    private String email;
+public class UpdateBenefitRequest {
     @NotNull
-    private int subscriptionId;
+    private int id;
+    private String name;
+    private String description;
+    private int memberSubscription;
 }

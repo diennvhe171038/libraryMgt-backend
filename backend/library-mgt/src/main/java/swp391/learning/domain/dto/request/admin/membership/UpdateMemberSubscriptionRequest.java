@@ -1,39 +1,23 @@
 package swp391.learning.domain.dto.request.admin.membership;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-//import swp391.learning.domain.enums.EnumMembershipType;
+import swp391.learning.domain.dto.response.user.membership.MembershipResponse.BenefitDTO;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 public class UpdateMemberSubscriptionRequest {
-    @NotBlank
+    private int subId;
     private String email;
-
-    @NotNull
-    private int id;
-    @NotBlank
-    private String NameSubscription;
-    @NotNull
-    private boolean deleted;
-//    @NotNull
-//    private String subscriptionPlan;
-    @NotNull
+    private String nameSubscription;
     private double fee_member;
-//    @NotNull
-//    private EnumMembershipType membershipType;
-
-    @NotNull
-    private LocalDateTime startDate;
-
-    @NotNull
-    private LocalDateTime endDate;
+    private String expireDate;
+    private int maxBook;
+    private List<BenefitDTO> selectedBenefits;
 }

@@ -9,7 +9,7 @@ import java.io.UnsupportedEncodingException;
 
 public interface PaymentService {
 
-    ResponseCommon<PaymentRes> addPayment(double amount) throws UnsupportedEncodingException;
+    ResponseCommon<PaymentRes> addPayment(double amount, int memberId) throws UnsupportedEncodingException;
 
 
     ResponseCommon<ResponsePayment> getPaymentByUser(GetPaymentByUserRequest getPaymentByUserRequest);

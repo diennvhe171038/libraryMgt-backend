@@ -16,10 +16,11 @@ import swp391.learning.domain.dto.response.admin.membership.AddMemberSubscriptio
 import swp391.learning.domain.dto.response.admin.membership.DeleteMemberSubscriptionResponse;
 import swp391.learning.domain.dto.response.admin.membership.UpdateMemberSubscriptionResponse;
 import swp391.learning.domain.dto.response.user.membership.EnrollMembershipResponse;
+import swp391.learning.domain.dto.response.user.membership.MembershipResponse;
 import swp391.learning.domain.dto.response.user.membership.PaymentConfirmResponse;
-import swp391.learning.domain.entity.MemberSubscription;
 import swp391.learning.domain.enums.ResponseCode;
-import java.util.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/membership")
@@ -29,7 +30,7 @@ public class MemberSubController {
     private final MemberSubscriptionService memberSubscriptionService;
 
     @GetMapping("/memberships")
-    public ResponseEntity<ResponseCommon<List<MemberSubscription>>> getAllMembershipSubscription(){
+    public ResponseEntity<ResponseCommon<List<MembershipResponse>>> getAllMembershipSubscription(){
         return ResponseEntity.ok(memberSubscriptionService.getAllMemberships());
     }
 
@@ -46,7 +47,7 @@ public class MemberSubController {
         }
     }
 
-    @PutMapping("/update-subscription")
+    @PostMapping("/update-subscription")
     public ResponseEntity<ResponseCommon<UpdateMemberSubscriptionResponse>> updateMemberSubscription(
             @Valid @RequestBody UpdateMemberSubscriptionRequest updateMemberSubscriptionRequest) {
         ResponseCommon<UpdateMemberSubscriptionResponse> response = memberSubscriptionService.updateMemberSubscription(updateMemberSubscriptionRequest);
@@ -59,7 +60,7 @@ public class MemberSubController {
         }
     }
 
-    @DeleteMapping("/delete-subscription")
+    @PostMapping("/delete-subscription")
     public ResponseEntity<ResponseCommon<DeleteMemberSubscriptionResponse>> deleteMemberSubscription(
             @Valid @RequestBody DeleteMemberSubscriptionRequest deleteMemberSubscriptionRequest) {
         ResponseCommon<DeleteMemberSubscriptionResponse> response = memberSubscriptionService.deleteMemberSubscription(deleteMemberSubscriptionRequest);
@@ -79,7 +80,7 @@ public class MemberSubController {
         } else if(response.getCode()==ResponseCode.FAIL.getCode()){
             return ResponseEntity.badRequest().body(new ResponseCommon<>(ResponseCode.FAIL.getCode(),"Exception send url",null));
         } else {
-            return ResponseEntity.ok().body(new ResponseCommon<>(ResponseCode.SUCCESS.getCode(),"Send url payment success",response.getData()));
+            return ResponseEntity.ok().body(new ResponseCommon<>(ResponseCode.SUCCESS.getCode(),response.getMessage(),response.getData()));
         }
     }
 

@@ -1,8 +1,8 @@
 package swp391.learning.domain.dto.response.admin.BookCopy;
 
-import java.util.List;
-
 import lombok.*;
+
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor

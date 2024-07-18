@@ -2,7 +2,6 @@ package swp391.learning.application.service.Implements;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
@@ -19,12 +18,11 @@ import swp391.learning.domain.dto.request.admin.book.BookRequest;
 import swp391.learning.domain.dto.response.admin.BookCopy.BookCopyResponse;
 import swp391.learning.domain.dto.response.admin.SampleBook.SampleBookResponse;
 import swp391.learning.domain.dto.response.admin.author.AuthorResponse;
-import swp391.learning.domain.dto.response.admin.book.SubCategoryBookResponse;
 import swp391.learning.domain.dto.response.admin.book.BookResponse;
+import swp391.learning.domain.dto.response.admin.book.SubCategoryBookResponse;
 import swp391.learning.domain.dto.response.admin.category.CategoryResponse;
 import swp391.learning.domain.entity.*;
 import swp391.learning.domain.enums.EnumBookStatus;
-import swp391.learning.domain.enums.EnumLoanStatus;
 import swp391.learning.exception.DuplicateResourceException;
 import swp391.learning.exception.ResourceNotFoundException;
 import swp391.learning.repository.*;
@@ -48,7 +46,6 @@ public class BookServiceImpl implements BookService {
     private final UserRepository userRepository;
     private final FileService fileUploadService;
     private final ZipService zipService;
-    @Autowired
     private final LoanRepository loanRepository;
 
     @Override

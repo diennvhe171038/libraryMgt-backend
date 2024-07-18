@@ -5,10 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-//import swp391.learning.domain.enums.EnumMembershipType;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Table(name = "member_subscription")
@@ -22,20 +22,15 @@ public class MemberSubscription implements Serializable {
     private int id;
 
     @Column(name = "nameSubscription")
-    private String nameSubscription; //tên gói
-//    @Column(name = "subscription_plan")
-//    private String subscriptionPlan;
-    @Column(name="fee_member")
+    private String nameSubscription; // tên gói
+    // @Column(name = "subscription_plan")
+    // private String subscriptionPlan;
+    @Column(name = "fee_member")
     private double feeMember; // phí gói thành viên
     private boolean isDeleted = false;
-//    @Column(name="membership")
-//    private EnumMembershipType membershipType; //type member
-
-    @Column(name = "start_date")
-    private LocalDateTime startDate; // ngay bat dau goi
-
-    @Column(name = "end_date")
-    private LocalDateTime endDate; // ngay het han
+    private int maxBook;
+    @Column(name = "expire_date", nullable = true)
+    private int expireDate;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt; // ngay goi duoc tạo ra
@@ -44,6 +39,9 @@ public class MemberSubscription implements Serializable {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User userCreated;
     @ManyToOne
-    @JoinColumn(name="updated_by",referencedColumnName = "id")
+    @JoinColumn(name = "updated_by", referencedColumnName = "id")
     private User userUpdated;
+
+    @OneToMany(mappedBy = "memberSubscription")
+    Set<MemberBenefit> memberBenefits;
 }

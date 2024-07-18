@@ -1,7 +1,5 @@
 package swp391.learning.application.service;
 
-import java.util.List;
-
 import swp391.learning.domain.dto.common.ResponseCommon;
 import swp391.learning.domain.dto.request.admin.membership.AddMemberSubscriptionRequest;
 import swp391.learning.domain.dto.request.admin.membership.DeleteMemberSubscriptionRequest;
@@ -12,8 +10,11 @@ import swp391.learning.domain.dto.response.admin.membership.AddMemberSubscriptio
 import swp391.learning.domain.dto.response.admin.membership.DeleteMemberSubscriptionResponse;
 import swp391.learning.domain.dto.response.admin.membership.UpdateMemberSubscriptionResponse;
 import swp391.learning.domain.dto.response.user.membership.EnrollMembershipResponse;
+import swp391.learning.domain.dto.response.user.membership.MembershipResponse;
 import swp391.learning.domain.dto.response.user.membership.PaymentConfirmResponse;
 import swp391.learning.domain.entity.MemberSubscription;
+
+import java.util.List;
 
 
 public interface MemberSubscriptionService {
@@ -25,6 +26,6 @@ public interface MemberSubscriptionService {
     ResponseCommon<EnrollMembershipResponse> enrollMembership(EnrollMembershipRequest enrollCourseRequest);
 
     ResponseCommon<PaymentConfirmResponse> paymentConfirm(PaymentConfirmRequest paymentConfirmRequest);
-    ResponseCommon<List<MemberSubscription>> getAllMemberships();
+    ResponseCommon<List<MembershipResponse>> getAllMemberships();
     MemberSubscription findById(int id);
 }
