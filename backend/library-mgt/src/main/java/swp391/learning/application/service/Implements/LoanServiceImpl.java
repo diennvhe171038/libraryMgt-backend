@@ -1,7 +1,12 @@
 package swp391.learning.application.service.Implements;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import swp391.learning.application.service.BookCopyService;
 import swp391.learning.application.service.LoanService;
 import swp391.learning.application.service.MemberSubscriptionService;
@@ -12,10 +17,6 @@ import swp391.learning.domain.enums.EnumBookStatus;
 import swp391.learning.domain.enums.EnumLoanStatus;
 import swp391.learning.repository.BookCopyRepository;
 import swp391.learning.repository.LoanRepository;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 @Service
 public class LoanServiceImpl implements LoanService {

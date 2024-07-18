@@ -1,9 +1,13 @@
 package swp391.learning.domain.dto.response.user.rent;
 
-import lombok.*;
-import swp391.learning.domain.dto.response.admin.BookCopy.BookCopyResponse;
-
 import java.time.LocalDateTime;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import swp391.learning.domain.dto.response.admin.BookCopy.BookCopyResponse;
 
 @Builder
 @AllArgsConstructor

@@ -3,9 +3,10 @@ package swp391.learning.application.service.Implements;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import swp391.learning.application.service.OtpService;
 import swp391.learning.domain.entity.Otp;
 import swp391.learning.repository.OtpRepository;
+import swp391.learning.application.service.OtpService;
+
 
 import java.time.LocalDateTime;
 import java.util.Random;

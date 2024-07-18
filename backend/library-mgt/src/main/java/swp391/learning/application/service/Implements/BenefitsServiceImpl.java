@@ -29,7 +29,6 @@ public class BenefitsServiceImpl implements BenefitsService {
     //     Benefits benefits = new Benefits();
     //     benefits.setName(createBenefitRequest.getName());
     //     benefits.setDescription(createBenefitRequest.getDescription());
-    //     benefits.setNumberOfRent(createBenefitRequest.getNumberOfRent());
     //     benefits.setMemberSubscription(memberSubscriptionRepository.findById(memberSubscriptionId).get());
     //     return benefitsRepository.save(benefits);
     // }
@@ -46,7 +45,6 @@ public class BenefitsServiceImpl implements BenefitsService {
     //     Benefits benefits = benefitsRepository.findById(benefitsId).get();
     //     benefits.setName(updateBenefitRequest.getName());
     //     benefits.setDescription(updateBenefitRequest.getDescription());
-    //     benefits.setNumberOfRent(updateBenefitRequest.getNumberOfRent());
     //     benefits.setMemberSubscription(memberSubscriptionRepository.findById(memberSubscriptionId).get());
     //     return benefitsRepository.save(benefits);
     // }

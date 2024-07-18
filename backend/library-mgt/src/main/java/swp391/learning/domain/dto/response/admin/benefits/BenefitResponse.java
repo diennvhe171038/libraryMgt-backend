@@ -13,5 +13,4 @@ public class BenefitResponse {
     private int id;
     private String name;
     private String description;
-//    private int numberOfRent;
 }

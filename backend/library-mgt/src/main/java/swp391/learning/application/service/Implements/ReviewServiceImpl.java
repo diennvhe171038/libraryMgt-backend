@@ -9,6 +9,7 @@ import swp391.learning.domain.dto.response.admin.Review.ReviewResponse;
 import swp391.learning.domain.entity.Book;
 import swp391.learning.domain.entity.Review;
 import swp391.learning.domain.entity.User;
+import swp391.learning.exception.DuplicateResourceException;
 import swp391.learning.exception.ResourceNotFoundException;
 import swp391.learning.repository.BookRepository;
 import swp391.learning.repository.ReviewRepository;

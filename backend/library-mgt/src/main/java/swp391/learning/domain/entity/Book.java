@@ -2,19 +2,20 @@
 
     import com.fasterxml.jackson.annotation.JsonIgnore;
     import jakarta.persistence.*;
-    import lombok.AllArgsConstructor;
-    import lombok.Getter;
-    import lombok.NoArgsConstructor;
-    import lombok.Setter;
+    import lombok.*;
     import lombok.experimental.Accessors;
     import org.hibernate.annotations.CreationTimestamp;
+    import org.hibernate.annotations.JdbcTypeCode;
     import org.hibernate.annotations.UpdateTimestamp;
+    import org.hibernate.type.SqlTypes;
     import swp391.learning.domain.enums.EnumBookStatus;
 
     import java.io.Serializable;
     import java.math.BigDecimal;
-    import java.time.LocalDateTime;
-    import java.util.Set;
+    import java.sql.Blob;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "book")

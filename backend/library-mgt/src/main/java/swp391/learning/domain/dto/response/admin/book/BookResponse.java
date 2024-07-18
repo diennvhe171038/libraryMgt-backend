@@ -6,6 +6,8 @@ import swp391.learning.domain.dto.response.admin.Review.ReviewResponse;
 import swp391.learning.domain.dto.response.admin.SampleBook.SampleBookResponse;
 import swp391.learning.domain.dto.response.admin.author.AuthorResponse;
 import swp391.learning.domain.dto.response.admin.category.CategoryResponse;
+import swp391.learning.domain.entity.Author;
+import swp391.learning.domain.entity.Category;
 
 import java.math.BigDecimal;
 import java.util.Set;
